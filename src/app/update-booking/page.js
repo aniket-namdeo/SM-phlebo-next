@@ -142,7 +142,7 @@ export default function updatebooking() {
                   Add Family Member
                 </Link>
 
-                <Link href={"#"} className="btn web-btn d-block">
+                <Link href={"#"} className="btn web-btn d-block ">
                   Next
                 </Link>
               </Form>
