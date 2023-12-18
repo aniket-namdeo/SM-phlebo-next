@@ -12,3 +12,39 @@
   font-size: 14px;
   color: grey;
 }
+.update-booking .selected-packages {
+  border: 1px solid var(--greencolor);
+  background-color: var(--lightgreencolor);
+  padding: 10px;
+  border-radius: 5px;
+  position: relative;
+}
+.update-booking .selected-packages p small {
+  font-size: 14px;
+}
+.update-booking .selected-packages .delete-btn {
+  width: 30px;
+  height: 30px;
+  padding: 0px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  border-radius: 50px;
+}
+.update-booking .web-box .table {
+  margin: -20px -20px 16px;
+  width: calc(100% + 40px);
+  font-size: 14px;
+  line-height: 18px;
+}
+.update-booking .web-box .table td,
+.update-booking .web-box .table th {
+  padding: 10px 20px;
+}
+.update-booking .scan {
+  font-size: 12px;
+  text-decoration: none;
+}
+.update-booking .scan svg {
+  font-size: 30px;
+}
