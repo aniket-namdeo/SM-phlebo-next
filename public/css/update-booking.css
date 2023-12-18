@@ -1,0 +1,14 @@
+.update-booking .info-box {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.update-booking .info-box p {
+  margin-bottom: 0px;
+  word-break: break-all;
+  line-height: 20px;
+}
+.update-booking .info-box p span {
+  font-size: 14px;
+  color: grey;
+}

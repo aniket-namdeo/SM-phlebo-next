@@ -1,0 +1,51 @@
+.login {
+  min-height: 100vh;
+  background-color: #e7e7e7;
+}
+.login .box {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 85vh;
+  padding: 20px 0px;
+  border-radius: 0px 0px 30px 30px;
+}
+.login .logo {
+  height: auto;
+  margin: 0px auto 20px;
+  display: block;
+  object-fit: contain;
+}
+.login .heading {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.login a {
+  text-decoration: none;
+}
+.login .web-btn {
+  margin-top: 30px;
+}
+.login .login-with {
+  text-align: center;
+  margin-top: 30px;
+}
+.login .login-with ul {
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+.login .login-with ul li {
+  list-style: none;
+}
+.login .login-footer {
+  height: 15vh;
+  padding: 15px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

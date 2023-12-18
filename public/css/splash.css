@@ -1,0 +1,27 @@
+.splash {
+  min-height: 100vh;
+  background-color: var(--greencolor);
+  background-image: url("../images/delivery.png");
+  background-size: 150%;
+  background-repeat: no-repeat;
+  background-position: center right;
+  text-align: center;
+  padding: 60px 0px 0px;
+  position: relative;
+}
+.splash .heading {
+  color: white;
+  font-size: 35px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.splash-footer {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  width: calc(100% - 50px);
+}
+.splash-footer .btn {
+  width: 100%;
+  margin-top: 15px;
+}
