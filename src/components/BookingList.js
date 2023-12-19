@@ -79,7 +79,7 @@ const BookingList = ({ bookings }) => {
             <Link
               href="#"
               className="btn web-btn w-100"
-              onClick={() => handleButtonClick(booking)}
+              //onClick={() => handleButtonClick(booking)}
             >
               Proceed
             </Link>
