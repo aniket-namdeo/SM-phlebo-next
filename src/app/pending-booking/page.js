@@ -7,7 +7,30 @@ import "/public/css/pending-booking.css";
 import PageHeader from "../component/page-header";
 import Footer from "../component/footer";
 
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { LabPackageBooking } from '@/api_calls/LabPackageBooking';
+import { useSearchParams } from 'next/navigation';
+import Snackbar from '@mui/material/Snackbar';
+
 export default function pendingbooking() {
+
+  const [userPackageBooking, setUserPackageBooking] = useState([]);
+
+  useEffect(() => {
+    async function check() {
+        await LabPackageBooking().then(res => {
+            if (false) {
+            }
+            else {
+              setUserPackageBooking(res);
+            }
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+    check(); 
+}, []);
   return (
     <>
       <PageHeader heading="Pending Bookings" />

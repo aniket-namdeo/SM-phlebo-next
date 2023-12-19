@@ -8,7 +8,69 @@ import Link from "next/link";
 import Image from "next/image";
 import "/public/css/login.css";
 
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { SendOTP } from '@/api_calls/SendOtp';
+import { useSearchParams } from 'next/navigation';
+import Snackbar from '@mui/material/Snackbar';
+
 export default function Login() {
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [mobile, setMobile] = useState({ value: '', errText: '' });
+  const [showLoginBtn, setShowLoginBtn] = useState(false);
+  const [snack, setSnack] = useState({
+      open: false,
+      message: ''
+  });
+  const snackClose = () => {
+      setSnack({
+          open: false,
+          message: ''
+      });
+  };
+
+  const [btnSubmit, setBtnSubmit] = useState(false);
+  const handleMobileChange = (e) => {
+      if (e.target.value.length == 10) {
+          setShowLoginBtn(true);
+          setMobile({
+              value: e.target.value,
+              errText: ''
+          });
+      } else {
+          setShowLoginBtn(false);
+          setMobile({
+              value: e.target.value,
+              errText: 'Please enter 10 digits of mobile no.'
+          });
+      }
+  }
+
+  const handleConfirm = async () => {
+      setBtnSubmit(true);
+      const guest = {
+          user_id: 0,
+          name: "Guest",
+          mobile_no: mobile,
+          otp_verify: false
+      }
+      localStorage.setItem("app_user", JSON.stringify(guest));
+      const otpAPI = await SendOTP(mobile.value); // Send OTP API Call
+      if (otpAPI.status == 1) {
+          router.push("/login/verify-otp");
+      } else {
+          setBtnSubmit(false);
+          const msg = otpAPI.msg;
+          setSnack({
+              open: true,
+              message: msg
+          });
+      }
+  }
+
+  
   return (
     <>
       <section className="login">
@@ -26,24 +88,27 @@ export default function Login() {
                 <h1 className="heading">Log In</h1>
                 <Form>
                   <Form.Group className="mb-3">
-                    <Form.Control type="email" placeholder="Email" />
-                  </Form.Group>
-                  <Form.Group className="mb-3">
-                    <Form.Control
-                      type="text"
-                      placeholder="Password"
-                      className="mb-3"
+                    <Form.Control 
+                      type="text" 
+                      placeholder="Mobile" 
+                      value={mobile.value}  
+                      onChange={(e) => handleMobileChange(e)} 
+                      helperText={mobile.errText}
                     />
-                    <Link href="#">Forgot Password?</Link>
-                  </Form.Group>
+                  </Form.Group>                  
                   <div className="text-center">
-                    <Button className="btn web-btn">Log In</Button>
+                  {
+                    showLoginBtn ?
+                    <Button className="btn web-btn" onClick={handleConfirm}>Log In</Button>
+                    :
+                    <Button className="btn web-btn" disabled>Log In</Button>
+                  }
                   </div>
                 </Form>
                 <div className="login-with">
                   <p>Log In with</p>
                   <ul>
-                    <li>
+                    {/* <li>
                       <Link href={"#"}>
                         <Image
                           src="/images/facebook-icon.svg"
@@ -52,7 +117,7 @@ export default function Login() {
                           alt=""
                         />
                       </Link>
-                    </li>
+                    </li> */}
                     <li>
                       <Link href={"#"}>
                         <Image
@@ -68,10 +133,16 @@ export default function Login() {
               </Col>
             </Row>
           </Container>
+          <Snackbar
+              open={snack.open}
+              autoHideDuration={6000}
+              onClose={snackClose}
+              message={snack.message}
+          />
         </div>
         <div className="login-footer text-center">
           <p className="m-0">
-            Don't have an account? <Link href={"#"}>Sign Up</Link>
+            {/* Don't have an account? <Link href={"#"}>Sign Up</Link> */}
           </p>
         </div>
       </section>

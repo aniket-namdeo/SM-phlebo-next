@@ -18,9 +18,9 @@ export default function Login() {
                 <Link href={"login"} className="btn white-btn">
                   Log In
                 </Link>
-                <Link href={"#"} className="btn white-stroke-btn">
+                {/* <Link href={"#"} className="btn white-stroke-btn">
                   Sign up
-                </Link>
+                </Link> */}
               </div>
             </Col>
           </Row>
