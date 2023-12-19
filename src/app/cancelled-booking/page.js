@@ -7,7 +7,29 @@ import "/public/css/pending-booking.css";
 import PageHeader from "../component/page-header";
 import Footer from "../component/footer";
 
-export default function cancelledbooking() {
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { LabPackageBooking } from '@/api_calls/LabPackageBooking';
+import { useSearchParams } from 'next/navigation';
+import Snackbar from '@mui/material/Snackbar';
+import BookingList from '@/components/BookingList';
+
+const CancelledBookingPage = () => {
+  const [userPackageBooking, setUserPackageBooking] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await LabPackageBooking('canceled');
+        setUserPackageBooking(res);
+        console.log('userPackageBooking:', res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []);
   return (
     <>
       <PageHeader heading="Cancelled Bookings" />
@@ -15,84 +37,8 @@ export default function cancelledbooking() {
         <Container>
           <Row>
             <Col>
-              <div className="web-box">
-                <h2 className="box-heading">Mr. Chitransh Khare</h2>
-                <div className="box-body">
-                  <p>
-                    <span>Booking ID:</span> <br /> 6234775
-                  </p>
-                  <p>
-                    <span>Age:</span> <br /> 32
-                  </p>
-                  <p>
-                    <span>Gender:</span> <br /> Male
-                  </p>
-                  <p>
-                    <span>Email:</span> <br />
-                    <Link href={"#"}>customer.report@redcliffelabs.com</Link>
-                  </p>
-                  <p>
-                    <span>Collection Date:</span> <br /> 21 November 2023
-                  </p>
-                  <p>
-                    <span>Collection Time:</span> <br /> 12:00:00 - 13:00:00
-                  </p>
-                  <p>
-                    <span>Booking Amount:</span> <br /> 1079
-                  </p>
-                  <p>
-                    <span>Amount Due:</span> <br /> 0
-                  </p>
-                  <p>
-                    <span>Booking Status:</span> <br /> phlebo reached
-                  </p>
-                  <p>
-                    <span>Booking Source:</span> <br /> Redcliffelabs
-                  </p>
-                  <Link href={"#"} className="btn web-btn w-100">
-                    Button
-                  </Link>
-                </div>
-              </div>
-              <div className="web-box">
-                <h2 className="box-heading">Mr. Chitransh Khare</h2>
-                <div className="box-body">
-                  <p>
-                    <span>Booking ID:</span> <br /> 6234775
-                  </p>
-                  <p>
-                    <span>Age:</span> <br /> 32
-                  </p>
-                  <p>
-                    <span>Gender:</span> <br /> Male
-                  </p>
-                  <p>
-                    <span>Email:</span> <br />
-                    <Link href={"#"}>customer.report@redcliffelabs.com</Link>
-                  </p>
-                  <p>
-                    <span>Collection Date:</span> <br /> 21 November 2023
-                  </p>
-                  <p>
-                    <span>Collection Time:</span> <br /> 12:00:00 - 13:00:00
-                  </p>
-                  <p>
-                    <span>Booking Amount:</span> <br /> 1079
-                  </p>
-                  <p>
-                    <span>Amount Due:</span> <br /> 0
-                  </p>
-                  <p>
-                    <span>Booking Status:</span> <br /> phlebo reached
-                  </p>
-                  <p>
-                    <span>Booking Source:</span> <br /> Redcliffelabs
-                  </p>
-                  <Link href={"#"} className="btn web-btn w-100">
-                    Button
-                  </Link>
-                </div>
-              </div>
+              <h1>Cancelled Bookings</h1>
+              <BookingList bookings={userPackageBooking} />
             </Col>
           </Row>
         </Container>
@@ -102,3 +48,5 @@ export default function cancelledbooking() {
     </>
   );
 }
+
+export default CancelledBookingPage;
