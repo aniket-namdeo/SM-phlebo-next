@@ -53,7 +53,7 @@ export default function Login() {
       const guest = {
           user_id: 0,
           name: "Guest",
-          mobile_no: mobile,
+          mobile_no: mobile.value,
           otp_verify: false
       }
       localStorage.setItem("app_user", JSON.stringify(guest));
