@@ -10,6 +10,7 @@ import { LuFileInput } from "react-icons/lu";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaRegUser } from "react-icons/fa";
 import { GrLocation } from "react-icons/gr";
+import { FaUserPlus } from "react-icons/fa";
 import "/public/css/myaccount.css";
 import PageHeader from "../component/page-header";
 import Footer from "../component/footer";
@@ -93,6 +94,10 @@ export default function myaccount() {
           </Row>
         </Container>
       </section>
+
+      <Link href={"#"} className="create-plus-btn btn web-btn">
+        <FaUserPlus />
+      </Link>
       <Footer page="account" />
     </>
   );

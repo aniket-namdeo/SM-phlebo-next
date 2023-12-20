@@ -45,6 +45,19 @@ a {
   color: var(--greencolor);
 }
 
+.create-plus-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 100px;
+  padding: 0px !important;
+  width: 48px;
+  height: 48px;
+  border-radius: 50px !important;
+  font-size: 24px;
+  z-index: 100;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
 /* Form */
 .form-label {
   font-size: 14px;
