@@ -80,7 +80,7 @@ export default function updatebooking() {
                 </div>
               </div>
             </Col>
-            <Col className="col-6">
+            <Col className="col-12">
               <div className="dash-box">
                 <div className="box-body">
                   <h2 className="number">00</h2>
@@ -91,7 +91,7 @@ export default function updatebooking() {
                 </div>
               </div>
             </Col>
-            <Col className="col-6">
+            <Col className="col-12">
               <div className="dash-box total">
                 <div className="box-body">
                   <h2 className="number">&#8377;1750</h2>
