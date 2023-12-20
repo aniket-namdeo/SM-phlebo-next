@@ -79,7 +79,7 @@ const BookingList = ({ bookings }) => {
             <Link
               href="#"
               className="btn web-btn w-100"
-              //onClick={() => handleButtonClick(booking)}
+              onClick={() => handleButtonClick(booking)}
             >
               Proceed
             </Link>
@@ -93,18 +93,20 @@ const BookingList = ({ bookings }) => {
         </Modal.Header>
         <Modal.Body>
           <p>Selected Booking ID: {selectedBooking?.id}</p>
-          <Button variant="primary" onClick={() => handleStatusChange('onHold')}>
-            Hold
-          </Button>
-          <Button variant="warning" onClick={() => handleStatusChange('pending')}>
-            Pending
-          </Button>
-          <Button variant="success" onClick={() => handleStatusChange('confirmed')}>
-            Confirmed
-          </Button>
-          <Button variant="danger" onClick={() => handleStatusChange('canceled')}>
-            Canceled
-          </Button>
+          <div className="d-grid gap-2">
+            <Button variant="primary" size="lg" onClick={() => handleStatusChange('onHold')}>
+              Put on Hold
+            </Button>
+            <Button variant="warning" size="lg" onClick={() => handleStatusChange('pending')}>
+              Set as Pending
+            </Button>
+            <Button variant="success" size="lg" onClick={() => handleStatusChange('confirmed')}>
+              Confirm
+            </Button>
+            <Button variant="danger" size="lg" onClick={() => handleStatusChange('canceled')}>
+              Cancel
+            </Button>
+          </div>
         </Modal.Body>
       </Modal>
     </>
