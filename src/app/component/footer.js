@@ -36,7 +36,7 @@ export default function Footer(props) {
             </Link>
           </li>
           <li className={props.page == "account" && "active"}>
-            <Link href={"#"}>
+            <Link href={"my-account"}>
               <AiOutlineUser /> <br />
               <span>My Account</span>
             </Link>

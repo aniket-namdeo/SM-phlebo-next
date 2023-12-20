@@ -1,0 +1,37 @@
+.myaccount .web-box.user-info {
+  background-color: var(--lightgreencolor);
+  border-color: var(--greencolor);
+}
+.myaccount .web-box .d-flex {
+  gap: 15px;
+}
+.myaccount .web-box .logo {
+  object-fit: contain;
+  border-radius: 5px;
+}
+.myaccount .web-box .heading {
+  font-size: 18px;
+  margin-bottom: 0px;
+}
+.myaccount .web-box ul {
+  margin: 0px;
+  padding: 0px;
+}
+.myaccount .web-box ul li a {
+  padding: 20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  color: var(--defaultcolor);
+  border-bottom: 1px solid #c5c5c5;
+}
+.myaccount .web-box ul .icon-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.myaccount .web-box ul .icon-name svg {
+  font-size: 20px;
+  color: var(--greencolor);
+}
