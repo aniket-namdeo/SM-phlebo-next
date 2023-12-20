@@ -1,0 +1,52 @@
+.offcanvas {
+  max-width: 80%;
+}
+.sidebar-btn {
+  position: absolute;
+  right: 20px;
+  top: 18px;
+  padding: 0px;
+  background-color: transparent;
+  border: none;
+  border-radius: 0px;
+  font-size: 24px;
+}
+.sidebar-btn:hover,
+.sidebar-btn:focus,
+.sidebar-btn:active {
+  background-color: transparent;
+}
+.offcanvas-header {
+  background-color: var(--greencolor);
+  color: white;
+  padding: 20px 20px;
+}
+.offcanvas-header .offcanvas-title {
+  color: white;
+  font-size: 20px;
+  line-height: 24px;
+}
+.offcanvas-header .btn-close {
+  padding: 0px;
+  margin-right: 0px;
+}
+
+.offcanvas-body {
+  padding: 0px;
+}
+.offcanvas-body ul {
+  margin: 0px;
+  padding: 0px;
+}
+.offcanvas-body ul li {
+  list-style: none;
+}
+.offcanvas-body ul li a {
+  padding: 20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  color: var(--defaultcolor);
+  border-bottom: 1px solid #c5c5c5;
+}

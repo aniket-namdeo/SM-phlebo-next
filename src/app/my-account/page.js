@@ -12,12 +12,14 @@ import { FaRegUser } from "react-icons/fa";
 import { GrLocation } from "react-icons/gr";
 import { FaUserPlus } from "react-icons/fa";
 import "/public/css/myaccount.css";
+import Sidebar from "../component/sidebar";
 import PageHeader from "../component/page-header";
 import Footer from "../component/footer";
 
 export default function myaccount() {
   return (
     <>
+      <Sidebar />
       <PageHeader heading="My Account" />
       <section className="myaccount section-padding">
         <Container>
