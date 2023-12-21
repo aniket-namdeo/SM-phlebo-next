@@ -60,7 +60,7 @@ export default function updatebooking() {
                   <Form.Select
                     className="page-form-control"
                     value={userPackageBooking.booking_for}
-                    onChange={(e) => setBookingData({ ...userPackageBooking, booking_for: e.target.value })}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, booking_for: e.target.value })}
                   >
                     <option>Select Gender</option>
                     <option value="Self">Self</option>
@@ -95,7 +95,7 @@ export default function updatebooking() {
                   <Form.Select
                     className="page-form-control"
                     value={userPackageBooking.gender}
-                    onChange={(e) => setBookingData({ ...userPackageBooking, gender: e.target.value })}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, gender: e.target.value })}
                   >
                     <option>Select Gender</option>
                     <option value="Male">Male</option>
@@ -114,7 +114,7 @@ export default function updatebooking() {
                     onChange={(e) => setUserPackageBooking({ ...userPackageBooking, email: e.target.value })}
                   />
                 </Form.Group>
-                <Form.Group className="mb-3">
+                {/*<Form.Group className="mb-3">
                   <Form.Label>Aadhaar Number</Form.Label>
                   <Form.Control
                     type="text"
@@ -130,7 +130,7 @@ export default function updatebooking() {
                     className="page-form-control"
                   />
                 </Form.Group>
-                {/* <Form.Group className="mb-3">
+                 <Form.Group className="mb-3">
                   <Form.Label>House No./Plot No./Flat No.*</Form.Label>
                   <Form.Control
                     type="text"
@@ -154,7 +154,7 @@ export default function updatebooking() {
                     style={{ height: "80px" }}
                     className="page-form-control"
                     value={userPackageBooking.user_address}
-                    onChange={(e) => setBookingData({ ...userPackageBooking, user_address: e.target.value })}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, user_address: e.target.value })}
                   />
                 </Form.Group>
                 {/* <Form.Group className="mb-3">
@@ -167,13 +167,23 @@ export default function updatebooking() {
                   />
                 </Form.Group>          */}
                 <Form.Group className="mb-3">
+                  <Form.Label>Pincode</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Latitude"
+                    className="page-form-control"
+                    value={userPackageBooking.pincode}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, pincode: e.target.value })}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
                   <Form.Label>Latitude</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Latitude"
                     className="page-form-control"
                     value={userPackageBooking.latitude}
-                    onChange={(e) => setBookingData({ ...userPackageBooking, latitude: e.target.value })}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, latitude: e.target.value })}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -183,7 +193,7 @@ export default function updatebooking() {
                     placeholder="Longitude"
                     className="page-form-control"
                     value={userPackageBooking.longitude}
-                    onChange={(e) => setBookingData({ ...userPackageBooking, longitude: e.target.value })}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, longitude: e.target.value })}
                   />
                 </Form.Group>
 
@@ -199,7 +209,7 @@ export default function updatebooking() {
                   Update Member Details
                 </Link>
 
-                <Link href={"update-booking/step2"}  className="btn web-btn d-block">
+                <Link href={ `update-booking/step2?id=${userPackageBooking.id}`} className="btn web-btn d-block">
                   Next
                 </Link>
               </Form>

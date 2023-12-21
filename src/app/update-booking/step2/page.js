@@ -10,7 +10,34 @@ import Table from "react-bootstrap/Table";
 import "/public/css/update-booking.css";
 import PageHeader from "../../component/page-header";
 
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { LabPackageBookingDetails } from '@/api_calls/LabPackageBookingDetails';
+import { UpdateBookingMemberDetails } from '@/api_calls/UpdateBookingMemberDetails';
+import { useSearchParams } from 'next/navigation';
+import Snackbar from '@mui/material/Snackbar';
+import BookingList from '@/components/BookingList';
+
 export default function step2() {
+
+  const searchParams = useSearchParams();
+  const [userPackageBooking, setUserPackageBooking] = useState({});
+
+  useEffect(() => {
+    const id = searchParams.get('id');
+    async function fetchData() {
+      try {
+        const res = await LabPackageBookingDetails(id);
+        setUserPackageBooking(res);
+        console.log('userPackageBooking:', res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <PageHeader heading="Update Booking" />
@@ -25,38 +52,29 @@ export default function step2() {
                     <div className="info-box mb-3">
                       <p>
                         <span>Primary User Name:</span>
-                        <br /> User Name
+                        <br /> {userPackageBooking.name}
                       </p>
                       <p>
                         <span>Primary User Age</span>
-                        <br /> 28
+                        <br /> {userPackageBooking.age}
                       </p>
                     </div>
                     <div className="info-box mt-3 mb-3">
                       <p>
                         <span>Collection Date</span>
-                        <br /> 2023-11-21
+                        <br /> {userPackageBooking.booking_date}
                       </p>
                       <p>
                         <span>Collection Time</span>
-                        <br /> 06:00:00-07:00:00
+                        <br /> {userPackageBooking.slot_time}
                       </p>
                       <p>
                         <span>Mobile Number</span>
-                        <br /> XXXXXX8762
-                      </p>
-                      <p>
-                        <span>Whatsapp Number</span>
-                        <br /> XXXXXX8762
-                      </p>
-                      <p>
-                        <span>Alternative Number</span>
-                        <br /> XXXXXX8762
-                      </p>
+                        <br />  {userPackageBooking.contact}
+                      </p>                 
                   </div>
                     <Form.Group className="mb-3">
-                      <p className="mb-0">VIP Membership</p>
-                      <Form.Label>Rs 499 80% off - Rs 99 - 1 Year</Form.Label>
+                      <p className="mb-0">Package</p>
                       <Form.Control
                         type="text"
                         placeholder=""

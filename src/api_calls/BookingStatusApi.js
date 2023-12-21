@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const updateBookingStatus = async (bookingId, newStatus) => {
-  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"labPackageUpdateStatus/"+bookingId+"/"+newStatus
+  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"lab/labPackageUpdateStatus/"+bookingId+"/"+newStatus
 
   try {
     const response = await axios.post(apiURL);
