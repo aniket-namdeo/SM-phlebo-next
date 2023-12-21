@@ -32,6 +32,28 @@ export default function step2() {
                         <br /> 28
                       </p>
                     </div>
+                    <div className="info-box mt-3 mb-3">
+                      <p>
+                        <span>Collection Date</span>
+                        <br /> 2023-11-21
+                      </p>
+                      <p>
+                        <span>Collection Time</span>
+                        <br /> 06:00:00-07:00:00
+                      </p>
+                      <p>
+                        <span>Mobile Number</span>
+                        <br /> XXXXXX8762
+                      </p>
+                      <p>
+                        <span>Whatsapp Number</span>
+                        <br /> XXXXXX8762
+                      </p>
+                      <p>
+                        <span>Alternative Number</span>
+                        <br /> XXXXXX8762
+                      </p>
+                  </div>
                     <Form.Group className="mb-3">
                       <p className="mb-0">VIP Membership</p>
                       <Form.Label>Rs 499 80% off - Rs 99 - 1 Year</Form.Label>

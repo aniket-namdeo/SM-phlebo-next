@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const SendOTP = async (mobile_no) => {
     //const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL + "Doctorapi/doctorUser_login";
-    const apiURL = `http://127.0.0.1:8000/api/sendOtp/${mobile_no}`;
+    const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"sendOtp/"+mobile_no;
 
     let data = JSON.stringify({
         //"contact": mobile_no

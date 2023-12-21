@@ -8,7 +8,44 @@ import Button from "react-bootstrap/Button";
 import "/public/css/update-booking.css";
 import PageHeader from "../component/page-header";
 
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { LabPackageBookingDetails } from '@/api_calls/LabPackageBookingDetails';
+import { UpdateBookingMemberDetails } from '@/api_calls/UpdateBookingMemberDetails';
+import { useSearchParams } from 'next/navigation';
+import Snackbar from '@mui/material/Snackbar';
+import BookingList from '@/components/BookingList';
+
 export default function updatebooking() {
+
+  const searchParams = useSearchParams();
+
+
+  const [userPackageBooking, setUserPackageBooking] = useState({});
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
+    console.log('Age:', userPackageBooking.age);
+    const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id,userPackageBooking); 
+  };
+
+
+  useEffect(() => {
+    const id = searchParams.get('id');
+    async function fetchData() {
+      try {
+        const res = await LabPackageBookingDetails(id);
+        setUserPackageBooking(res);
+        console.log('userPackageBooking:', res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+
   return (
     <>
       <PageHeader heading="Update Booking" />
@@ -17,11 +54,20 @@ export default function updatebooking() {
           <Row>
             <Col>
               <p className="mb-3 text-danger">Patient Details</p>
-              <Form>
+              <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Solution*</Form.Label>
-                  <Form.Select className="page-form-control">
-                    <option>Mr</option>
+                  <Form.Label>Relation*</Form.Label>
+                  <Form.Select
+                    className="page-form-control"
+                    value={userPackageBooking.booking_for}
+                    onChange={(e) => setBookingData({ ...userPackageBooking, booking_for: e.target.value })}
+                  >
+                    <option>Select Gender</option>
+                    <option value="Self">Self</option>
+                    <option value="Father">Father</option>
+                    <option value="Mother">Mother</option>
+                    <option value="Sister">Sister</option>
+                    <option value="Brother">Brother</option>
                   </Form.Select>
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -30,6 +76,8 @@ export default function updatebooking() {
                     type="text"
                     placeholder="Name"
                     className="page-form-control"
+                    value={userPackageBooking.name}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, name: e.target.value })}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -38,45 +86,32 @@ export default function updatebooking() {
                     type="text"
                     placeholder="Age"
                     className="page-form-control"
+                    value={userPackageBooking.age}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, age: e.target.value })}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Gender*</Form.Label>
-                  <Form.Select className="page-form-control">
+                <Form.Label>Gender*</Form.Label>
+                  <Form.Select
+                    className="page-form-control"
+                    value={userPackageBooking.gender}
+                    onChange={(e) => setBookingData({ ...userPackageBooking, gender: e.target.value })}
+                  >
                     <option>Select Gender</option>
-                    <option>Male</option>
-                    <option>Female</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
                   </Form.Select>
                 </Form.Group>
 
-                <div className="info-box mt-3 mb-3">
-                  <p>
-                    <span>Collection Date</span>
-                    <br /> 2023-11-21
-                  </p>
-                  <p>
-                    <span>Collection Time</span>
-                    <br /> 06:00:00-07:00:00
-                  </p>
-                  <p>
-                    <span>Mobile Number</span>
-                    <br /> XXXXXX8762
-                  </p>
-                  <p>
-                    <span>Whatsapp Number</span>
-                    <br /> XXXXXX8762
-                  </p>
-                  <p>
-                    <span>Alternative Number</span>
-                    <br /> XXXXXX8762
-                  </p>
-                </div>
+            
                 <Form.Group className="mb-3">
                   <Form.Label>Email*</Form.Label>
                   <Form.Control
                     type="email"
                     placeholder="Email"
                     className="page-form-control"
+                    value={userPackageBooking.email}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, email: e.target.value })}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -95,7 +130,7 @@ export default function updatebooking() {
                     className="page-form-control"
                   />
                 </Form.Group>
-                <Form.Group className="mb-3">
+                {/* <Form.Group className="mb-3">
                   <Form.Label>House No./Plot No./Flat No.*</Form.Label>
                   <Form.Control
                     type="text"
@@ -110,7 +145,7 @@ export default function updatebooking() {
                     placeholder="Enter Appartment"
                     className="page-form-control"
                   />
-                </Form.Group>
+                </Form.Group> */}
                 <Form.Group className="mb-3">
                   <Form.Label>Landmark/Sublocality*</Form.Label>
                   <Form.Control
@@ -118,15 +153,37 @@ export default function updatebooking() {
                     placeholder="Landmark"
                     style={{ height: "80px" }}
                     className="page-form-control"
+                    value={userPackageBooking.user_address}
+                    onChange={(e) => setBookingData({ ...userPackageBooking, user_address: e.target.value })}
                   />
                 </Form.Group>
-                <Form.Group className="mb-3">
+                {/* <Form.Group className="mb-3">
                   <Form.Label>Locality*</Form.Label>
                   <Form.Control
                     as="textarea"
                     placeholder="Locality"
                     style={{ height: "80px" }}
                     className="page-form-control"
+                  />
+                </Form.Group>          */}
+                <Form.Group className="mb-3">
+                  <Form.Label>Latitude</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Latitude"
+                    className="page-form-control"
+                    value={userPackageBooking.latitude}
+                    onChange={(e) => setBookingData({ ...userPackageBooking, latitude: e.target.value })}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Longitude</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Longitude"
+                    className="page-form-control"
+                    value={userPackageBooking.longitude}
+                    onChange={(e) => setBookingData({ ...userPackageBooking, longitude: e.target.value })}
                   />
                 </Form.Group>
 
@@ -138,8 +195,8 @@ export default function updatebooking() {
                   *Location updated on 11/18/2023 at 9:10 AM
                 </p>
 
-                <Link href={"#"} className="btn web-stroke-btn mb-3 d-block">
-                  Add Family Member
+                <Link href={"#"} className="btn web-stroke-btn mb-3 d-block" onClick={handleSubmit}>
+                  Update Member Details
                 </Link>
 
                 <Link href={"update-booking/step2"}  className="btn web-btn d-block">

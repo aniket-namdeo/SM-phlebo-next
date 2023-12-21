@@ -83,6 +83,10 @@ const BookingList = ({ bookings }) => {
             >
               Proceed
             </Link>
+            <Link href={`update-booking?id=${booking.id}`} 
+              className="btn web-btn w-100">
+              Update Details
+            </Link>
           </div>
         </div>
       ))}

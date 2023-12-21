@@ -1,7 +1,13 @@
 import axios from 'axios';
 
 export const LabPackageBooking = async (status) => {
-    const apiURL = "http://127.0.0.1:8000/api/labPackage/"+status;
+    var userId = 0;
+    if (JSON.parse(localStorage.getItem("app_user_temp")).temp_user_id) {
+        var userId = JSON.parse(localStorage.getItem("app_user_temp")).temp_user_id;
+    } else {
+        var userId = 0;
+    }
+    const apiURL =  process.env.NEXT_PUBLIC_API_BASE_URL+"labPackage/"+userId+"/"+status;
 
     let data = JSON.stringify({});
 
