@@ -36,7 +36,6 @@ const PendingBookingPage = () => {
       <section className="pending-booking section-padding">
         <Container>
           <Col>
-            <h1>Pending Bookings</h1>
             <BookingList bookings={userPackageBooking} />
           </Col>
         </Container>

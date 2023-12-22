@@ -1,0 +1,6 @@
+#barcode-scanner video {
+    width: 100%;
+}
+#barcode-scanner canvas {
+display: none;
+}

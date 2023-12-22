@@ -40,7 +40,6 @@ export default function confirmedbooking() {
         <Container>
           <Row>
             <Col>
-              <h1>Confirmed Bookings</h1>
               <BookingList bookings={userPackageBooking} />
             </Col>
           </Row>

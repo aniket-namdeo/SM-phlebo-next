@@ -28,9 +28,25 @@ export default function step2() {
   const [slots, setSlots] = useState({});
   const [selectedDate, setSelectedDate] = useState(''); 
 
+    
+  const [snack, setSnack] = useState({
+    open: false,
+      message: ''
+  });
+  const snackClose = () => {
+      setSnack({
+          open: false,
+          message: ''
+      });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     console.log('Data:', userPackageBooking);
+    setSnack({
+        open: true,
+        message: 'Successfully Update Package Details.'
+    });
     //const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id,userPackageBooking); 
   };
 
@@ -185,7 +201,13 @@ export default function step2() {
                         <p className="mb-0">Selected Package(s)</p>                                              
                       </div>
                     )}
+                     <div className="text-center">
+                      <Link href={ `package-attachment-details?id=${userPackageBooking.id}`} className="text-danger">
+                        Tube Details
+                      </Link>
                     </div>
+                    </div>
+                   
                     
                     <div>
                       {userPackageBooking.package_name != "" && (
@@ -250,6 +272,12 @@ export default function step2() {
               </Link>
             </Col>
           </Row>
+          <Snackbar
+              open={snack.open}
+              autoHideDuration={6000}
+              onClose={snackClose}
+              message={snack.message}
+          />
         </Container>
       </section>
     </>

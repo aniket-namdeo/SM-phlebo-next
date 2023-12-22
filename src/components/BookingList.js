@@ -41,7 +41,7 @@ const BookingList = ({ bookings }) => {
 
   return (
     <>
-      {bookings.map((booking) => (
+      {bookings.length > 0 ? (bookings.map((booking) => (
         <div key={booking.id} className="web-box">
           <h2 className="box-heading">{booking.name}</h2>
           <div className="box-body">
@@ -89,7 +89,11 @@ const BookingList = ({ bookings }) => {
             </Link>
           </div>
         </div>
-      ))}
+      ))) : (
+        <div className="web-box">
+          <h2 className="box-heading">No bookings found.</h2>
+        </div>
+      )}
 
       <Modal show={showPopup} onHide={handlePopupClose}>
         <Modal.Header closeButton>

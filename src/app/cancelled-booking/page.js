@@ -37,7 +37,6 @@ const CancelledBookingPage = () => {
         <Container>
           <Row>
             <Col>
-              <h1>Cancelled Bookings</h1>
               <BookingList bookings={userPackageBooking} />
             </Col>
           </Row>

@@ -40,7 +40,6 @@ export default function holdbooking() {
         <Container>
           <Row>
             <Col>
-              <h1>Hold Bookings</h1>
               <BookingList bookings={userPackageBooking} />
             </Col>
           </Row>
