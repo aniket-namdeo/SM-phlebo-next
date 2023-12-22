@@ -4,7 +4,6 @@ import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { RiMenu3Line } from "react-icons/ri";
 import { FaAngleRight } from "react-icons/fa6";
-import { FaBox } from "react-icons/fa";
 import Link from "next/link";
 import "/public/css/sidebar.css";
 

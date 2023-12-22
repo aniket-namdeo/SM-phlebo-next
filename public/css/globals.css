@@ -99,14 +99,14 @@ a {
   transition: all 0.3s 0s linear;
 }
 .web-btn {
-  background-color: var(--greencolor);
-  border-color: var(--greencolor);
+  background-color: var(--greencolor) !important;
+  border-color: var(--greencolor) !important;
   color: white;
 }
 .web-btn:hover,
 .web-btn:active {
-  background-color: var(--darkgreencolor);
-  border-color: var(--darkgreencolor);
+  background-color: var(--darkgreencolor) !important;
+  border-color: var(--darkgreencolor) !important;
   color: white;
 }
 .web-stroke-btn {
@@ -231,4 +231,17 @@ a {
   -webkit-line-clamp: 1;
   line-clamp: 1;
   -webkit-box-orient: vertical;
+}
+
+/* Custom File Upload */
+.custom-file-upload {
+  border: 2px solid #ddd;
+  width: 100%;
+  border-radius: 10px;
+  padding: 30px 20px;
+  text-align: center;
+}
+.custom-file-upload svg {
+  font-size: 40px;
+  margin-bottom: 5px;
 }
