@@ -20,6 +20,18 @@ export default function updatebooking() {
 
   const searchParams = useSearchParams();
 
+  
+  const [snack, setSnack] = useState({
+    open: false,
+      message: ''
+  });
+  const snackClose = () => {
+      setSnack({
+          open: false,
+          message: ''
+      });
+  };
+
 
   const [userPackageBooking, setUserPackageBooking] = useState({});
   
@@ -27,6 +39,18 @@ export default function updatebooking() {
     e.preventDefault(); 
     console.log('Age:', userPackageBooking.age);
     const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id,userPackageBooking); 
+    if(otpAPI.status == 200){
+      console.log(otpAPI.status);      
+      setSnack({
+          open: true,
+          message: 'Successfully Update Member Details.'
+      });
+    }else{
+      setSnack({
+          open: true,
+          message: 'Something Wrong.'
+      });
+    }
   };
 
 
@@ -215,6 +239,12 @@ export default function updatebooking() {
               </Form>
             </Col>
           </Row>
+          <Snackbar
+              open={snack.open}
+              autoHideDuration={6000}
+              onClose={snackClose}
+              message={snack.message}
+          />
         </Container>
       </section>
     </>
