@@ -16,14 +16,21 @@ import { UpdateBookingMemberDetails } from '@/api_calls/UpdateBookingMemberDetai
 import { LabPackages } from '@/api_calls/LabPackages';
 import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
+import SignaturePad from '@/components/SignaturePad';
 
 export default function step2() {
 
   const [scannedBarcode, setScannedBarcode] = useState(null);
+  const [signatureData, setSignatureData] = useState('');
 
   const handleBarcodeScanned = (barcode) => {
     console.log('Barcode scanned:', barcode);
     setScannedBarcode(barcode);
+  };
+
+
+  const handleSignatureChange = (data) => {
+    setSignatureData(data);
   };
 
   return (
@@ -33,10 +40,23 @@ export default function step2() {
         <Container>
           <Row>
             <Col>
-              <div className="text-center mb-3">
+              {/* <div className="text-center mb-3">
                 <Link href={"#"}>Take Customer Signature</Link>
-              </div>
+              </div> */}
+             
               <div className="web-box">
+                <div className="box-left">
+                  <h2 className="box-heading">Customer Signature</h2>
+                  <SignaturePad onSignatureChange={handleSignatureChange} />
+                </div>
+                <div className="box-right">
+                  {signatureData && (
+                    <div>
+                      <h2>Signature Preview</h2>
+                      <img src={signatureData} alt="Customer Signature" />
+                    </div>
+                  )}
+                </div>
                 <h2 className="box-heading">Master Barcode Value</h2>
                 <div className="box-body">
                   <div className="d-flex align-items-center justify-content-between gap-3">

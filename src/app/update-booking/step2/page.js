@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 import { LabPackageBookingDetails } from '@/api_calls/LabPackageBookingDetails';
 import { UpdateBookingMemberDetails } from '@/api_calls/UpdateBookingMemberDetails';
 import { LabPackages } from '@/api_calls/LabPackages';
+import { ThyrocareSlot } from '@/api_calls/ThyrocareSlot';
 import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import BookingList from '@/components/BookingList';
@@ -24,6 +25,8 @@ export default function step2() {
   const searchParams = useSearchParams();
   const [userPackageBooking, setUserPackageBooking] = useState({});
   const [labPackages, setLabPackages] = useState([]);
+  const [slots, setSlots] = useState({});
+  const [selectedDate, setSelectedDate] = useState(''); 
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
@@ -44,10 +47,41 @@ export default function step2() {
       } catch (error) {
         console.error(error);
       }
+      const dynamicParams = {
+        pincode: '700051',
+        newdate: '2023-12-24',
+      };
+
+      try {
+        const data = await ThyrocareSlot(dynamicParams);
+          setSlots([
+            "06:00 - 06:30",
+            "06:30 - 07:00",
+            "07:00 - 07:30",
+            "07:30 - 08:00",
+            "08:00 - 08:30",
+            "09:30 - 10:00",
+            "10:00 - 10:30",
+            "10:30 - 11:00",
+            "11:00 - 11:30",
+            "11:30 - 12:00",
+            "12:00 - 12:30",
+            "12:30 - 13:00",
+            "13:00 - 13:30",
+            "13:30 - 14:00"
+        ]);
+      } catch (error) {
+        console.error(error.message);
+      }
     }
 
     fetchData();
   }, []);
+
+  const handleDateChange = (event) => {
+    // Update the selectedDate state when the date field changes
+    setSelectedDate(event.target.value);
+  };
 
   const priceDifference = userPackageBooking.package_mrp - userPackageBooking.package_price;
 
@@ -98,7 +132,7 @@ export default function step2() {
                         <span>Mobile Number</span>
                         <br />  {userPackageBooking.contact}
                       </p>                 
-                  </div>
+                    </div>
                     <div>
                     {userPackageBooking.package_name == "" && (
                       <div>
@@ -110,6 +144,28 @@ export default function step2() {
                             className="page-form-control"
                           />
                         </Form.Group> */}
+                        <div>
+                          <Form.Group className="mb-3">
+                            <p className="mb-0">Booking Date</p>
+                            <Form.Control
+                              type="date"
+                              placeholder=""
+                              className="page-form-control"
+                              onChange={handleDateChange} // Call handleDateChange on date field change
+                            />
+                          </Form.Group>
+                          <Form.Group className="mb-3">
+                            <p className="mb-0">Booking Slot</p>
+                            <Form.Select name="Slot">
+                              <option value="">Select Slot</option>
+                              {slots.map((slot, index) => (
+                                <option key={index} value={slot}>
+                                  {slot}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </Form.Group>  
+                        </div>
                         <Form.Group className="mb-3">
                           <Form.Label>Chose Package*</Form.Label>
                           <Form.Select
@@ -126,7 +182,7 @@ export default function step2() {
                             ))}
                           </Form.Select>
                         </Form.Group>
-                        <p className="mb-0">Selected Package(s)</p>                        
+                        <p className="mb-0">Selected Package(s)</p>                                              
                       </div>
                     )}
                     </div>
