@@ -7,8 +7,25 @@ import Form from "react-bootstrap/Form";
 import { MdQrCodeScanner } from "react-icons/md";
 import "/public/css/update-booking.css";
 import PageHeader from "../../component/page-header";
+import BarcodeReader from '@/components/BarcodeReader';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { LabPackageBookingDetails } from '@/api_calls/LabPackageBookingDetails';
+import { UpdateBookingMemberDetails } from '@/api_calls/UpdateBookingMemberDetails';
+import { LabPackages } from '@/api_calls/LabPackages';
+import { useSearchParams } from 'next/navigation';
+import Snackbar from '@mui/material/Snackbar';
 
 export default function step2() {
+
+  const [scannedBarcode, setScannedBarcode] = useState(null);
+
+  const handleBarcodeScanned = (barcode) => {
+    console.log('Barcode scanned:', barcode);
+    setScannedBarcode(barcode);
+  };
+
   return (
     <>
       <PageHeader heading="Update Booking" />
@@ -32,8 +49,16 @@ export default function step2() {
                       <MdQrCodeScanner />
                       <br />
                       Scan
-                    </Link>
+                    </Link>                   
                   </div>
+                   <div>
+                      <h2 className="box-heading">Next.js Barcode Reader</h2>
+                      {scannedBarcode ? (
+                        <p>Scanned Barcode: {scannedBarcode}</p>
+                      ) : (
+                        <BarcodeReader onBarcodeScanned={handleBarcodeScanned} />
+                      )}
+                    </div>
                 </div>
               </div>
               <div className="web-box">

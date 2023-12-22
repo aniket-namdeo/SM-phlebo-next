@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LabPackageBookingDetails } from '@/api_calls/LabPackageBookingDetails';
 import { UpdateBookingMemberDetails } from '@/api_calls/UpdateBookingMemberDetails';
+import { LabPackages } from '@/api_calls/LabPackages';
 import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import BookingList from '@/components/BookingList';
@@ -22,6 +23,14 @@ export default function step2() {
 
   const searchParams = useSearchParams();
   const [userPackageBooking, setUserPackageBooking] = useState({});
+  const [labPackages, setLabPackages] = useState([]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
+    console.log('Data:', userPackageBooking);
+    //const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id,userPackageBooking); 
+  };
+
 
   useEffect(() => {
     const id = searchParams.get('id');
@@ -29,6 +38,8 @@ export default function step2() {
       try {
         const res = await LabPackageBookingDetails(id);
         setUserPackageBooking(res);
+        const lab_res = await LabPackages();
+        setLabPackages(lab_res);
         console.log('userPackageBooking:', res);
       } catch (error) {
         console.error(error);
@@ -37,6 +48,21 @@ export default function step2() {
 
     fetchData();
   }, []);
+
+  const priceDifference = userPackageBooking.package_mrp - userPackageBooking.package_price;
+
+  // Helper function to convert camelCase to Title Case
+  const camelToTitleCase = (str) => {
+    if (!str) {
+      return '';
+    }
+    return str.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+  const removePackage = () => {
+    // Set userPackageBooking to an object with package_name as an empty string
+    setUserPackageBooking({ ...userPackageBooking, package_name: '' });
+  };
+
 
   return (
     <>
@@ -48,7 +74,7 @@ export default function step2() {
               <div className="web-box">
                 <h2 className="box-heading">Order Details</h2>
                 <div className="box-body">
-                  <Form>
+                  <Form onSubmit={handleSubmit}>
                     <div className="info-box mb-3">
                       <p>
                         <span>Primary User Name:</span>
@@ -73,47 +99,60 @@ export default function step2() {
                         <br />  {userPackageBooking.contact}
                       </p>                 
                   </div>
-                    <Form.Group className="mb-3">
-                      <p className="mb-0">Package</p>
-                      <Form.Control
-                        type="text"
-                        placeholder=""
-                        className="page-form-control"
-                      />
-                    </Form.Group>
+                    <div>
+                    {userPackageBooking.package_name == "" && (
+                      <div>
+                        {/* <Form.Group className="mb-3">
+                          <p className="mb-0">Package</p>
+                          <Form.Control
+                            type="text"
+                            placeholder=""
+                            className="page-form-control"
+                          />
+                        </Form.Group> */}
+                        <Form.Group className="mb-3">
+                          <Form.Label>Chose Package*</Form.Label>
+                          <Form.Select
+                            className="page-form-control"
+                            value={userPackageBooking.package_name}
+                            onChange={(e) => setUserPackageBooking({ ...userPackageBooking, package_name: e.target.value })}
+                          >
+                            <option>Select Package</option>
+                            {/* Map over labPackages to generate options */}
+                            {labPackages.map((labPackage) => (
+                              <option key={labPackage.lab_package_id} value={labPackage.package_name}>
+                                {labPackage.lab_package_name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </Form.Group>
+                        <p className="mb-0">Selected Package(s)</p>                        
+                      </div>
+                    )}
+                    </div>
+                    
+                    <div>
+                      {userPackageBooking.package_name != "" && (
+                        <div className="selected-packages mb-3">
+                          <p className="text-secondary mb-2">
+                            <small>{userPackageBooking.package_name}</small>
+                          </p>
+                          <p className="mb-0">{userPackageBooking.package_price}</p>
+                          <button
+                            onClick={removePackage}
+                            className="delete-btn btn btn-danger"
+                          >
+                            <HiOutlineMinusSm />
+                          </button>
+                        </div>
+                      )}
+                    </div>
 
-                    <p className="mb-0">Selected Package(s)</p>
-                    <div className="text-right mb-3">
-                      <Link href={"#"}>Edit Packages</Link>
-                    </div>
-                    <div className="selected-packages mb-3">
-                      <p className="text-secondary mb-2">
-                        <small>
-                          Advance Plus Full Body Checkup(Within 15 Hrs)
-                        </small>
-                      </p>
-                      <p className="mb-0">2099</p>
-                      <Link href={"#"} className="delete-btn btn btn-danger">
-                        <HiOutlineMinusSm />
-                      </Link>
-                    </div>
-                    <div className="selected-packages mb-3">
-                      <p className="text-secondary mb-2">
-                        <small>
-                          Advance Plus Full Body Checkup(Within 15 Hrs)
-                        </small>
-                      </p>
-                      <p className="mb-0">2099</p>
-                      <Link href={"#"} className="delete-btn btn btn-danger">
-                        <HiOutlineMinusSm />
-                      </Link>
-                    </div>
-
-                    <div className="text-center">
+                    {/* <div className="text-center">
                       <Link href={"#"} className="text-danger">
                         Tube Details
                       </Link>
-                    </div>
+                    </div> */}
                   </Form>
                 </div>
               </div>
@@ -124,32 +163,32 @@ export default function step2() {
                     <tbody>
                       <tr>
                         <td>Price</td>
-                        <th>2099</th>
+                        <th>{userPackageBooking.package_mrp}</th>
                       </tr>
                       <tr>
                         <td>Discount</td>
-                        <th>-189</th>
-                      </tr>
-                      <tr>
-                        <td>VIP Membership Discount</td>
-                        <th>-210.00</th>
+                        <th>-{priceDifference}</th>
                       </tr>
                       <tr>
                         <td>Price After Discount</td>
-                        <th>1700</th>
+                        <th>{userPackageBooking.package_price}</th>
                       </tr>
                       <tr>
-                        <td>Amount to be taken from customer</td>
-                        <th>Already Paid</th>
+                        <td>Payment Status</td>
+                        <th>{camelToTitleCase(userPackageBooking.payment_status)}</th>
                       </tr>
                     </tbody>
                   </Table>
-                  <Link href={"#"} className="btn web-stroke-btn w-100">
+                  {/* <Link href={"#"} className="btn web-stroke-btn w-100">
                     <FaPlus />
                     Select Coupon
-                  </Link>
+                  </Link> */}
                 </div>
-              </div>
+              </div>              
+              <Link href={"#"} className="btn web-stroke-btn mb-3 d-block" onClick={handleSubmit}>
+                Update Booking Details
+              </Link>
+
               <Link href={"step3"} className="btn web-btn w-100">
                 Next
               </Link>
