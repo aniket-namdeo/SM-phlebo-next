@@ -24,6 +24,13 @@ export default function searchpackages() {
         <Container>
           <Row>
             <Col>
+              <Form.Group className="mb-3">
+                <Form.Control
+                  type="text"
+                  placeholder="Search Packages"
+                  className="page-form-control"
+                />
+              </Form.Group>
               <div className="web-box">
                 <div className="box-body">
                   <h2>Thrombophilia Profile - Platinum,</h2>
