@@ -13,6 +13,7 @@ import { LabPackageBooking } from '@/api_calls/LabPackageBooking';
 import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import BookingList from '@/components/BookingList';
+import { FaUserPlus } from "react-icons/fa";
 
 const PendingBookingPage = () => {
   const [userPackageBooking, setUserPackageBooking] = useState([]);
@@ -40,6 +41,9 @@ const PendingBookingPage = () => {
           </Col>
         </Container>
       </section>
+      <Link href={"/book/step1"} className="create-plus-btn btn web-btn">
+        <FaUserPlus />
+      </Link>
       <Footer page="pending" />
     </>
   );
