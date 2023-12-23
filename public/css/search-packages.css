@@ -1,0 +1,21 @@
+.search-packages .web-box h2 {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+.search-packages .web-box p {
+  margin-bottom: 5px;
+  line-height: 20px;
+}
+.search-packages .web-box .text-grey {
+  color: grey;
+  font-size: 14px;
+  margin-bottom: 0px;
+}
+.search-packages .web-box .price {
+  margin: 0px;
+  font-family: "Poppins-Bold";
+}
+.search-packages .web-box .price del {
+  font-family: "Poppins-SemiBold";
+  margin-right: 5px;
+}
