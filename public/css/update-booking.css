@@ -48,3 +48,10 @@
 .update-booking .scan svg {
   font-size: 30px;
 }
+
+#barcode-scanner video {
+  width: 100%;
+}
+#barcode-scanner canvas {
+display: none;
+}
