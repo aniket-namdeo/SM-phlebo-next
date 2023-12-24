@@ -1,0 +1,60 @@
+.sample-handover .scan {
+  font-size: 12px;
+  text-decoration: none;
+}
+.sample-handover .scan svg {
+  font-size: 30px;
+}
+.sample-booking-box {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  border: 1px solid #c5c5c5;
+  border-radius: 10px;
+  padding: 10px 20px;
+  position: relative;
+}
+.sample-booking-box p {
+  margin-bottom: 0px;
+  word-break: break-all;
+  line-height: 20px;
+  color: var(--defaultcolor);
+  width: calc(50% - 2.5px);
+  font-size: 16px;
+}
+.sample-booking-box p span {
+  font-size: 14px;
+  color: grey;
+}
+
+.sample-handover-modal {
+  height: auto !important;
+  max-height: 80vh !important;
+}
+.sample-handover-modal .custom-checkbox .sample-booking-box {
+  padding-left: 55px;
+}
+.sample-handover-modal .custom-checkbox .sample-booking-box:before {
+  content: "✓";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  line-height: 28px;
+  background-color: #ddd;
+  color: #ddd;
+  left: 15px;
+  top: 15px;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: bold;
+}
+.sample-handover-modal .custom-checkbox input:checked ~ .sample-booking-box {
+  background-color: var(--lightgreencolor);
+  border-color: var(--greencolor);
+}
+.sample-handover-modal
+  .custom-checkbox
+  input:checked
+  ~ .sample-booking-box:before {
+  background-color: var(--greencolor);
+}
