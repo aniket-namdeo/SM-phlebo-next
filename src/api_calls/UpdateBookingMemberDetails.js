@@ -18,6 +18,13 @@ export const UpdateBookingMemberDetails = async (bookingId,memberObj) => {
     bodyFormData.append('gender', memberObj.gender);
     bodyFormData.append('user_address', memberObj.user_address);
     bodyFormData.append('latitude', memberObj.latitude);
+    if(memberObj.package_name){
+        bodyFormData.append('package_name', memberObj.package_name);
+        bodyFormData.append('package_price', memberObj.package_price);
+        bodyFormData.append('package_mrp', memberObj.package_mrp);
+        bodyFormData.append('package_id', memberObj.package_id);
+    }   
+    bodyFormData.append('longitude', memberObj.longitude);
     bodyFormData.append('longitude', memberObj.longitude);
     bodyFormData.append('id', memberObj.id);
 

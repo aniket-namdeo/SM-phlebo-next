@@ -138,6 +138,16 @@ export default function updatebooking() {
                     onChange={(e) => setUserPackageBooking({ ...userPackageBooking, email: e.target.value })}
                   />
                 </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Contact*</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Age"
+                    className="page-form-control"
+                    value={userPackageBooking.contact}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, contact: e.target.value })}
+                  />
+                </Form.Group>
                 {/*<Form.Group className="mb-3">
                   <Form.Label>Aadhaar Number</Form.Label>
                   <Form.Control
@@ -200,7 +210,7 @@ export default function updatebooking() {
                     onChange={(e) => setUserPackageBooking({ ...userPackageBooking, pincode: e.target.value })}
                   />
                 </Form.Group>
-                <Form.Group className="mb-3">
+                {/* <Form.Group className="mb-3">
                   <Form.Label>Latitude</Form.Label>
                   <Form.Control
                     type="text"
@@ -219,7 +229,7 @@ export default function updatebooking() {
                     value={userPackageBooking.longitude}
                     onChange={(e) => setUserPackageBooking({ ...userPackageBooking, longitude: e.target.value })}
                   />
-                </Form.Group>
+                </Form.Group> */}
 
                 <div className="mb-3 text-center">
                   <Link href={"#"}>Get direction to customer</Link>
