@@ -6,6 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import Reamark from "react-bootstrap/Button";
 import Link from "next/link";
 import "/public/css/pending-booking.css";
 import { useEffect, useState } from 'react';
@@ -76,6 +77,21 @@ const BookingList = ({ bookings }) => {
             <p>
               <span>Booking Source:</span> <br /> Redcliffelabs
             </p>
+            <div>
+                {booking.reamark ? (
+                  <div>
+                    <p>
+                    <span>Remark:</span><Reamark> {booking.reamark }</Reamark> 
+                    </p>
+                    <p>
+                      <span>Reason:</span><Reamark> {booking.reason }</Reamark> 
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                  </>
+                )}
+            </div>
             <Link
               href="#"
               className="btn web-btn w-100"

@@ -32,6 +32,8 @@ export default function step2() {
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
+  const router = useRouter();
+
      
   const [snack, setSnack] = useState({
     open: false,
@@ -47,12 +49,18 @@ export default function step2() {
 
   const handleBarcodeScanned = (barcode) => {
     console.log('Barcode scanned:', barcode);
-    setScannedBarcode(barcode);
+    setScannedBarcode(barcode);   
+    setUserPackageBooking(prev => {
+      return { ...prev, customer_signature: data}
+    }); 
   };
 
 
   const handleSignatureChange = (data) => {
     setSignatureData(data);
+    setUserPackageBooking(prev => {
+      return { ...prev, customer_signature: data}
+    });
   };
 
   const handleSelectChange = (value) => {
@@ -64,6 +72,9 @@ export default function step2() {
 
   const handleTextAreaChange = (value) => {
     // Handle the change in the text area value if needed
+    setUserPackageBooking(prev => {
+      return { ...prev, reamark: value}
+    });
   };
 
   useEffect(() => {
@@ -86,7 +97,15 @@ export default function step2() {
     e.preventDefault(); 
     const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id,userPackageBooking); 
     if(otpAPI.status == 200){
-      console.log(otpAPI.status);      
+      console.log(otpAPI.status);    
+      if(userPackageBooking.booking_status == "onHold"){
+        router.push('/hold-booking');
+      }else if(userPackageBooking.booking_status == "canceled"){
+        router.push('/cancelled-booking');
+      }
+      else{
+        router.push('/confirmed-booking');
+      }  
       setSnack({
           open: true,
           message: 'Successfully Update Final Details.'
@@ -163,7 +182,11 @@ export default function step2() {
                 </div>
                 {selectedOption === 'canceled' || selectedOption === 'onHold' ? (
                 <div className="box-body">
-                  <Form.Select className="page-form-control">
+                  <Form.Select 
+                  className="page-form-control"
+                  value={userPackageBooking.reason}
+                  onChange={(e) => setUserPackageBooking({ ...userPackageBooking, reason: e.target.value })}
+                  >
                     <option value="outOfStation">Customer out of station</option>
                     <option value="notReal">Booking not confirmed, customer not real</option>
                     <option value="notFasting">Customer not in fasting</option>
@@ -192,6 +215,8 @@ export default function step2() {
                 <div className="box-body">
                 <Form.Select 
                   className="page-form-control"
+                  value={userPackageBooking.payment_mode}
+                  onChange={(e) => setUserPackageBooking({ ...userPackageBooking, payment_mode: e.target.value })}
                   >
                     <option >select</option>
                     <option value="admin_pay">Admin paid</option>
@@ -203,6 +228,8 @@ export default function step2() {
                     <Form.Control
                       type="text"
                       placeholder=""
+                      value={userPackageBooking.cash_payment}
+                      onChange={(e) => setUserPackageBooking({ ...userPackageBooking, cash_payment: e.target.value })}
                       className="page-form-control"
                     />
                   </Form.Group>

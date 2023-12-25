@@ -26,6 +26,12 @@ export const UpdateBookingMemberDetails = async (bookingId,memberObj) => {
     }   
     if(memberObj.booking_status){
         bodyFormData.append('booking_status', memberObj.booking_status);
+        bodyFormData.append('payment_mode', memberObj.payment_mode);
+        bodyFormData.append('cash_payment', memberObj.cash_payment);
+        bodyFormData.append('reason', memberObj.reason);
+        bodyFormData.append('reamark', memberObj.reamark);
+        bodyFormData.append('customer_signature', memberObj.customer_signature);
+        bodyFormData.append('master_barcode_no', memberObj.master_barcode_no);
     }
     bodyFormData.append('longitude', memberObj.longitude);
     bodyFormData.append('longitude', memberObj.longitude);
