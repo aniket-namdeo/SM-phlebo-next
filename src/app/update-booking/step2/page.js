@@ -309,7 +309,7 @@ export default function step2() {
                 Update Booking Details
               </Link>
 
-              <Link href={"step3"} className="btn web-btn w-100">
+              <Link href={ `step3?id=${userPackageBooking.id}`} className="btn web-btn w-100">
                 Next
               </Link>
             </Col>

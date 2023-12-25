@@ -24,6 +24,9 @@ export const UpdateBookingMemberDetails = async (bookingId,memberObj) => {
         bodyFormData.append('package_mrp', memberObj.package_mrp);
         bodyFormData.append('package_id', memberObj.package_id);
     }   
+    if(memberObj.booking_status){
+        bodyFormData.append('booking_status', memberObj.booking_status);
+    }
     bodyFormData.append('longitude', memberObj.longitude);
     bodyFormData.append('longitude', memberObj.longitude);
     bodyFormData.append('id', memberObj.id);
