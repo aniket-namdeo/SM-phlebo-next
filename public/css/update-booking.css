@@ -55,3 +55,12 @@
 #barcode-scanner canvas {
 display: none;
 }
+
+canvas {
+  width: 100%;
+}
+
+img, svg {
+  vertical-align: middle;
+  width: 100%;
+}

@@ -68,13 +68,28 @@ export default function step2() {
         setLabPackages(lab_res);
         console.log('userPackageBooking:', res);
           const dynamicParams = {
-            pincode: res.pincode,
+            pincode: '700051',
             //newdate: getCurrentDate(),
-            newdate: '2023-12-24',
+            newdate: '2023-12-26',
           };    
           try {
             const data = await ThyrocareSlot(dynamicParams);
-              //setSlots(data[0]);
+              setSlots([
+                "06:00 - 06:30",
+                "07:30 - 08:00",
+                "08:00 - 08:30",
+                "08:30 - 09:00",
+                "09:00 - 09:30",
+                "09:30 - 10:00",
+                "10:00 - 10:30",
+                "10:30 - 11:00",
+                "11:00 - 11:30",
+                "11:30 - 12:00",
+                "12:00 - 12:30",
+                "12:30 - 13:00",
+                "13:00 - 13:30",
+                "13:30 - 14:00"
+            ]);
           } catch (error) {
             console.error(error.message);
           }
@@ -112,7 +127,10 @@ export default function step2() {
   };
   const removePackage = () => {
     // Set userPackageBooking to an object with package_name as an empty string
-    setUserPackageBooking({ ...userPackageBooking, package_name: '' });
+    setUserPackageBooking(prev => {
+      return { ...prev, package_name: ''}
+    });
+    //setUserPackageBooking({ ...userPackageBooking, slot_time: '' });
   };
 
   const packageChange = (val) => {
@@ -183,6 +201,23 @@ export default function step2() {
                           />
                         </Form.Group> */}
                         <div>
+                        <Form.Group className="mb-3">
+                          <Form.Label>Chose Package*</Form.Label>
+                          <Form.Select
+                            className="page-form-control"
+                            value={userPackageBooking.package_name}
+                            onChange={(e) => packageChange(e.target.value)}
+                          >
+                            <option>Select Package</option>
+                            {/* Map over labPackages to generate options */}
+                            {labPackages.map((labPackage) => (
+                              <option key={labPackage.lab_package_id} value={labPackage.lab_package_id}>
+                                {labPackage.lab_package_name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </Form.Group>
+                        <p className="mb-0">Selected Package(s)</p>    
                           <Form.Group className="mb-3">
                             <p className="mb-0">Booking Date</p>
                             <Form.Control
@@ -205,23 +240,7 @@ export default function step2() {
                             </Form.Select>
                           </Form.Group>  
                         </div>
-                        <Form.Group className="mb-3">
-                          <Form.Label>Chose Package*</Form.Label>
-                          <Form.Select
-                            className="page-form-control"
-                            value={userPackageBooking.package_name}
-                            onChange={(e) => packageChange(e.target.value)}
-                          >
-                            <option>Select Package</option>
-                            {/* Map over labPackages to generate options */}
-                            {labPackages.map((labPackage) => (
-                              <option key={labPackage.lab_package_id} value={labPackage.lab_package_id}>
-                                {labPackage.lab_package_name}
-                              </option>
-                            ))}
-                          </Form.Select>
-                        </Form.Group>
-                        <p className="mb-0">Selected Package(s)</p>                                              
+                                                                  
                       </div>
                     )}
                      <div className="text-center">

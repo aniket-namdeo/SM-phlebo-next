@@ -16,6 +16,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LabPackageBookingDetails } from '@/api_calls/LabPackageBookingDetails';
 import { UpdateBookingMemberDetails } from '@/api_calls/UpdateBookingMemberDetails';
+import { LabBookingTubeDetails } from '@/api_calls/LabBookingTubeDetails';
+import { UpdateBookingTubeDetails } from '@/api_calls/UpdateBookingTubeDetails';
 import { LabPackages } from '@/api_calls/LabPackages';
 import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
@@ -23,6 +25,13 @@ import SignaturePad from '@/components/SignaturePad';
 import BarcodeReader from '@/components/BarcodeReader';
 
 export default function PackageAttachmentDetails() {
+
+  const searchParams = useSearchParams();
+  const [userPackageBooking, setUserPackageBooking] = useState({});
+  const [labPackages, setLabPackages] = useState([]);
+  const [slots, setSlots] = useState({});
+  const [selectedDate, setSelectedDate] = useState(''); 
+
 
   const [scannedBarcode, setScannedBarcode] = useState(null);
   const [signatureData, setSignatureData] = useState('');
@@ -34,6 +43,18 @@ export default function PackageAttachmentDetails() {
     setScannedBarcode(barcode);
   };
 
+  const [snack, setSnack] = useState({
+    open: false,
+      message: ''
+  });
+  const snackClose = () => {
+      setSnack({
+          open: false,
+          message: ''
+      });
+  };
+
+
 
   const handleSignatureChange = (data) => {
     setSignatureData(data);
@@ -41,9 +62,35 @@ export default function PackageAttachmentDetails() {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
-    console.log(packageBookingTubeDetails);
-    //const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id,userPackageBooking); 
+    //console.log(packageBookingTubeDetails);
+    console.log(userPackageBooking.id);
+    const otpAPI = await UpdateBookingTubeDetails(userPackageBooking.tube_id,userPackageBooking.id,packageBookingTubeDetails); 
+    if(otpAPI.status == 200){    
+      setSnack({
+          open: true,
+          message: 'Successfully Update Tube Details.'
+      });
+    }else{
+      setSnack({
+          open: true,
+          message: 'Something Wrong.'
+      });
+    }
   };
+
+  useEffect(() => {
+    const id = searchParams.get('id');
+    async function fetchData() {
+      try {
+        const res = await LabBookingTubeDetails(id);
+        setUserPackageBooking(res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -66,7 +113,7 @@ export default function PackageAttachmentDetails() {
                       <Form.Label>Sample Status*</Form.Label>
                       <Form.Select 
                       className="page-form-control"
-                      value={packageBookingTubeDetails.status}
+                      value={userPackageBooking.status}
                       onChange={(e) => setPackageBookingTubeDetails({ ...packageBookingTubeDetails, status: e.target.value })}
                       >
                         <option>Select</option>
@@ -138,6 +185,12 @@ export default function PackageAttachmentDetails() {
               </Form>
             </Col>
           </Row>
+          <Snackbar
+              open={snack.open}
+              autoHideDuration={6000}
+              onClose={snackClose}
+              message={snack.message}
+          />
         </Container>
       </section>
     </>
