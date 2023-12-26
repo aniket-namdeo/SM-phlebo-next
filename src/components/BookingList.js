@@ -78,7 +78,7 @@ const BookingList = ({ bookings }) => {
               <span>Booking Source:</span> <br /> Redcliffelabs
             </p>
             <div>
-                {booking.reamark ? (
+                {booking.reamark || booking.booking_status == "onHold" || booking.booking_status == "canceled" ? (
                   <div>
                     <p>
                     <span>Remark:</span><Reamark> {booking.reamark }</Reamark> 

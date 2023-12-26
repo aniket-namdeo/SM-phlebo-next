@@ -48,7 +48,7 @@ export default function BookStep1() {
   const handleConfirm = async () => {
     setBtnSubmit(true);
     const mobileNum = mobile.value;
-    router.push('/book/step2');
+    router.push('/book/step2?mobileNo='+mobileNum);
   };
 
   return (

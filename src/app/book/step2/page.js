@@ -5,20 +5,45 @@ import Col from "react-bootstrap/Col";
 import Link from "next/link";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Table from "react-bootstrap/Table";
 import "/public/css/update-booking.css";
 import PageHeader from "../../component/page-header";
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LabPackageBookingDetails } from '@/api_calls/LabPackageBookingDetails';
-import { UpdateBookingMemberDetails } from '@/api_calls/UpdateBookingMemberDetails';
+import { userDetailsByMobile } from '@/api_calls/userDetailsByMobile';
+import { AddBookingsDetails } from '@/api_calls/AddBookingsDetails';
 import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import BookingList from '@/components/BookingList';
 
+
+import { LabPackages } from '@/api_calls/LabPackages';
+import { ThyrocareSlot } from '@/api_calls/ThyrocareSlot';
+
 export default function BookStep2() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [userPackageBooking, setUserPackageBooking] = useState({});
+  const [labPackages, setLabPackages] = useState([]);
+  const [slots, setSlots] = useState([
+    "06:00 - 06:30",
+    "06:30 - 07:00",
+    "07:00 - 07:30",
+    "07:30 - 08:00",
+    "08:00 - 08:30",
+    "09:30 - 10:00",
+    "10:00 - 10:30",
+    "10:30 - 11:00",
+    "11:00 - 11:30",
+    "11:30 - 12:00",
+    "12:00 - 12:30",
+    "12:30 - 13:00",
+    "13:00 - 13:30",
+    "13:30 - 14:00"
+  ]);
+  const [selectedDate, setSelectedDate] = useState('');
 
 
   const [snack, setSnack] = useState({
@@ -33,19 +58,39 @@ export default function BookStep2() {
   };
 
 
-  const [userPackageBooking, setUserPackageBooking] = useState({});
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    router.push('/book/step3');
+    console.log(userPackageBooking);    
+    const otpAPI = await AddBookingsDetails(userPackageBooking); 
+    if(otpAPI.status == 200){
+      console.log(otpAPI.status);      
+      setSnack({
+          open: true,
+          message: 'Successfully Add Booking.'
+      });
+      router.push('/pending-booking');
+    }else{
+      setSnack({
+          open: true,
+          message: 'Something Wrong.'
+      });
+    }
   };
 
 
   useEffect(() => {
-    const id = searchParams.get('id');
+    const mobileNo = searchParams.get('mobileNo');
     async function fetchData() {
       try {
-        const res = await LabPackageBookingDetails(id);
+        const lab_res = await LabPackages();
+        setLabPackages(lab_res);
+      } catch (error) {
+        console.error(error);
+      }
+      try {
+        const res = await userDetailsByMobile(mobileNo);
         setUserPackageBooking(res);
         console.log('userPackageBooking:', res);
       } catch (error) {
@@ -56,16 +101,70 @@ export default function BookStep2() {
     fetchData();
   }, []);
 
+  const getCurrentDate = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const handleDateChange = (event) => {
+    // Update the selectedDate state when the date field changes
+    setSelectedDate(event.target.value);
+  };
+
+
+  // Helper function to convert camelCase to Title Case
+  const camelToTitleCase = (str) => {
+    if (!str) {
+      return '';
+    }
+    return str.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+  
+  const packageChange = (val) => {
+    const lab_package_obj = labPackages.filter(i => i.lab_package_id == val);
+    console.log(lab_package_obj);
+    setUserPackageBooking(prev => {
+      return { ...prev, package_name: lab_package_obj[0].lab_package_name}
+    });
+    setUserPackageBooking(prev => {
+      return { ...prev, package_price: lab_package_obj[0].package_price }
+    }); 
+    
+    setUserPackageBooking(prev => {
+      return { ...prev, package_mrp: lab_package_obj[0].package_mrp }
+    });  ; 
+    
+    setUserPackageBooking(prev => {
+      return { ...prev, package_id: lab_package_obj[0].lab_package_id }
+    }); 
+
+    setUserPackageBooking(prev => {
+      return { ...prev, booking_date: '2023-12-27' }
+    }); 
+
+    setUserPackageBooking(prev => {
+      return { ...prev, slot_time: '12:00 - 12:30' }
+    }); 
+
+
+    
+    
+  }
+  
+  const priceDifference = userPackageBooking.package_mrp - userPackageBooking.package_price;
+
 
   return (
     <>
       <PageHeader heading="Customer Details" />
       <section className="update-booking section-padding">
+        <Form onSubmit={handleSubmit}>
         <Container>
           <Row>
             <Col>
-              {/* <p className="mb-3 text-danger">Patient Details</p> */}
-              <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label>Relation*</Form.Label>
                   <Form.Select
@@ -87,8 +186,8 @@ export default function BookStep2() {
                     type="text"
                     placeholder="Name"
                     className="page-form-control"
-                    value={userPackageBooking.name}
-                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, name: e.target.value })}
+                    value={userPackageBooking.user_name}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, user_name: e.target.value })}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -97,16 +196,16 @@ export default function BookStep2() {
                     type="text"
                     placeholder="Age"
                     className="page-form-control"
-                    value={userPackageBooking.age}
-                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, age: e.target.value })}
+                    value={userPackageBooking.user_age}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, user_age: e.target.value })}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Gender*</Form.Label>
                   <Form.Select
                     className="page-form-control"
-                    value={userPackageBooking.gender}
-                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, gender: e.target.value })}
+                    value={userPackageBooking.user_gender}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, user_gender: e.target.value })}
                   >
                     <option>Select Gender</option>
                     <option value="Male">Male</option>
@@ -114,49 +213,26 @@ export default function BookStep2() {
                   </Form.Select>
                 </Form.Group>
 
-
+                <Form.Group className="mb-3">
+                  <Form.Label>Mobile*</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Name"
+                    className="page-form-control"
+                    value={userPackageBooking.user_contact}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, user_contact: e.target.value })}
+                  />
+                </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Email*</Form.Label>
                   <Form.Control
                     type="email"
                     placeholder="Email"
                     className="page-form-control"
-                    value={userPackageBooking.email}
-                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, email: e.target.value })}
+                    value={userPackageBooking.user_email}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, user_email: e.target.value })}
                   />
-                </Form.Group>
-                {/*<Form.Group className="mb-3">
-                  <Form.Label>Aadhaar Number</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Please enter Aadhaar Number"
-                    className="page-form-control"
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Passport Number</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Please enter Passport Number"
-                    className="page-form-control"
-                  />
-                </Form.Group>
-                 <Form.Group className="mb-3">
-                  <Form.Label>House No./Plot No./Flat No.*</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter House No."
-                    className="page-form-control"
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Appartment/Building/Colony/Block*</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter Appartment"
-                    className="page-form-control"
-                  />
-                </Form.Group> */}
+                </Form.Group>               
                 <Form.Group className="mb-3">
                   <Form.Label>Landmark/Sublocality*</Form.Label>
                   <Form.Control
@@ -167,16 +243,7 @@ export default function BookStep2() {
                     value={userPackageBooking.user_address}
                     onChange={(e) => setUserPackageBooking({ ...userPackageBooking, user_address: e.target.value })}
                   />
-                </Form.Group>
-                {/* <Form.Group className="mb-3">
-                  <Form.Label>Locality*</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    placeholder="Locality"
-                    style={{ height: "80px" }}
-                    className="page-form-control"
-                  />
-                </Form.Group>          */}
+                </Form.Group>              
                 <Form.Group className="mb-3">
                   <Form.Label>Pincode</Form.Label>
                   <Form.Control
@@ -187,33 +254,90 @@ export default function BookStep2() {
                     onChange={(e) => setUserPackageBooking({ ...userPackageBooking, pincode: e.target.value })}
                   />
                 </Form.Group>
-
-                {/*                 
-                <Form.Group className="mb-3">
-                  <Form.Label>Latitude</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Latitude"
-                    className="page-form-control"
-                    value={userPackageBooking.latitude}
-                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, latitude: e.target.value })}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Longitude</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Longitude"
-                    className="page-form-control"
-                    value={userPackageBooking.longitude}
-                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, longitude: e.target.value })}
-                  />
-                </Form.Group> */}
-
-                <Button type="submit" className="btn web-btn">
-                  Next
-                </Button>
-              </Form>
+            </Col>
+          </Row>        
+          <Row>
+            <Col>
+              <div className="web-box">
+                <h2 className="box-heading">Order Details</h2>
+                <div className="box-body">                             
+                    <div>
+                      <div>
+                        <div>
+                          <Form.Group className="mb-3">
+                            <Form.Label>Chose Package*</Form.Label>
+                            <Form.Select
+                              className="page-form-control"
+                              onChange={(e) => packageChange(e.target.value)}
+                            >
+                              <option>Select Package</option>
+                              {/* Map over labPackages to generate options */}
+                              {labPackages.map((labPackage) => (
+                                <option key={labPackage.lab_package_id} value={labPackage.lab_package_id}>
+                                  {labPackage.lab_package_name}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </Form.Group>
+                          <p className="mb-0">Selected Package(s)</p>
+                            <Form.Group className="mb-3">
+                              <p className="mb-0">Booking Date</p>
+                              <Form.Control
+                                type="date"
+                                placeholder=""
+                                className="page-form-control"
+                                min={getCurrentDate()} 
+                                onChange={handleDateChange} // Call handleDateChange on date field change
+                              />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                              <p className="mb-0">Booking Slot</p>
+                              <Form.Select name="Slot">
+                                <option value="">Select Slot</option>
+                                {slots.map((slot, index) => (
+                                  <option key={index} value={slot}>
+                                    {slot}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                            </Form.Group>
+                          </div>                          
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div className="web-box">
+                <h2 className="box-heading">Order Summary</h2>
+                <div className="box-body">
+                  <Table striped bordered hover>
+                    <tbody>
+                      <tr>
+                        <td>Price</td>
+                        <th>{userPackageBooking.package_mrp}</th>
+                      </tr>
+                      <tr>
+                        <td>Discount</td>
+                        <th>-{priceDifference}</th>
+                      </tr>
+                      <tr>
+                        <td>Price After Discount</td>
+                        <th>{userPackageBooking.package_price}</th>
+                      </tr>
+                      <tr>
+                        <td>Payment Status</td>
+                        <th>{camelToTitleCase(userPackageBooking.payment_status)}</th>
+                      </tr>
+                    </tbody>
+                  </Table>
+                  {/* <Link href={"#"} className="btn web-stroke-btn w-100">
+                    <FaPlus />
+                    Select Coupon
+                  </Link> */}
+                </div>
+              </div>
+              <Link href={"#"} className="btn web-stroke-btn mb-3 d-block" onClick={handleSubmit}>
+                Submit
+              </Link>
             </Col>
           </Row>
           <Snackbar
@@ -223,6 +347,7 @@ export default function BookStep2() {
             message={snack.message}
           />
         </Container>
+        </Form>
       </section>
     </>
   );

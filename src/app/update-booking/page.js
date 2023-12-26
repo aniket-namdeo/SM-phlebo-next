@@ -19,6 +19,8 @@ import BookingList from '@/components/BookingList';
 export default function updatebooking() {
 
   const searchParams = useSearchParams();
+  const [location, setLocation] = useState(null);
+  const [error, setError] = useState(null);
 
   
   const [snack, setSnack] = useState({
@@ -55,6 +57,21 @@ export default function updatebooking() {
 
 
   useEffect(() => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Get the latitude and longitude from the position object
+          const { latitude, longitude } = position.coords;
+          setLocation({ latitude, longitude });
+        },
+        (err) => {
+          setError(err.message);
+        }
+      );
+    } else {
+      setError('Geolocation is not supported in this browser.');
+    }
+
     const id = searchParams.get('id');
     async function fetchData() {
       try {
@@ -68,6 +85,11 @@ export default function updatebooking() {
 
     fetchData();
   }, []);
+
+  const handleGetDirections = () => {
+    const googleMapsLink = `https://www.google.com/maps/dir/?api=1&origin=${location.latitude},${location.longitude}&destination=${userPackageBooking.latitude},${userPackageBooking.longitude}`;
+    window.open(googleMapsLink, '_blank');
+  };
 
 
   return (
@@ -232,7 +254,7 @@ export default function updatebooking() {
                 </Form.Group> */}
 
                 <div className="mb-3 text-center">
-                  <Link href={"#"}>Get direction to customer</Link>
+                  <Link href="#" onClick={handleGetDirections} >Get direction to customer</Link>
                 </div>
 
                 <p className="text-danger mb-3 text-center">
