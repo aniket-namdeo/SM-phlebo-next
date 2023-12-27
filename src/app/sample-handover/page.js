@@ -6,17 +6,41 @@ import Link from "next/link";
 import Form from "react-bootstrap/Form";
 import { MdQrCodeScanner } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
-import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import "/public/css/sample-handover.css";
 import PageHeader from "../component/page-header";
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { LabPackageBooking } from '@/api_calls/LabPackageBooking';
+import { useSearchParams } from 'next/navigation';
+import Snackbar from '@mui/material/Snackbar';
+import BookingList from '@/components/BookingList';
 
 export default function samplehandover() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [userPackageBooking, setUserPackageBooking] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await LabPackageBooking('confirmed');
+        setUserPackageBooking(res);
+        console.log('userPackageBooking:', res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+
   return (
     <>
       <PageHeader heading="Sample Handover" />
@@ -40,29 +64,8 @@ export default function samplehandover() {
                 <Offcanvas.Header closeButton>
                   <Offcanvas.Title>Add Bookings</Offcanvas.Title>
                 </Offcanvas.Header>
-                <Offcanvas.Body>
-                  <Form.Group className="mb-3 custom-checkbox">
-                    <Form.Control
-                      type="checkbox"
-                      name="bookings"
-                      id="booking1"
-                      hidden
-                    />
-                    <Form.Label className="sample-booking-box" for="booking1">
-                      <p>
-                        <span>Name:</span> <br /> User Name
-                      </p>
-                      <p>
-                        <span>Number:</span> <br /> 0123456789
-                      </p>
-                      <p>
-                        <span>Package Name</span> <br /> XYZ
-                      </p>
-                      <p>
-                        <span>Package Detail</span> <br /> XYZ
-                      </p>
-                    </Form.Label>
-                  </Form.Group>
+                <Offcanvas.Body>              
+                  {userPackageBooking.length > 0 ? (userPackageBooking.map((booking) => (
                   <Form.Group className="mb-3 custom-checkbox">
                     <Form.Control
                       type="checkbox"
@@ -72,19 +75,24 @@ export default function samplehandover() {
                     />
                     <Form.Label className="sample-booking-box" for="booking2">
                       <p>
-                        <span>Name:</span> <br /> User Name
+                        <span>Name:</span> <br /> {booking.name}
                       </p>
                       <p>
-                        <span>Number:</span> <br /> 0123456789
+                        <span>Number:</span> <br />{booking.contact}
                       </p>
                       <p>
-                        <span>Package Name</span> <br /> XYZ
+                        <span>Booking id</span> <br /> {booking.id}
                       </p>
                       <p>
-                        <span>Package Detail</span> <br /> XYZ
+                        <span>Package Price</span> <br /> {booking.package_price}
                       </p>
                     </Form.Label>
-                  </Form.Group>
+                  </Form.Group>  
+                  ))) : (
+                    <div className="web-box">
+                      <h2 className="box-heading">No bookings found.</h2>
+                    </div>
+                  )}                
                   <Button className="btn web-btn w-100">Confirm</Button>
                 </Offcanvas.Body>
               </Offcanvas>

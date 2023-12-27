@@ -35,13 +35,11 @@ export default function searchpackages() {
   const handleSearch = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-
-    // Filter lab packages based on the search query
+    console.log()
     const filtered = labPackages.filter((labPackage) =>
-      labPackage.lab_name.toLowerCase().includes(query.toLowerCase())
+      labPackage.lab_package_name.toLowerCase().includes(query.toLowerCase())
     );
-
-    setLabPackages(filtered);
+    setFilteredPackages(filtered);
   };
 
   useEffect(() => {
@@ -50,6 +48,7 @@ export default function searchpackages() {
       try {       
         const lab_res = await LabPackages();
         setLabPackages(lab_res);
+        setFilteredPackages(lab_res);
          
       } catch (error) {
         console.error(error);
@@ -77,20 +76,20 @@ export default function searchpackages() {
                 />
               </Form.Group>
            
-                {labPackages.map((labPackage) => (
-                    <div key={labPackage.lab_package_id} value={labPackage.lab_package_id} className="web-box">
-                      <div className="box-body">
-                        <h2>{labPackage.lab_package_name}</h2>
-                        <p>{labPackage.lab_name}</p>
-                        <p className="text-grey">
-                          {labPackage.package_short_description}
-                        </p>
-                        <hr />
-                        <p className="price web-clr">
-                          <del className="text-grey">Rs. {labPackage.package_mrp}</del> Rs. {labPackage.package_price}/-
-                        </p>
-                      </div>
+                {filteredPackages.map((labPackage) => (
+                  <div key={labPackage.lab_package_id} value={labPackage.lab_package_id} className="web-box">
+                    <div className="box-body">
+                      <h2>{labPackage.lab_package_name}</h2>
+                      <p>{labPackage.lab_name}</p>
+                      <p className="text-grey">
+                        {labPackage.package_short_description}
+                      </p>
+                      <hr />
+                      <p className="price web-clr">
+                        <del className="text-grey">Rs. {labPackage.package_mrp}</del> Rs. {labPackage.package_price}/-
+                      </p>
                     </div>
+                  </div>
                 ))}
 
             </Col>
