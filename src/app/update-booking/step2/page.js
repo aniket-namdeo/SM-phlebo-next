@@ -26,9 +26,7 @@ export default function step2() {
   const [userPackageBooking, setUserPackageBooking] = useState({});
   const [labPackages, setLabPackages] = useState([]);
   const [slots, setSlots] = useState({});
-  const [selectedDate, setSelectedDate] = useState(''); 
-
-    
+  const [selectedDate, setSelectedDate] = useState('');     
   const [snack, setSnack] = useState({
     open: false,
       message: ''
@@ -39,7 +37,6 @@ export default function step2() {
           message: ''
       });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id,userPackageBooking); 
@@ -56,8 +53,6 @@ export default function step2() {
       });
     }
   };
-
-
   useEffect(() => {
     const id = searchParams.get('id');
     async function fetchData() {
@@ -102,12 +97,10 @@ export default function step2() {
 
     fetchData();
   }, []);
-
   const handleDateChange = (event) => {
     // Update the selectedDate state when the date field changes
     setSelectedDate(event.target.value);
   };
-
   const getCurrentDate = () => {
     const now = new Date();
     const year = now.getFullYear();
@@ -115,10 +108,7 @@ export default function step2() {
     const day = String(now.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
-
   const priceDifference = userPackageBooking.package_mrp - userPackageBooking.package_price;
-
-  // Helper function to convert camelCase to Title Case
   const camelToTitleCase = (str) => {
     if (!str) {
       return '';
@@ -132,7 +122,6 @@ export default function step2() {
     });
     //setUserPackageBooking({ ...userPackageBooking, slot_time: '' });
   };
-
   const packageChange = (val) => {
     const lab_package_obj = labPackages.filter(i => i.lab_package_id == val);
     console.log(lab_package_obj[0].lab_package_name);
@@ -152,8 +141,6 @@ export default function step2() {
     }); 
 
   }
-  
-
   return (
     <>
       <PageHeader heading="Update Booking" />

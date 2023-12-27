@@ -75,23 +75,32 @@ const BookingList = ({ bookings }) => {
               <span>Booking Status:</span> <br /> {booking.booking_status}
             </p>
             <p>
-              <span>Booking Source:</span> <br /> Redcliffelabs
+              <span>Package Name:</span> <br /> {booking.package_name}
             </p>
-            <div>
-                {booking.reamark || booking.booking_status == "onHold" || booking.booking_status == "canceled" ? (
-                  <div>
-                    <p>
-                    <span>Remark:</span><Reamark> {booking.reamark }</Reamark> 
-                    </p>
-                    <p>
-                      <span>Reason:</span><Reamark> {booking.reason }</Reamark> 
-                    </p>
-                  </div>
-                ) : (
-                  <>
-                  </>
-                )}
-            </div>
+            <p>
+              <span>Booking Source:</span> <br /> Thyrocare
+            </p> <br />
+            {booking.reamark? (
+              <>
+                <br />
+                <p>
+                <span>Remark:</span><span> {booking.reamark }</span> 
+                </p> <br />
+              </>
+            ) : (
+              <>
+              </>
+            )}
+              {booking.reason? (
+              <>
+                <p>
+                  <span>Reason:</span><span> {booking.reason }</span> 
+                </p> <br />
+              </>
+            ) : (
+              <>
+              </>
+            )}
             <Link
               href="#"
               className="btn web-btn w-100"

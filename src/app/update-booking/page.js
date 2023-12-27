@@ -108,7 +108,7 @@ export default function updatebooking() {
                     value={userPackageBooking.booking_for}
                     onChange={(e) => setUserPackageBooking({ ...userPackageBooking, booking_for: e.target.value })}
                   >
-                    <option>Select Gender</option>
+                    <option>Select Relation</option>
                     <option value="Self">Self</option>
                     <option value="Father">Father</option>
                     <option value="Mother">Mother</option>

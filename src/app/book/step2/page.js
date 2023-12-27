@@ -142,7 +142,7 @@ export default function BookStep2() {
     }); 
 
     setUserPackageBooking(prev => {
-      return { ...prev, booking_date: '2023-12-27' }
+      return { ...prev, booking_date: '2023-12-28' }
     }); 
 
     setUserPackageBooking(prev => {

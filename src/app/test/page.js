@@ -1,70 +1,66 @@
 "use client";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Link from "next/link";
-import "/public/css/pending-booking.css";
-import PageHeader from "../component/page-header";
-import Footer from "../component/footer";
-
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { LabPackageBooking } from '@/api_calls/LabPackageBooking';
-import { useSearchParams } from 'next/navigation';
-import Snackbar from '@mui/material/Snackbar';
-import BookingList from '@/components/BookingList';
+import { useRouter } from 'next/router'; // Change 'next/navigation' to 'next/router'
+import Head from 'next/head'; // Add import for next/head
+import PlanetInfo from '@/components/PlanetInfo';
 
+export default function Test() { // Use uppercase for component names
 
-export default function test() {
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const [location, setLocation] = useState(null);
-  const [error, setError] = useState(null);
-
-  const handleGetLocation = () => {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setLocation({ latitude, longitude });
-        },
-        (err) => {
-          setError(err.message);
-        }
-      );
-    } else {
-      setError('Geolocation is not supported in this browser. Please enable location services.');
-    }
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    fetchLocationSuggestions(query);
+    setSearchQuery(query);
   };
 
+  async function fetchLocationSuggestions(query) {
+    const apiKey = 'a34969ab63msh80603a7461d690fp1fd996jsnc14960cb03f9'; // Replace with your RapidAPI key
+    const apiUrl = `https://lasoo-location-service.p.rapidapi.com/location/${query}/clientkey/iphone`;
 
-  useEffect(() => {
-    // Check if the Geolocation API is available
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          // Get the latitude and longitude from the position object
-          const { latitude, longitude } = position.coords;
-          setLocation({ latitude, longitude });
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'X-RapidAPI-Key': apiKey,
+          'X-RapidAPI-Host': 'lasoo-location-service.p.rapidapi.com',
         },
-        (err) => {
-          setError(err.message);
-        }
-      );
-    } else {
-      setError('Geolocation is not supported in this browser.');
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Location suggestions:', data);
+        // Handle the suggestions as needed
+      } else {
+        console.error('Error fetching location suggestions:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
-  }, []); // Empty dependency array to run the effect only once
+  }
 
   return (
-    <div>
-      {location ? (
-        <p>
-          Latitude: {location.latitude}, Longitude: {location.longitude}
-        </p>
-      ) : (
-        <p>{error || 'Fetching location...'}</p>
-      )}
-    </div>
+    <>
+      <Head>
+        <title>Your Page Title</title>
+        {/* Add other meta tags or stylesheets if needed */}
+      </Head>
+      <section className="search-packages section-padding">
+        <div>
+          <label htmlFor="locationInput">Enter your address:</label>
+          <input
+            type="text"
+            id="locationInput"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+          <p>You entered: {searchQuery}</p>
+        </div>
+      </section>
+      <div>
+        <h1>My Next.js App</h1>
+        <PlanetInfo />
+      </div>
+    </>
   );
 }
-
