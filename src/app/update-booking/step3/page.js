@@ -63,6 +63,10 @@ export default function step2() {
     });
   };
 
+  const handleRemoveSignature = () => {
+    setSignatureData(null);
+  }
+
   const handleSelectChange = (value) => {
     setSelectedOption(value);
     setUserPackageBooking(prev => {
@@ -136,12 +140,12 @@ export default function step2() {
                   <SignaturePad onSignatureChange={handleSignatureChange} />
                 </div>
                 <div className="box-right">
-                  {signatureData && (
+                  {/* {signatureData && (
                     <div>
                       <h2>Signature Preview</h2>
                       <img src={signatureData} alt="Customer Signature" />
                     </div>
-                  )}
+                  )} */}
                 </div>
                 <h2 className="box-heading">Master Barcode Value</h2>
                 <div className="box-body">
@@ -174,6 +178,7 @@ export default function step2() {
                   className="page-form-control"
                   onChange={(e) => handleSelectChange(e.target.value)}
                   >
+                    <option >Select</option>
                     <option value="confirmed">Picked</option>
                     <option value="canceled">Not Picked</option>
                     <option value="pending">Pending</option>
@@ -210,6 +215,7 @@ export default function step2() {
                 </div>
               ) : null}
               </div>
+              {selectedOption === 'confirmed'? (
               <div className="web-box">
                 <h2 className="box-heading">Payment Details</h2>
                 <div className="box-body">
@@ -266,6 +272,7 @@ export default function step2() {
                   </Form.Group> */}
                 </div>
               </div>
+              ): null}
 
               <Link href={"#"} className="btn web-btn w-100"  onClick={handleSubmit}>
                 Update Booking Details

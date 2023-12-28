@@ -64,3 +64,9 @@ img, svg {
   vertical-align: middle;
   width: 100%;
 }
+
+.clear_canvas > a {
+  margin: 29%;
+  padding: 0% 2%;
+  border: 1pX solid;
+}

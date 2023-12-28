@@ -10,12 +10,22 @@ const SignaturePad = ({ onSignatureChange }) => {
     onSignatureChange(signatureData);
   };
 
+  const handleClear = () => {
+    signatureRef.current.clear();
+    onSignatureChange(null);
+  };
+
   return (
-    <SignatureCanvas
-      ref={signatureRef}
-      canvasProps={{ className: 'signature-canvas' }}
-      onEnd={handleEnd}
-    />
+    <div>
+      <SignatureCanvas
+        ref={signatureRef}
+        canvasProps={{ className: 'signature-canvas' }}
+        onEnd={handleEnd}
+      />
+      <div className='clear_canvas'>
+        <a onClick={handleClear}>Clear Signature</a>
+      </div>
+    </div>
   );
 };
 
