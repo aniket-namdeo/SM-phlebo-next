@@ -16,7 +16,40 @@ import Sidebar from "../component/sidebar";
 import PageHeader from "../component/page-header";
 import Footer from "../component/footer";
 
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { LabPackageBooking } from '@/api_calls/LabPackageBooking';
+import { PhelboDetails } from '@/api_calls/PhelboDetails';
+import { useSearchParams } from 'next/navigation';
+import Snackbar from '@mui/material/Snackbar';
+
+
 export default function myaccount() {
+  const router = useRouter();
+  const [userDetails, setUserDetails] = useState({});
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await PhelboDetails();
+        setUserDetails(res);
+        console.log(res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  const handleLogoutClick = (e) => {
+    e.preventDefault(); 
+    // Remove the item from localStorage
+    //localStorage.removeItem("app_user_temp");
+    router.push('http://localhost:3000/login');
+
+  };
   return (
     <>
       <Sidebar />
@@ -35,8 +68,8 @@ export default function myaccount() {
                     className="logo"
                   />
                   <div>
-                    <h1 className="heading">User Name</h1>
-                    <p className="mb-0">username@gmail.com</p>
+                    <h1 className="heading">{userDetails.user_name}</h1>
+                    <p className="mb-0" style={{ wordBreak: 'break-all' }}>{userDetails.user_email}</p>
                   </div>
                 </div>
               </div>
@@ -48,29 +81,20 @@ export default function myaccount() {
                         <FaMobileAlt />
                         Mobile
                       </div>
-                      <span>01234567890</span>
+                      <span>{userDetails.user_contact}</span>
                     </Link>
                   </li>
                   <li>
                     <Link href={"#"}>
                       <div className="icon-name">
                         <LuFileInput />
-                        Punch In Time
+                        Logged In
                       </div>
-                      <span>05:48 AM</span>
+                      {/* <span>05:48 AM</span> */}
                     </Link>
                   </li>
                   <li>
-                    <Link href={"#"}>
-                      <div className="icon-name">
-                        <LuFileOutput />
-                        Punch Out Time
-                      </div>
-                      <FaAngleRight className="web-clr" />
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={"#"}>
+                    <Link href={"dashboard"}>
                       <div className="icon-name">
                         <FaRegUser />
                         Phlebo Dashboard
@@ -78,7 +102,7 @@ export default function myaccount() {
                       <FaAngleRight className="web-clr" />
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link href={"#"}>
                       <div className="icon-name">
                         <GrLocation />
@@ -86,20 +110,17 @@ export default function myaccount() {
                       </div>
                       <FaAngleRight className="web-clr" />
                     </Link>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
-              <Link href={"#"} className="btn web-btn w-100">
+              <button  className="btn web-btn w-100" onClick={handleLogoutClick}>
                 Logout
-              </Link>
+              </button>
             </Col>
           </Row>
         </Container>
       </section>
 
-      <Link href={"#"} className="create-plus-btn btn web-btn">
-        <FaUserPlus />
-      </Link>
       <Footer page="account" />
     </>
   );

@@ -23,25 +23,49 @@ export default function Sidebar(props) {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <ul>
-            <li className={props.page == "allbooking" && "active"}>
-              <Link href={"#"}>
-                All Bookings
+            <li className={props.page == "leads" && "active"}>
+              <Link href={"/dashboard"}>
+                Dashboard
                 <FaAngleRight className="web-clr" />
               </Link>
             </li>
-            <li className={props.page == "containerdelivery" && "active"}>
+            <li className={props.page == "allbooking" && "active"}>
+              <Link href={"/pending-booking"}>
+                Pending Bookings
+                <FaAngleRight className="web-clr" />
+              </Link>
+            </li>
+            <li className={props.page == "allbooking" && "active"}>
+              <Link href={"/confirmed-booking"}>
+                Confirmed Bookings
+                <FaAngleRight className="web-clr" />
+              </Link>
+            </li>
+            <li className={props.page == "allbooking" && "active"}>
+              <Link href={"/cancelled-booking"}>
+                Canceled Bookings
+                <FaAngleRight className="web-clr" />
+              </Link>
+            </li>
+            <li className={props.page == "allbooking" && "active"}>
+              <Link href={"/hold-booking"}>
+                Hold Bookings
+                <FaAngleRight className="web-clr" />
+              </Link>
+            </li>
+            {/* <li className={props.page == "containerdelivery" && "active"}>
               <Link href={"#"}>
                 Container Delivery
                 <FaAngleRight className="web-clr" />
               </Link>
-            </li>
+            </li> */}
             <li className={props.page == "samplehandover" && "active"}>
-              <Link href="#">
+              <Link href={"/sample-handover"}>
                 Sample Handover
                 <FaAngleRight className="web-clr" />
               </Link>
             </li>
-            <li className={props.page == "campbooking" && "active"}>
+            {/* <li className={props.page == "campbooking" && "active"}>
               <Link href="#">
                 Camp Booking
                 <FaAngleRight className="web-clr" />
@@ -64,13 +88,7 @@ export default function Sidebar(props) {
                 Pay Cash Bookings
                 <FaAngleRight className="web-clr" />
               </Link>
-            </li>
-            <li className={props.page == "leads" && "active"}>
-              <Link href="#">
-                Leads
-                <FaAngleRight className="web-clr" />
-              </Link>
-            </li>
+            </li>          
             <li className={props.page == "inventorymodule" && "active"}>
               <Link href="#">
                 Inventory Module
@@ -86,10 +104,16 @@ export default function Sidebar(props) {
                 Courier Handovered Booking List
                 <FaAngleRight className="web-clr" />
               </Link>
-            </li>
+            </li> */}
             <li className={props.page == "searchpackages" && "active"}>
-              <Link href="#">
+              <Link href={"/search-packages"}>
                 Search Packages
+                <FaAngleRight className="web-clr" />
+              </Link>
+            </li>
+            <li className={props.page == "leads" && "active"}>
+              <Link href={"/book/step1"}>
+                Add Leads
                 <FaAngleRight className="web-clr" />
               </Link>
             </li>

@@ -6,10 +6,12 @@ import Link from "next/link";
 import "/public/css/dashboard.css";
 import PageHeader from "../component/page-header";
 import Footer from "../component/footer";
+import Sidebar from "../component/sidebar";
 
 export default function updatebooking() {
   return (
     <>
+      <Sidebar />
       <PageHeader heading="Phlebo Dashboard" />
       <section className="dashboard section-padding">
         <Container>
@@ -17,33 +19,33 @@ export default function updatebooking() {
             <Col className="col-6">
               <Link href={"#"} className="dash-box">
                 <div className="box-body">
-                  <h2 className="number">91</h2>
+                  <h2 className="number">2</h2>
                   <p>Assigned Bookings</p>
                 </div>
                 <div className="box-footer">
-                  <p>Today - 13</p>
+                  <p>Month - 12</p>
                 </div>
               </Link>
             </Col>
             <Col className="col-6">
               <div className="dash-box">
                 <div className="box-body">
-                  <h2 className="number">74</h2>
+                  <h2 className="number">1</h2>
                   <p>Confirmed Bookings</p>
                 </div>
                 <div className="box-footer">
-                  <p>Today - 07</p>
+                  <p>Month - 07</p>
                 </div>
               </div>
             </Col>
             <Col className="col-6">
               <div className="dash-box">
                 <div className="box-body">
-                  <h2 className="number">06</h2>
+                  <h2 className="number">02</h2>
                   <p>Hold Bookings</p>
                 </div>
                 <div className="box-footer">
-                  <p>Today - 04</p>
+                  <p>Month - 04</p>
                 </div>
               </div>
             </Col>
@@ -54,47 +56,47 @@ export default function updatebooking() {
                   <p>Pending Bookings</p>
                 </div>
                 <div className="box-footer">
-                  <p>Today - 02</p>
+                  <p>Month - 02</p>
                 </div>
               </div>
             </Col>
             <Col className="col-6">
               <div className="dash-box">
                 <div className="box-body">
-                  <h2 className="number">90</h2>
+                  <h2 className="number">0</h2>
                   <p>Add on Amount</p>
                 </div>
                 <div className="box-footer">
-                  <p>Today - 00</p>
+                  <p>Today - 4300</p>
                 </div>
               </div>
             </Col>
             <Col className="col-6">
               <div className="dash-box">
                 <div className="box-body">
-                  <h2 className="number">20</h2>
+                  <h2 className="number">1</h2>
                   <p>New Bookings</p>
                 </div>
                 <div className="box-footer">
-                  <p>Today - 00</p>
+                  <p>Month - 02</p>
                 </div>
               </div>
             </Col>
             <Col className="col-12">
               <div className="dash-box">
                 <div className="box-body">
-                  <h2 className="number">00</h2>
+                  <h2 className="number">4350</h2>
                   <p>Cash Due</p>
                 </div>
                 <div className="box-footer">
-                  <p>Today - 00</p>
+                  <p>Today - 4350</p>
                 </div>
               </div>
             </Col>
             <Col className="col-12">
               <div className="dash-box total">
                 <div className="box-body">
-                  <h2 className="number">&#8377;1750</h2>
+                  <h2 className="number">&#8377;4350</h2>
                   <p>Total Cash Due</p>
                 </div>
               </div>

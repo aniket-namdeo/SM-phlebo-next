@@ -13,6 +13,7 @@ import { LabPackageBooking } from '@/api_calls/LabPackageBooking';
 import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import BookingList from '@/components/BookingList';
+import Sidebar from "../component/sidebar";
 
 
 export default function confirmedbooking() {
@@ -35,6 +36,7 @@ export default function confirmedbooking() {
 
   return (
     <>
+      <Sidebar />
       <PageHeader heading="Confirmed Bookings" />
       <section className="pending-booking section-padding">
         <Container>

@@ -14,6 +14,7 @@ import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import BookingList from '@/components/BookingList';
 import { FaUserPlus } from "react-icons/fa";
+import Sidebar from "../component/sidebar";
 
 const PendingBookingPage = () => {
   const [userPackageBooking, setUserPackageBooking] = useState([]);
@@ -33,6 +34,7 @@ const PendingBookingPage = () => {
   }, []);
   return (
     <>
+     <Sidebar />
       <PageHeader heading="Pending Bookings" />
       <section className="pending-booking section-padding">
         <Container>

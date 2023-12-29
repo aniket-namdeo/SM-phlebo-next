@@ -1,8 +1,14 @@
 import axios from 'axios';
 
-export const userDetailsByMobile = async (mobileNo) => {
+export const PhelboDetails = async () => {
+    var userId = 0;
+    if (JSON.parse(localStorage.getItem("app_user_temp")).temp_user_id) {
+        var userId = JSON.parse(localStorage.getItem("app_user_temp")).temp_user_id;
+    } else {
+        var userId = 0;
+    }
     //const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"labPackageBooking/"+id;
-    const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"customerDetails/"+mobileNo;
+    const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"userDetails/"+userId;
 
     let data = JSON.stringify({});
 

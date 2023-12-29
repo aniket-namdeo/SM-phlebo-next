@@ -14,18 +14,22 @@ import PageHeader from "../component/page-header";
 import { useEffect, useState,Fragment  } from 'react';
 import { useRouter } from 'next/navigation';
 import { LabPackageBooking } from '@/api_calls/LabPackageBooking';
+import { UpdateHandoverLabDetails } from '@/api_calls/UpdateHandoverLabDetails';
 import { LabBranches } from '@/api_calls/LabBranches';
 import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import BookingList from '@/components/BookingList';
+import Sidebar from "../component/sidebar";
+
 
 export default function samplehandover() {
+  const router = useRouter();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
   const [userPackageBooking, setUserPackageBooking] = useState([]);
+  const [handoverLabPackageBooking, setHandoverLabPackageBooking] = useState({});
   const [labBranches, setLabBranches] = useState([]);
 
   const [selectedBookings, setSelectedBookings] = useState([]);
@@ -81,12 +85,34 @@ export default function samplehandover() {
     fetchData();
   }, []);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
+    //console.log(selectedBookings);
+    //console.log(handoverLabPackageBooking);
+    try {
+      const res = await UpdateHandoverLabDetails(handoverLabPackageBooking,selectedBookings);
+      // const res1 = await LabPackageBooking('confirmed');
+      // setUserPackageBooking(res1);
+      console.log(res);
+    } catch (error) {
+      console.error(error);
+    }
+    router.push('/confirmed-booking');
+
+  };
+
+  // useEffect(() => {
+  //   alert('dasda');
+  // }, [userPackageBooking]);
+
 
   return (
     <>
+      <Sidebar />
       <PageHeader heading="Sample Handover" />
       <section className="sample-handover section-padding">
         <Container>
+          <Form  onSubmit={handleSubmit}>
           <Row>
             <Col>
               <Button
@@ -116,6 +142,7 @@ export default function samplehandover() {
                         type="checkbox"
                         name="bookings"
                         id={`booking${booking.id}`}
+                        checked={selectedBookings.includes(booking.id)}
                         hidden
                         onChange={() => handleCheckboxChange(booking.id)}
                       />
@@ -172,16 +199,28 @@ export default function samplehandover() {
               </div>           
 
               <Form.Group className="mb-3">
-              <Form.Label>Select Receiver Type:</Form.Label>
-              <Form.Select className="page-form-control">
-                <option>Labs</option>
-                {labBranches.map((branch) => (
-                  <option key={branch.branch_id} value={branch.branch_id}>
-                    {branch.name} - {branch.area_name}, {branch.city_name}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
+                <Form.Label>Select Receiver Type:</Form.Label>
+                <Form.Select 
+                className="page-form-control"
+                onChange={(e) => setHandoverLabPackageBooking({ ...handoverLabPackageBooking, branch_id: e.target.value })}
+                >
+                  <option>Labs</option>
+                  {labBranches.map((branch) => (
+                    <option key={branch.branch_id} value={branch.branch_id}>
+                      {branch.name} - {branch.area_name}, {branch.city_name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="mb-3">
+                  <Form.Label>Cash</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Cash"
+                    className="page-form-control"
+                    onChange={(e) => setHandoverLabPackageBooking({ ...handoverLabPackageBooking, cash_submit: e.target.value })}
+                  />
+                </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Given to</Form.Label>
                 <div className="d-flex align-items-center justify-content-between gap-3">
@@ -200,11 +239,12 @@ export default function samplehandover() {
               <Link href={"#"} className="text-center mb-3 d-block">
                 Take sample receivers signature
               </Link>
-              <Link href={"#"} className="btn web-btn w-100">
+              <Link href={"#"} className="btn web-btn w-100" onClick={handleSubmit}>
                 Submit
               </Link>
             </Col>
           </Row>
+          </Form>
         </Container>
       </section>
     </>
