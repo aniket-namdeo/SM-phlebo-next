@@ -17,7 +17,7 @@ export default function Sidebar(props) {
       <Button onClick={handleShow} className="sidebar-btn">
         <RiMenu3Line />
       </Button>
-      <Offcanvas show={show} onHide={handleClose}>
+      <Offcanvas show={show} onHide={handleClose} className="sidebar">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Phlebo Dashboard</Offcanvas.Title>
         </Offcanvas.Header>

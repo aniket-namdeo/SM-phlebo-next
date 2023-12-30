@@ -112,139 +112,141 @@ export default function samplehandover() {
       <PageHeader heading="Sample Handover" />
       <section className="sample-handover section-padding">
         <Container>
-          <Form  onSubmit={handleSubmit}>
+         
           <Row>
             <Col>
-              <Button
-                className="btn web-stroke-btn w-100 mb-3"
-                onClick={handleShow}
-              >
-                <FaPlus /> Click To Add Bookings
-              </Button>
-
-              <Offcanvas
-                show={show}
-                onHide={handleClose}
-                placement="bottom"
-                className="sample-handover-modal"
-              >
-                <Offcanvas.Header closeButton>
-                  <Offcanvas.Title>Add Bookings</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>              
-                {userPackageBooking.length > 0 ? (
-                  userPackageBooking.map((booking) => (
-                    <Form.Group
-                      key={booking.id}
-                      className="mb-3 custom-checkbox"
-                    >
-                      <Form.Control
-                        type="checkbox"
-                        name="bookings"
-                        id={`booking${booking.id}`}
-                        checked={selectedBookings.includes(booking.id)}
-                        hidden
-                        onChange={() => handleCheckboxChange(booking.id)}
-                      />
-                      <Form.Label
-                        className="sample-booking-box"
-                        htmlFor={`booking${booking.id}`}
-                      >
-                      <p>
-                        <span>Name:</span> <br /> {booking.name}
-                      </p>
-                      <p>
-                        <span>Number:</span> <br />{booking.contact}
-                      </p>
-                      <p>
-                        <span>Booking id</span> <br /> {booking.id}
-                      </p>
-                      <p>
-                        <span>Package Price</span> <br /> {booking.package_price}
-                      </p>
-                    </Form.Label>
-                  </Form.Group>  
-                  ))) : (
-                    <div className="web-box">
-                      <h2 className="box-heading">No bookings found.</h2>
-                    </div>
-                  )}                
-                  <Button className="btn web-btn w-100"  onClick={handleConfirm}>Confirm</Button>
-                </Offcanvas.Body>
-              </Offcanvas>
-
-              <div>
-                {selectedBookings.map((bookingId) => {
-                  const selectedBooking = userPackageBooking.find(
-                    (booking) => booking.id === bookingId
-                  );
-
-                  return (
-                    <div style={{ border: '1px solid #ccc', padding: '10px' }} className="sample-booking-box mb-3" key={selectedBooking.id}>
-                      <p>
-                        <span>Name:</span> <br /> {selectedBooking.name}
-                      </p>
-                      <p>
-                        <span>Number:</span> <br /> {selectedBooking.contact}
-                      </p>
-                      <p>
-                        <span>Package Name</span> <br /> {selectedBooking.package_name}
-                      </p>
-                      <p>
-                        <span>Package Detail</span> <br /> {selectedBooking.package_detail}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>           
-
-              <Form.Group className="mb-3">
-                <Form.Label>Select Receiver Type:</Form.Label>
-                <Form.Select 
-                className="page-form-control"
-                onChange={(e) => setHandoverLabPackageBooking({ ...handoverLabPackageBooking, branch_id: e.target.value })}
+              <Form  onSubmit={handleSubmit}>
+                <Button
+                  className="btn web-stroke-btn w-100 mb-3"
+                  onClick={handleShow}
                 >
-                  <option>Labs</option>
-                  {labBranches.map((branch) => (
-                    <option key={branch.branch_id} value={branch.branch_id}>
-                      {branch.name} - {branch.area_name}, {branch.city_name}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                  <Form.Label>Cash</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Cash"
-                    className="page-form-control"
-                    onChange={(e) => setHandoverLabPackageBooking({ ...handoverLabPackageBooking, cash_submit: e.target.value })}
-                  />
+                  <FaPlus /> Click To Add Bookings
+                </Button>
+
+                <Offcanvas
+                  show={show}
+                  onHide={handleClose}
+                  placement="bottom"
+                  className="sample-handover-modal"
+                >
+                  <Offcanvas.Header closeButton>
+                    <Offcanvas.Title>Add Bookings</Offcanvas.Title>
+                  </Offcanvas.Header>
+                  <Offcanvas.Body>              
+                  {userPackageBooking.length > 0 ? (
+                    userPackageBooking.map((booking) => (
+                      <Form.Group
+                        key={booking.id}
+                        className="mb-3 custom-checkbox"
+                      >
+                        <Form.Control
+                          type="checkbox"
+                          name="bookings"
+                          id={`booking${booking.id}`}
+                          checked={selectedBookings.includes(booking.id)}
+                          hidden
+                          onChange={() => handleCheckboxChange(booking.id)}
+                        />
+                        <Form.Label
+                          className="sample-booking-box"
+                          htmlFor={`booking${booking.id}`}
+                        >
+                        <p>
+                          <span>Name:</span> <br /> {booking.name}
+                        </p>
+                        <p>
+                          <span>Number:</span> <br />{booking.contact}
+                        </p>
+                        <p>
+                          <span>Booking id</span> <br /> {booking.id}
+                        </p>
+                        <p>
+                          <span>Package Price</span> <br /> {booking.package_price}
+                        </p>
+                      </Form.Label>
+                    </Form.Group>  
+                    ))) : (
+                      <div className="web-box">
+                        <h2 className="box-heading">No bookings found.</h2>
+                      </div>
+                    )}                
+                    <Button className="btn web-btn w-100"  onClick={handleConfirm}>Confirm</Button>
+                  </Offcanvas.Body>
+                </Offcanvas>
+
+                <div>
+                  {selectedBookings.map((bookingId) => {
+                    const selectedBooking = userPackageBooking.find(
+                      (booking) => booking.id === bookingId
+                    );
+
+                    return (
+                      <div style={{ border: '1px solid #ccc', padding: '10px' }} className="sample-booking-box mb-3" key={selectedBooking.id}>
+                        <p>
+                          <span>Name:</span> <br /> {selectedBooking.name}
+                        </p>
+                        <p>
+                          <span>Number:</span> <br /> {selectedBooking.contact}
+                        </p>
+                        <p>
+                          <span>Package Name</span> <br /> {selectedBooking.package_name}
+                        </p>
+                        <p>
+                          <span>Package Detail</span> <br /> {selectedBooking.package_detail}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>           
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Select Receiver Type:</Form.Label>
+                  <Form.Select 
+                  className="page-form-control"
+                  onChange={(e) => setHandoverLabPackageBooking({ ...handoverLabPackageBooking, branch_id: e.target.value })}
+                  >
+                    <option>Labs</option>
+                    {labBranches.map((branch) => (
+                      <option key={branch.branch_id} value={branch.branch_id}>
+                        {branch.name} - {branch.area_name}, {branch.city_name}
+                      </option>
+                    ))}
+                  </Form.Select>
                 </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Given to</Form.Label>
-                <div className="d-flex align-items-center justify-content-between gap-3">
-                  <Form.Control
-                    type="text"
-                    placeholder=" "
-                    className="page-form-control"
-                  />
-                  <Link href={"#"} className="scan text-center">
-                    <MdQrCodeScanner />
-                    <br />
-                    Scan
-                  </Link>
-                </div>
-              </Form.Group>
-              <Link href={"#"} className="text-center mb-3 d-block">
-                Take sample receivers signature
-              </Link>
-              <Link href={"#"} className="btn web-btn w-100" onClick={handleSubmit}>
-                Submit
-              </Link>
+                <Form.Group className="mb-3">
+                    <Form.Label>Cash</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Cash"
+                      className="page-form-control"
+                      onChange={(e) => setHandoverLabPackageBooking({ ...handoverLabPackageBooking, cash_submit: e.target.value })}
+                    />
+                  </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Given to</Form.Label>
+                  <div className="d-flex align-items-center justify-content-between gap-3">
+                    <Form.Control
+                      type="text"
+                      placeholder=" "
+                      className="page-form-control"
+                    />
+                    <Link href={"#"} className="scan text-center">
+                      <MdQrCodeScanner />
+                      <br />
+                      Scan
+                    </Link>
+                  </div>
+                </Form.Group>
+                <Link href={"#"} className="text-center mb-3 d-block">
+                  Take sample receivers signature
+                </Link>
+                <Link href={"#"} className="btn web-btn w-100" onClick={handleSubmit}>
+                  Submit
+                </Link>
+                
+              </Form>
             </Col>
           </Row>
-          </Form>
         </Container>
       </section>
     </>

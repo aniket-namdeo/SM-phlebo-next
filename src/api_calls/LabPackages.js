@@ -15,6 +15,10 @@ export const LabPackages = async (status) => {
         method: 'get',
         maxBodyLength: Infinity,
         url: apiURL,
+        headers: { 
+            'accept': '*/*',
+            'Content-Type': 'application/json'
+          },
         data: data
     };
 

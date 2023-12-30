@@ -22,7 +22,8 @@ import BookingList from '@/components/BookingList';
 
 export default function step2() {
 
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams();  
+  const [selectedSlot, setSelectedSlot] = useState("");
   const [userPackageBooking, setUserPackageBooking] = useState({});
   const [labPackages, setLabPackages] = useState([]);
   const [slots, setSlots] = useState({});
@@ -65,26 +66,11 @@ export default function step2() {
           const dynamicParams = {
             pincode: '700051',
             //newdate: getCurrentDate(),
-            newdate: '2023-12-26',
+            newdate: '2023-12-31',
           };    
           try {
             const data = await ThyrocareSlot(dynamicParams);
-              setSlots([
-                "06:00 - 06:30",
-                "07:30 - 08:00",
-                "08:00 - 08:30",
-                "08:30 - 09:00",
-                "09:00 - 09:30",
-                "09:30 - 10:00",
-                "10:00 - 10:30",
-                "10:30 - 11:00",
-                "11:00 - 11:30",
-                "11:30 - 12:00",
-                "12:00 - 12:30",
-                "12:30 - 13:00",
-                "13:00 - 13:30",
-                "13:30 - 14:00"
-            ]);
+              setSlots(data.data);
           } catch (error) {
             console.error(error.message);
           }
@@ -94,12 +80,41 @@ export default function step2() {
 
       
     }
-
+    setUserPackageBooking((prev) => {
+      return { ...prev, slot_time: userPackageBooking.slot_time};
+    });
+    setSelectedSlot(userPackageBooking.slot_time);
     fetchData();
   }, []);
-  const handleDateChange = (event) => {
+  const handleDateChange = async (event) => {
+    const newDate = event.target.value;
+  
     // Update the selectedDate state when the date field changes
-    setSelectedDate(event.target.value);
+    setSelectedDate(newDate);
+  
+    try {
+      const dynamicParams = {
+        pincode: '700051',
+        newdate: newDate,
+      };
+  
+      const data = await ThyrocareSlot(dynamicParams);
+      
+      setUserPackageBooking((prev) => {
+        return { ...prev, booking_date: newDate };
+      });
+  
+      setSlots(data.data);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  const handleSlotChange = (event) => {
+    const newSelectedSlot = event.target.value;
+    setSelectedSlot(newSelectedSlot);
+    setUserPackageBooking((prev) => {
+      return { ...prev, slot_time: event.target.value};
+    });
   };
   const getCurrentDate = () => {
     const now = new Date();
@@ -120,6 +135,10 @@ export default function step2() {
     setUserPackageBooking(prev => {
       return { ...prev, package_name: ''}
     });
+    setUserPackageBooking(prev => {
+      return { ...prev, slot_time: ''}
+    });
+    setSelectedSlot('');
     //setUserPackageBooking({ ...userPackageBooking, slot_time: '' });
   };
   const packageChange = (val) => {
@@ -177,84 +196,65 @@ export default function step2() {
                       </p>                 
                     </div>
                     <div>
-                    {userPackageBooking.package_name == "" && (
-                      <div>
-                        {/* <Form.Group className="mb-3">
-                          <p className="mb-0">Package</p>
-                          <Form.Control
-                            type="text"
-                            placeholder=""
-                            className="page-form-control"
-                          />
-                        </Form.Group> */}
+                      {userPackageBooking.package_name === "" && userPackageBooking.slot_time === "" ? (
                         <div>
-                        <Form.Group className="mb-3">
-                          <Form.Label>Chose Package*</Form.Label>
-                          <Form.Select
-                            className="page-form-control"
-                            value={userPackageBooking.package_name}
-                            onChange={(e) => packageChange(e.target.value)}
-                          >
-                            <option>Select Package</option>
-                            {/* Map over labPackages to generate options */}
-                            {labPackages.map((labPackage) => (
-                              <option key={labPackage.lab_package_id} value={labPackage.lab_package_id}>
-                                {labPackage.lab_package_name}
-                              </option>
-                            ))}
-                          </Form.Select>
-                        </Form.Group>
-                        <p className="mb-0">Selected Package(s)</p>    
-                          <Form.Group className="mb-3">
-                            <p className="mb-0">Booking Date</p>
-                            <Form.Control
-                              type="date"
-                              placeholder=""
-                              className="page-form-control"
-                              min={getCurrentDate()} 
-                              onChange={handleDateChange} // Call handleDateChange on date field change
-                            />
-                          </Form.Group>
-                          <Form.Group className="mb-3">
-                            <p className="mb-0">Booking Slot</p>
-                            <Form.Select name="Slot">
-                              <option value="">Select Slot</option>
-                              {slots.map((slot, index) => (
-                                <option key={index} value={slot}>
-                                  {slot}
-                                </option>
-                              ))}
-                            </Form.Select>
-                          </Form.Group>  
+                          <div>
+                            <Form.Group className="mb-3">
+                              <Form.Label>Choose Package*</Form.Label>
+                              <Form.Select
+                                className="page-form-control"
+                                value={userPackageBooking.package_name}
+                                onChange={(e) => packageChange(e.target.value)}
+                              >
+                                <option>Select Package</option>
+                                {labPackages.map((labPackage) => (
+                                  <option key={labPackage.lab_package_id} value={labPackage.lab_package_id}>
+                                    {labPackage.lab_package_name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                            </Form.Group>
+                            <p className="mb-0">Selected Package(s)</p>
+                            <Form.Group className="mb-3">
+                              <p className="mb-0">Booking Date</p>
+                              <Form.Control
+                                type="date"
+                                placeholder=""
+                                className="page-form-control"
+                                min={getCurrentDate()}
+                                onChange={handleDateChange}
+                              />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                              <p className="mb-0">Booking Slot</p>
+                              <Form.Select name="Slot" value={selectedSlot} onChange={handleSlotChange}>
+                                <option value="">Select Slot</option>
+                                {slots.map((slot, index) => (
+                                  <option key={index} value={slot}>
+                                    {slot}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                            </Form.Group>
+                          </div>
                         </div>
-                                                                  
-                      </div>
-                    )}
-                     <div className="text-center">
-                      <Link href={ `package-attachment-details?id=${userPackageBooking.id}`} className="text-danger">
-                        Tube Details
-                      </Link>
-                    </div>
-                    </div>
-                   
-                    
-                    <div>
-                      {userPackageBooking.package_name != "" && (
+                      ) : (
                         <div className="selected-packages mb-3">
                           <p className="text-secondary mb-2">
                             <small>{userPackageBooking.package_name}</small>
                           </p>
                           <p className="mb-0">{userPackageBooking.package_price}</p>
-                          <button
-                            onClick={removePackage}
-                            className="delete-btn btn btn-danger"
-                          >
+                          <button onClick={removePackage} className="delete-btn btn btn-danger">
                             <HiOutlineMinusSm />
                           </button>
                         </div>
                       )}
+                      <div className="text-center">
+                        <Link href={`package-attachment-details?id=${userPackageBooking.id}`} className="text-danger">
+                          Tube Details
+                        </Link>
+                      </div>
                     </div>
-
                     {/* <div className="text-center">
                       <Link href={"#"} className="text-danger">
                         Tube Details

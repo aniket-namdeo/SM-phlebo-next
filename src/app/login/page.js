@@ -48,7 +48,7 @@ export default function Login() {
   };
 
   const handleConfirm = async () => {
-    setBtnSubmit(true);
+    setShowLoginBtn(true);
     const guest = {
       user_id: 0,
       name: "Guest",
@@ -61,7 +61,8 @@ export default function Login() {
       router.push("/login/verify-otp");
     } else {
       setBtnSubmit(false);
-      const msg = otpAPI.msg;
+      console.log(otpAPI);
+      const msg = "Invalid Contact Number";
       setSnack({
         open: true,
         message: msg,
@@ -106,10 +107,10 @@ export default function Login() {
                     )}
                   </div>
                 </Form>
-                <div className="login-with">
+                {/* <div className="login-with">
                   <p>Log In with</p>
                   <ul>
-                    {/* <li>
+                    <li>
                       <Link href={"#"}>
                         <Image
                           src="/images/facebook-icon.svg"
@@ -118,7 +119,7 @@ export default function Login() {
                           alt=""
                         />
                       </Link>
-                    </li> */}
+                    </li>
                     <li>
                       <Link href={"#"}>
                         <Image
@@ -130,7 +131,7 @@ export default function Login() {
                       </Link>
                     </li>
                   </ul>
-                </div>
+                </div> */}
               </Col>
             </Row>
           </Container>

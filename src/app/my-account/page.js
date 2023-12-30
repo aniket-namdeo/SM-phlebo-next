@@ -46,7 +46,8 @@ export default function myaccount() {
   const handleLogoutClick = (e) => {
     e.preventDefault(); 
     // Remove the item from localStorage
-    //localStorage.removeItem("app_user_temp");
+    localStorage.removeItem("app_user_temp");
+    localStorage.removeItem("app_user");
     router.push('http://localhost:3000/login');
 
   };

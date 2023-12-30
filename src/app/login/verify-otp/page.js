@@ -31,26 +31,28 @@ export default function Login() {
   };
 
   const router = useRouter();
-
+  const [showLoginBtn, setShowLoginBtn] = useState(false);
   const handleMobileChange = (e) => {
       if (e.target.value.length == 6) {
+        setShowLoginBtn(true);
           setOtp({
               value: e.target.value,
               errText: ''
           });
       } else {
+        setShowLoginBtn(false);
           setOtp({
               value: e.target.value,
-              errText: 'Please enter 10 digits of mobile no.'
+              errText: 'Please enter 6 digits of OTP.'
           });
       }
   }
 
   const handleVerify = async () => {
-    alert(otp.value);
     if (tmpUser.temp_user_otp == otp.value) {
       router.push("/pending-booking");
     }else{
+      setShowLoginBtn(true);
       setSnack({
           open: true,
           message: 'Inavlid OTP, Please try again.'
@@ -90,9 +92,17 @@ export default function Login() {
                     onChange={(e) => handleMobileChange(e)} 
                     helperText={otp.errText}
                      />
-                  </Form.Group>                  
+                  </Form.Group> 
                   <div className="text-center">
-                    <Button className="btn web-btn" onClick={handleVerify}>Submit</Button>
+                    {showLoginBtn ? (
+                      <Button className="btn web-btn" onClick={handleVerify}>
+                        Submit
+                      </Button>
+                    ) : (
+                      <Button className="btn web-btn" disabled>
+                        Submit
+                      </Button>
+                    )}
                   </div>
                 </Form>
               </Col>

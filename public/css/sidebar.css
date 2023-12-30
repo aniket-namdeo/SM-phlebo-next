@@ -1,4 +1,4 @@
-.offcanvas {
+.sidebar {
   max-width: 80%;
 }
 .sidebar-btn {
@@ -16,32 +16,32 @@
 .sidebar-btn:active {
   background-color: transparent;
 }
-.offcanvas-header {
+.sidebar .offcanvas-header {
   background-color: var(--greencolor);
   color: white;
   padding: 20px 20px;
 }
-.offcanvas-header .offcanvas-title {
+.sidebar .offcanvas-header .offcanvas-title {
   color: white;
   font-size: 20px;
   line-height: 24px;
 }
-.offcanvas-header .btn-close {
+.sidebar .offcanvas-header .btn-close {
   padding: 0px;
   margin-right: 0px;
 }
 
-.offcanvas-body {
+.sidebar .offcanvas-body {
   padding: 0px;
 }
-.offcanvas-body ul {
+.sidebar .offcanvas-body ul {
   margin: 0px;
   padding: 0px;
 }
-.offcanvas-body ul li {
+.sidebar .offcanvas-body ul li {
   list-style: none;
 }
-.offcanvas-body ul li a {
+.sidebar .offcanvas-body ul li a {
   padding: 20px 20px;
   display: flex;
   align-items: center;
