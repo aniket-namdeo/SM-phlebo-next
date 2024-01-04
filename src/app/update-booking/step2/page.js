@@ -20,6 +20,7 @@ import { LabBookingTubeList } from '@/api_calls/LabBookingTubeList';
 import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import BookingList from '@/components/BookingList';
+import Swal from 'sweetalert2';
 
 export default function step2() {
 
@@ -42,6 +43,23 @@ export default function step2() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault(); 
+    console.log(userPackageBooking);
+    const { slot_time , package_name} = userPackageBooking;
+    if (!slot_time.trim()  ) {
+      Swal.fire({
+        title: 'Error',
+        text: 'You Must Select The slot.',
+        icon: 'error',
+      });
+  }else if(!package_name.trim()){
+
+    Swal.fire({
+      title: 'Error',
+      text: 'You Must Select The package.',
+      icon: 'error',
+    });
+
+  } else {
     const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id,userPackageBooking); 
     if(otpAPI.status == 200){
       console.log(otpAPI.status);      
@@ -55,6 +73,8 @@ export default function step2() {
           message: 'Something Wrong.'
       });
     }
+  }
+   
   };
   useEffect(() => {
     const id = searchParams.get('id');
@@ -226,7 +246,6 @@ export default function step2() {
                                 value={userPackageBooking.package_id} 
                                 onChange={(e) => packageChange(e.target.value)}
                               >
-                                <option>Select Package</option>
                                 {labPackages.map((labPackage) => (
                                   <option key={labPackage.lab_package_id} value={labPackage.lab_package_id}>
                                     {labPackage.lab_package_name}
