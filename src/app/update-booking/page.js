@@ -15,6 +15,7 @@ import { UpdateBookingMemberDetails } from '@/api_calls/UpdateBookingMemberDetai
 import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import BookingList from '@/components/BookingList';
+import Swal from 'sweetalert2';
 
 export default function updatebooking() {
 
@@ -39,20 +40,32 @@ export default function updatebooking() {
   
   const handleSubmit = async (e) => {
     e.preventDefault(); 
-    console.log('Age:', userPackageBooking.age);
-    const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id,userPackageBooking); 
-    if(otpAPI.status == 200){
-      console.log(otpAPI.status);      
-      setSnack({
-          open: true,
-          message: 'Successfully Update Member Details.'
-      });
-    }else{
-      setSnack({
-          open: true,
-          message: 'Something Wrong.'
-      });
+    console.log(userPackageBooking);
+    const { name, email, contact, age , pincode , user_address} = userPackageBooking;
+    if (!name.trim() || !email.trim() || !contact.trim() || !age.trim() || !pincode.trim() || !user_address.trim()  ) {
+        Swal.fire({
+          title: 'Error',
+          text: 'All required fields must be filled.',
+          icon: 'error',
+        });
+    } else {
+      const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id,userPackageBooking); 
+      if(otpAPI.status == 200){
+        console.log(otpAPI.status);      
+        setSnack({
+            open: true,
+            message: 'Successfully Update Member Details.'
+        });
+      }else{
+        setSnack({
+            open: true,
+            message: 'Something Wrong.'
+        });
+      }
     }
+
+    
+    
   };
 
 
@@ -226,7 +239,7 @@ export default function updatebooking() {
                   <Form.Label>Pincode</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Latitude"
+                    placeholder="Pincode"
                     className="page-form-control"
                     value={userPackageBooking.pincode}
                     onChange={(e) => setUserPackageBooking({ ...userPackageBooking, pincode: e.target.value })}
