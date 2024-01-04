@@ -29,6 +29,11 @@ export const AddBookingsDetails = async (memberObj) => {
     bodyFormData.append('package_id', memberObj.package_id);
     bodyFormData.append('booking_date', memberObj.booking_date);
     bodyFormData.append('slot_time', memberObj.slot_time);
+    bodyFormData.append('height', memberObj.height);
+    bodyFormData.append('weight', memberObj.weight);
+    bodyFormData.append('blood_group', memberObj.blood_group);
+    bodyFormData.append('ref_by_doc', memberObj.ref_by_doc);
+    bodyFormData.append('ref_by_lab', memberObj.ref_by_lab);
     bodyFormData.append('service_provider_id', userId);
     //bodyFormData.append('service_provider_id',service_provider_id);
 

@@ -18,6 +18,7 @@ import { LabPackageBookingDetails } from '@/api_calls/LabPackageBookingDetails';
 import { UpdateBookingMemberDetails } from '@/api_calls/UpdateBookingMemberDetails';
 import { LabBookingTubeDetails } from '@/api_calls/LabBookingTubeDetails';
 import { UpdateBookingTubeDetails } from '@/api_calls/UpdateBookingTubeDetails';
+import { TubeMasterList } from '@/api_calls/TubeMasterList';
 import { LabPackages } from '@/api_calls/LabPackages';
 import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
@@ -37,6 +38,7 @@ export default function PackageAttachmentDetails() {
   const [signatureData, setSignatureData] = useState('');
   const [imageFile, setImageFile] = useState(null);
   const [packageBookingTubeDetails, setPackageBookingTubeDetails] = useState({});
+  const [tubeTypes, setTubeTypes] = useState([]);
 
   const handleBarcodeScanned = (barcode) => {
     console.log('Barcode scanned:', barcode);
@@ -80,6 +82,7 @@ export default function PackageAttachmentDetails() {
 
   useEffect(() => {
     const id = searchParams.get('id');
+
     async function fetchData() {
       try {
         const res = await LabBookingTubeDetails(id);
@@ -87,8 +90,15 @@ export default function PackageAttachmentDetails() {
       } catch (error) {
         console.error(error);
       }
-    }
 
+      try {
+        const response = await TubeMasterList();
+        console.log(response);
+        setTubeTypes(response); // Assuming response.data is the array of tube types
+      } catch (error) {
+        console.error('Error fetching tube types:', error.message);
+      }
+    }
     fetchData();
   }, []);
 
@@ -121,6 +131,17 @@ export default function PackageAttachmentDetails() {
                         <option>Not Picked</option>
                         <option>Pending</option>
                         <option>Hold</option>
+                      </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Tube Type*</Form.Label>
+                      <Form.Select className="page-form-control">
+                        <option value="">Select Tube Type</option>
+                        {tubeTypes && tubeTypes.length > 0 && tubeTypes.map((tubeType) => (
+                          <option key={tubeType.id} value={tubeType.id}>
+                            {tubeType.name}
+                          </option>
+                        ))}
                       </Form.Select>
                     </Form.Group>
 

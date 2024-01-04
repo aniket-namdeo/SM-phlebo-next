@@ -16,11 +16,16 @@ import { userDetailsByMobile } from '@/api_calls/userDetailsByMobile';
 import { AddBookingsDetails } from '@/api_calls/AddBookingsDetails';
 import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
+import { TubeMasterList } from '@/api_calls/TubeMasterList';
+import { BankMasterList } from '@/api_calls/BankMasterList';
 import BookingList from '@/components/BookingList';
 
 
 import { LabPackages } from '@/api_calls/LabPackages';
 import { ThyrocareSlot } from '@/api_calls/ThyrocareSlot';
+
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 export default function BookStep2() {
   const router = useRouter();
@@ -44,6 +49,9 @@ export default function BookStep2() {
     "13:30 - 14:00"
   ]);
   const [selectedDate, setSelectedDate] = useState('');
+  const [tubeTypes, setTubeTypes] = useState([]);
+  const [banks, setBanks] = useState([]);
+  const [tubes, setTubes] = useState([{ tubeType: '', barcodeNumber: '' }]);
 
 
   const [snack, setSnack] = useState({
@@ -56,10 +64,7 @@ export default function BookStep2() {
       message: ''
     });
   };
-
-
-
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(userPackageBooking);    
@@ -95,6 +100,20 @@ export default function BookStep2() {
         console.log('userPackageBooking:', res);
       } catch (error) {
         console.error(error);
+      }
+      try {
+        const response = await TubeMasterList();
+        console.log(response);
+        setTubeTypes(response); // Assuming response.data is the array of tube types
+      } catch (error) {
+        console.error('Error fetching tube types:', error.message);
+      }
+      try {
+        const response = await BankMasterList();
+        console.log(response);
+        setBanks(response); // Assuming response.data is the array of tube types
+      } catch (error) {
+        console.error('Error fetching bank types:', error.message);
       }
     }
 
@@ -156,6 +175,46 @@ export default function BookStep2() {
   
   const priceDifference = userPackageBooking.package_mrp - userPackageBooking.package_price;
 
+  const handleAgeChange = (e) => {
+    const age = parseInt(e.target.value, 10);
+
+    if (!isNaN(age) && age > 120) {
+      Swal.fire({
+        title: 'Invalid Age',
+        text: 'Age cannot be more than 120.',
+        icon: 'error',
+      });
+      setUserPackageBooking({ ...userPackageBooking, age: '' });
+    } else {
+      setUserPackageBooking({ ...userPackageBooking, age: e.target.value });
+    }
+  };
+
+
+  const handleTubeChange = (index, field, value) => {
+    const newTubes = [...tubes];
+    newTubes[index][field] = value;
+    setTubes(newTubes);
+  };
+
+  const addTube = () => {
+    setTubes([...tubes, { tubeType: '', barcodeNumber: '' }]);
+  };
+
+  const removeTube = (index) => {
+    if (tubes.length > 1) {
+      const newTubes = [...tubes];
+      newTubes.splice(index, 1);
+      setTubes(newTubes);
+    }
+  };
+
+  const [paymentMethod, setPaymentMethod] = useState('CASH');
+
+  const handlePaymentMethodChange = (e) => {
+    setPaymentMethod(e.target.value);
+  };
+
 
   return (
     <>
@@ -186,41 +245,32 @@ export default function BookStep2() {
                     type="text"
                     placeholder="Name"
                     className="page-form-control"
-                    value={userPackageBooking.user_name}
-                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, user_name: e.target.value })}
+                    value={userPackageBooking.name}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, name: e.target.value })}
                   />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Age*</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Age"
-                    className="page-form-control"
-                    value={userPackageBooking.user_age}
-                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, user_age: e.target.value })}
-                  />
-                </Form.Group>
+                </Form.Group>              
                 <Form.Group className="mb-3">
                   <Form.Label>Gender*</Form.Label>
                   <Form.Select
                     className="page-form-control"
-                    value={userPackageBooking.user_gender}
-                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, user_gender: e.target.value })}
+                    value={userPackageBooking.gender}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, gender: e.target.value })}
                   >
                     <option>Select Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
+                    <option value="Other">Other</option>
                   </Form.Select>
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                   <Form.Label>Mobile*</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="number"
                     placeholder="Name"
                     className="page-form-control"
-                    value={userPackageBooking.user_contact}
-                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, user_contact: e.target.value })}
+                    value={userPackageBooking.contact}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, contact: e.target.value })}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -229,10 +279,71 @@ export default function BookStep2() {
                     type="email"
                     placeholder="Email"
                     className="page-form-control"
-                    value={userPackageBooking.user_email}
-                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, user_email: e.target.value })}
+                    value={userPackageBooking.email}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, email: e.target.value })}
                   />
-                </Form.Group>               
+                </Form.Group> 
+                <Form.Group className="mb-3">
+                  <Form.Label>Age*</Form.Label>
+                  <Form.Control
+                    id="ageInput"
+                    type="number"
+                    placeholder="Age"
+                    className="page-form-control"
+                    value={userPackageBooking.age}
+                    onChange={handleAgeChange}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Weight</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Weight(Kg)"
+                    className="page-form-control"
+                    value={userPackageBooking.weight}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, weight: e.target.value })}
+                  />
+                </Form.Group>    
+                <Form.Group className="mb-3">
+                  <Form.Label>Height</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Height(cm)"
+                    className="page-form-control"
+                    value={userPackageBooking.height}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, height: e.target.value })}
+                  />
+                </Form.Group>  
+                <Form.Group className="mb-3">
+                  <Form.Label>Blood Group</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Blood Group"
+                    className="page-form-control"
+                    value={userPackageBooking.blood_group}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, blood_group: e.target.value })}
+                  />
+                </Form.Group>  
+                <Form.Group className="mb-3">
+                  <Form.Label>Refer By Doctor</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Refer By Doctor"
+                    className="page-form-control"
+                    value={userPackageBooking.ref_by_doc}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, ref_by_doc: e.target.value })}
+                  />
+                </Form.Group>  
+                <Form.Group className="mb-3">
+                  <Form.Label>Refer By Lab</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Refer By Lab"
+                    className="page-form-control"
+                    value={userPackageBooking.ref_by_lab}
+                    onChange={(e) => setUserPackageBooking({ ...userPackageBooking, ref_by_lab: e.target.value })}
+                  />
+                </Form.Group>                 
                 <Form.Group className="mb-3">
                   <Form.Label>Landmark/Sublocality*</Form.Label>
                   <Form.Control
@@ -303,7 +414,87 @@ export default function BookStep2() {
                             </Form.Group>
                           </div>                          
                         </div>
+                    </div>                    
+                    
+                </div>
+              </div>
+              <div className="web-box">
+                <h2 className="box-heading">Tube Details</h2>
+                <div className="box-body"> 
+                  <div>
+                    <p>Tubes</p>
+                    {tubes.map((tube, index) => (
+                      <div key={index}>
+                        <Form.Group className="mb-3">
+                          <Form.Label>Tube Type</Form.Label>
+                          <Form.Select
+                            onChange={(e) => handleTubeChange(index, 'tubeType', e.target.value)}
+                          >
+                            {/* Map over tube types to generate options */}
+                            {tubeTypes.map((type) => (
+                              <option key={type.id} value={type.id}>
+                                {type.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label>Barcode Number</Form.Label>
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter barcode number"
+                            value={tube.barcodeNumber}
+                            onChange={(e) => handleTubeChange(index, 'barcodeNumber', e.target.value)}
+                          />
+                        </Form.Group>
+                        <button  className="btn web-stroke-btn mb-3 d-block"  type="button" onClick={() => removeTube(index)}>Remove Tube</button>
+                      </div>
+                    ))}
+                    <button  className="btn web-stroke-btn mb-3 d-block"  type="button" onClick={addTube}>Add Tube</button>
+                  </div>
+                </div>
+              </div>
+              <div className="web-box">
+                <h2 className="box-heading">payment Details</h2>
+                <div className="box-body"> 
+                  <div className="row">
+                    <div className="form-group">
+                      <label htmlFor="paymentMethod">Payment Method:</label>
+                      <select
+                        id="paymentMethod"
+                        className="form-control"
+                        name="paymentMethod"
+                        onChange={handlePaymentMethodChange}
+                        value={paymentMethod}
+                      >
+                        <option value="CASH">CASH</option>
+                        <option value="CARD">CARD</option>
+                        <option value="CHEQUE_DD">CHEQUE/DD</option>
+                      </select>
                     </div>
+
+                    <div className="form-group">
+                      <label htmlFor="barcodeNumber">Cash Amount:</label>
+                      <input type="text" className="form-control" name="cash_amount" />
+                    </div>
+
+                    <div className="form-group" style={{ display: paymentMethod === 'CARD' || paymentMethod === 'CHEQUE_DD' ? 'block' : 'none' }}>
+                      <label htmlFor="paymentMethod">Select Bank</label>
+                      <select name="bank" id="bank" className="form-control">
+                        <option value="" disabled>Select a bank</option>
+                        {banks.map((bank) => (
+                          <option key={bank.id} value={bank.bank_name}>
+                            {bank.bank_name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="form-group" style={{ display: paymentMethod === 'CARD' || paymentMethod === 'CHEQUE_DD' ? 'block' : 'none' }}>
+                      <label htmlFor="paymentMethod">Cheque No./Card No.:</label>
+                      <input type="text" className="form-control" name="cash" />
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="web-box">

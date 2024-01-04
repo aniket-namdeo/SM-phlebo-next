@@ -23,6 +23,8 @@ export const UpdateBookingMemberDetails = async (bookingId,memberObj) => {
         bodyFormData.append('package_price', memberObj.package_price);
         bodyFormData.append('package_mrp', memberObj.package_mrp);
         bodyFormData.append('package_id', memberObj.package_id);
+        bodyFormData.append('booking_date', memberObj.booking_date);
+        bodyFormData.append('slot_time', memberObj.slot_time);
     }   
     if(memberObj.booking_status){
         bodyFormData.append('booking_status', memberObj.booking_status);

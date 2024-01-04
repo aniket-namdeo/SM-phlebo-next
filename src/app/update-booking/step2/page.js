@@ -65,8 +65,8 @@ export default function step2() {
         console.log('userPackageBooking:', res);
           const dynamicParams = {
             pincode: '700051',
-            //newdate: getCurrentDate(),
-            newdate: '2023-12-31',
+            newdate: getCurrentDatePlusOneDay(),
+            //newdate: '2023-12-31',
           };    
           try {
             const data = await ThyrocareSlot(dynamicParams);
@@ -121,6 +121,17 @@ export default function step2() {
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const getCurrentDatePlusOneDay = () => {
+    const now = new Date();
+    now.setDate(now.getDate() + 1); // Add one day
+  
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+  
     return `${year}-${month}-${day}`;
   };
   const priceDifference = userPackageBooking.package_mrp - userPackageBooking.package_price;
@@ -196,14 +207,14 @@ export default function step2() {
                       </p>                 
                     </div>
                     <div>
-                      {userPackageBooking.package_name === "" && userPackageBooking.slot_time === "" ? (
+                      {userPackageBooking.slot_time == "" ? (
                         <div>
                           <div>
                             <Form.Group className="mb-3">
                               <Form.Label>Choose Package*</Form.Label>
                               <Form.Select
                                 className="page-form-control"
-                                value={userPackageBooking.package_name}
+                                value={userPackageBooking.package_id} 
                                 onChange={(e) => packageChange(e.target.value)}
                               >
                                 <option>Select Package</option>
@@ -221,6 +232,7 @@ export default function step2() {
                                 type="date"
                                 placeholder=""
                                 className="page-form-control"
+                                value={getCurrentDatePlusOneDay()}
                                 min={getCurrentDate()}
                                 onChange={handleDateChange}
                               />
