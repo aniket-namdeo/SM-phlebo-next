@@ -51,29 +51,29 @@ export default function step2() {
         text: 'You Must Select The slot.',
         icon: 'error',
       });
-  }else if(!package_name.trim()){
+    }else if(!package_name.trim()){
 
-    Swal.fire({
-      title: 'Error',
-      text: 'You Must Select The package.',
-      icon: 'error',
-    });
+      Swal.fire({
+        title: 'Error',
+        text: 'You Must Select The package.',
+        icon: 'error',
+      });
 
-  } else {
-    const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id,userPackageBooking); 
-    if(otpAPI.status == 200){
-      console.log(otpAPI.status);      
-      setSnack({
-          open: true,
-          message: 'Successfully Update Member Details.'
-      });
-    }else{
-      setSnack({
-          open: true,
-          message: 'Something Wrong.'
-      });
+    } else {
+      const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id,userPackageBooking); 
+      if(otpAPI.status == 200){
+        console.log(otpAPI.status);      
+        setSnack({
+            open: true,
+            message: 'Successfully Update Member Details.'
+        });
+      }else{
+        setSnack({
+            open: true,
+            message: 'Something Wrong.'
+        });
+      }
     }
-  }
    
   };
   useEffect(() => {

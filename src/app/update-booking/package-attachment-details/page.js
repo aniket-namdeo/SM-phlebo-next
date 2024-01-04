@@ -24,6 +24,7 @@ import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import SignaturePad from '@/components/SignaturePad';
 import BarcodeReader from '@/components/BarcodeReader';
+import Swal from 'sweetalert2';
 
 export default function PackageAttachmentDetails() {
 
@@ -64,20 +65,30 @@ export default function PackageAttachmentDetails() {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
-    //console.log(packageBookingTubeDetails);
+    console.log(packageBookingTubeDetails);
     console.log(userPackageBooking.id);
-    const otpAPI = await UpdateBookingTubeDetails(userPackageBooking.tube_id,userPackageBooking.id,packageBookingTubeDetails); 
-    if(otpAPI.status == 200){    
-      setSnack({
-          open: true,
-          message: 'Successfully Update Tube Details.'
-      });
-    }else{
-      setSnack({
-          open: true,
-          message: 'Something Wrong.'
-      });
+    const { status , tube_type} = packageBookingTubeDetails;
+    if (!status.trim()) {
+        Swal.fire({
+          title: 'Error',
+          text: 'All required fields must be filled.',
+          icon: 'error',
+        });
+    } else {
+      const otpAPI = await UpdateBookingTubeDetails(userPackageBooking.tube_id,userPackageBooking.id,packageBookingTubeDetails); 
+      if(otpAPI.status == 200){    
+        setSnack({
+            open: true,
+            message: 'Successfully Update Tube Details.'
+        });
+      }else{
+        setSnack({
+            open: true,
+            message: 'Something Wrong.'
+        });
+      }
     }
+    
   };
 
   useEffect(() => {
@@ -92,6 +103,13 @@ export default function PackageAttachmentDetails() {
       }
 
       try {
+        const res = await LabBookingTubeDetails(id);
+        setPackageBookingTubeDetails(res);
+      } catch (error) {
+        console.error(error);
+      }
+
+      try {
         const response = await TubeMasterList();
         console.log(response);
         setTubeTypes(response); // Assuming response.data is the array of tube types
@@ -101,6 +119,13 @@ export default function PackageAttachmentDetails() {
     }
     fetchData();
   }, []);
+
+  const tubeTypeChange = (val) => {
+    console.log(val);
+    setPackageBookingTubeDetails(prev => {
+      return { ...prev, tube_type: val}
+    });
+  }
 
   return (
     <>
@@ -135,10 +160,16 @@ export default function PackageAttachmentDetails() {
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label>Tube Type*</Form.Label>
-                      <Form.Select className="page-form-control">
+                      <Form.Select 
+                      className="page-form-control"
+                      //value={userPackageBooking.tube_type}
+                      // onChange={(e) => setPackageBookingTubeDetails({ ...packageBookingTubeDetails, tube_type: e.target.value })}
+                      onChange={(e) => tubeTypeChange(e.target.value)}
+                      
+                      >
                         <option value="">Select Tube Type</option>
                         {tubeTypes && tubeTypes.length > 0 && tubeTypes.map((tubeType) => (
-                          <option key={tubeType.id} value={tubeType.id}>
+                          <option key={tubeType.id} value={tubeType.name}>
                             {tubeType.name}
                           </option>
                         ))}
