@@ -18,6 +18,7 @@ import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import { TubeMasterList } from '@/api_calls/TubeMasterList';
 import { BankMasterList } from '@/api_calls/BankMasterList';
+import { LabBookingTubeList } from '@/api_calls/LabBookingTubeList';
 import BookingList from '@/components/BookingList';
 
 
@@ -68,7 +69,10 @@ export default function BookStep2() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(userPackageBooking);    
-    const otpAPI = await AddBookingsDetails(userPackageBooking); 
+    console.log(tubes);    
+    const tubesJSONString = JSON.stringify(tubes);
+    console.log(tubesJSONString);    
+    const otpAPI = await AddBookingsDetails(userPackageBooking,tubesJSONString); 
     if(otpAPI.status == 200){
       console.log(otpAPI.status);      
       setSnack({

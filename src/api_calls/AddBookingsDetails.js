@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const AddBookingsDetails = async (memberObj) => {
+export const AddBookingsDetails = async (memberObj,tubes) => {
 
     var userId = 0;
     if (JSON.parse(localStorage.getItem("app_user_temp")).temp_user_id) {
@@ -11,7 +11,8 @@ export const AddBookingsDetails = async (memberObj) => {
 
 
     const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"lab/labPackageAdd/";
-
+    const receivedString = tubes;
+    const receivedData = JSON.parse(receivedString);
 
     var bodyFormData = new FormData();
     bodyFormData.append('name', memberObj.user_name);
@@ -35,6 +36,7 @@ export const AddBookingsDetails = async (memberObj) => {
     bodyFormData.append('ref_by_doc', memberObj.ref_by_doc);
     bodyFormData.append('ref_by_lab', memberObj.ref_by_lab);
     bodyFormData.append('service_provider_id', userId);
+    bodyFormData.append('tubeType', receivedData);
     //bodyFormData.append('service_provider_id',service_provider_id);
 
 

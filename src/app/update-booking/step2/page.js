@@ -16,6 +16,7 @@ import { LabPackageBookingDetails } from '@/api_calls/LabPackageBookingDetails';
 import { UpdateBookingMemberDetails } from '@/api_calls/UpdateBookingMemberDetails';
 import { LabPackages } from '@/api_calls/LabPackages';
 import { ThyrocareSlot } from '@/api_calls/ThyrocareSlot';
+import { LabBookingTubeList } from '@/api_calls/LabBookingTubeList';
 import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import BookingList from '@/components/BookingList';
@@ -27,6 +28,7 @@ export default function step2() {
   const [userPackageBooking, setUserPackageBooking] = useState({});
   const [labPackages, setLabPackages] = useState([]);
   const [slots, setSlots] = useState({});
+  const [labTubeList, setLabTubeList] = useState([]);
   const [selectedDate, setSelectedDate] = useState('');     
   const [snack, setSnack] = useState({
     open: false,
@@ -76,6 +78,13 @@ export default function step2() {
           }
       } catch (error) {
         console.error(error);
+      }
+      try {
+        const response = await LabBookingTubeList(id);
+        console.log(response);
+        setLabTubeList(response); // Assuming response.data is the array of tube types
+      } catch (error) {
+        console.error('Error fetching bank types:', error.message);
       }
 
       
@@ -262,9 +271,12 @@ export default function step2() {
                         </div>
                       )}
                       <div className="text-center">
-                        <Link href={`package-attachment-details?id=${userPackageBooking.id}`} className="text-danger">
-                          Tube Details
+                      {labTubeList.map((tube) => (
+                        <Link href={`package-attachment-details?id=${tube.tube_id}`} className="text-danger">
+                          <p>{tube.tube_type}</p><hr/>
                         </Link>
+                      ))}
+                        
                       </div>
                     </div>
                     {/* <div className="text-center">
