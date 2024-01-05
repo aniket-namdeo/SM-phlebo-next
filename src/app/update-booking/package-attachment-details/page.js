@@ -75,7 +75,7 @@ export default function PackageAttachmentDetails() {
           icon: 'error',
         });
     } else {
-      const otpAPI = await UpdateBookingTubeDetails(userPackageBooking.tube_id,userPackageBooking.id,packageBookingTubeDetails); 
+      const otpAPI = await UpdateBookingTubeDetails(packageBookingTubeDetails.tube_id,userPackageBooking.id,packageBookingTubeDetails); 
       if(otpAPI.status == 200){    
         setSnack({
             open: true,
