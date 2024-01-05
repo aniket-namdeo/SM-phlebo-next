@@ -7,7 +7,7 @@ export const LabPackages = async (status) => {
     } else {
         var userId = 0;
     }
-    const apiURL =  process.env.NEXT_PUBLIC_API_BASE_URL+"lab/labPackages/";
+    const apiURL =  process.env.NEXT_PUBLIC_API_BASE_URL+"lab/labPackages";
 
     let data = JSON.stringify({});
 

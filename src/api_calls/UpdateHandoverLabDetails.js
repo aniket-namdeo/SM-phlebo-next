@@ -8,7 +8,7 @@ export const UpdateHandoverLabDetails = async (subObj,bookIdArray) => {
     } else {
         var userId = 0;
     }
-    const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"lab/handoverToLabUpdate/"
+    const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"lab/handoverToLabUpdate"
 
     var bodyFormData = new FormData();
     bodyFormData.append('cash_submit', subObj.cash_submit);

@@ -10,7 +10,7 @@ export const AddBookingsDetails = async (memberObj,tubes) => {
     }
 
 
-    const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"lab/labPackageAdd/";
+    const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"lab/labPackageAdd";
     const receivedString = tubes;
     const receivedData = JSON.parse(receivedString);
 

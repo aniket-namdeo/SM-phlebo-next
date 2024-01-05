@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const LabBranches = async () => {
    
-    const apiURL =  process.env.NEXT_PUBLIC_API_BASE_URL+"lab/branches/";
+    const apiURL =  process.env.NEXT_PUBLIC_API_BASE_URL+"lab/branches";
 
     let data = JSON.stringify({});
 

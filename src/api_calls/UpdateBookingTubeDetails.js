@@ -3,7 +3,7 @@ import axios from 'axios';
 export const UpdateBookingTubeDetails = async (tubeId,bookingId,memberObj) => {
 
     //const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"labPackageBooking/"+bookingId
-    const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"lab/labPackageTubeUpdate/"
+    const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"lab/labPackageTubeUpdate"
 
     // let data = JSON.stringify({
     //     "name": memberObj.name
