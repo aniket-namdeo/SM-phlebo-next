@@ -291,10 +291,13 @@ export default function step2() {
                       )}
                       <div className="text-center">
                       {labTubeList.map((tube) => (
-                        <Link href={`package-attachment-details?id=${tube.tube_id}`} className="text-danger">
+                        <Link href={`package-attachment-details?id=${tube.tube_id}&booking_id=${userPackageBooking.id}`} className="text-danger">
                           <p>{tube.tube_type}</p><hr/>
                         </Link>
                       ))}
+                       <Link href={`package-attachment-details?booking_id=${userPackageBooking.id}`} className="text-danger">
+                          <p>Add Tube </p><hr/>
+                        </Link>
                         
                       </div>
                     </div>

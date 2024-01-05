@@ -26,7 +26,7 @@ export const UpdateBookingTubeDetails = async (tubeId,bookingId,memberObj) => {
         url: apiURL,
         data: bodyFormData
     };
-
+    console.log(config);
     return await axios.request(config)
         .then((response) => {
             console.log(response);           

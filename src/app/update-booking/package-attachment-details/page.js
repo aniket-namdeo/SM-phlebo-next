@@ -67,7 +67,7 @@ export default function PackageAttachmentDetails() {
     e.preventDefault(); 
     console.log(packageBookingTubeDetails);
     console.log(userPackageBooking.id);
-    const { status , tube_type} = packageBookingTubeDetails;
+    const { status } = packageBookingTubeDetails;
     if (!status.trim()) {
         Swal.fire({
           title: 'Error',
@@ -93,10 +93,11 @@ export default function PackageAttachmentDetails() {
 
   useEffect(() => {
     const id = searchParams.get('id');
+    const booking_id = searchParams.get('booking_id');
 
     async function fetchData() {
       try {
-        const res = await LabBookingTubeDetails(id);
+        const res = await LabPackageBookingDetails(booking_id);
         setUserPackageBooking(res);
       } catch (error) {
         console.error(error);
@@ -141,7 +142,7 @@ export default function PackageAttachmentDetails() {
                     <div className="info-box mb-3">
                       <p>
                         <span>Name:</span>
-                        <br /> EDTA Lavender top -13 mL
+                        <br /> {userPackageBooking.name}
                       </p>
                     </div>
                     <Form.Group className="mb-3">
@@ -152,10 +153,10 @@ export default function PackageAttachmentDetails() {
                       onChange={(e) => setPackageBookingTubeDetails({ ...packageBookingTubeDetails, status: e.target.value })}
                       >
                         <option>Select</option>
-                        <option>Picked</option>
-                        <option>Not Picked</option>
-                        <option>Pending</option>
-                        <option>Hold</option>
+                        <option value="Picked" >Picked</option>
+                        <option value="Not Picked">Not Picked</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Hold">Hold</option>
                       </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-3">
