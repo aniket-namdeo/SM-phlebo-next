@@ -18,9 +18,9 @@ export default function PageHeader(props) {
           <Row>
             <Col>
               <h1 className="page-heading">
-                <div onClick={goback} className="icon">
+                {/* <div onClick={goback} className="icon">
                   <BiArrowBack />
-                </div>
+                </div> */}
                 {props.heading}
               </h1>
             </Col>

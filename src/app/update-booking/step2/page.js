@@ -28,7 +28,22 @@ export default function step2() {
   const [selectedSlot, setSelectedSlot] = useState("");
   const [userPackageBooking, setUserPackageBooking] = useState({});
   const [labPackages, setLabPackages] = useState([]);
-  const [slots, setSlots] = useState({});
+  const [slots, setSlots] = useState([
+    "06:00 - 06:30",
+    "06:30 - 07:00",
+    "07:00 - 07:30",
+    "07:30 - 08:00",
+    "08:00 - 08:30",
+    "09:30 - 10:00",
+    "10:00 - 10:30",
+    "10:30 - 11:00",
+    "11:00 - 11:30",
+    "11:30 - 12:00",
+    "12:00 - 12:30",
+    "12:30 - 13:00",
+    "13:00 - 13:30",
+    "13:30 - 14:00"
+  ]);
   const [labTubeList, setLabTubeList] = useState([]);
   const [selectedDate, setSelectedDate] = useState('');     
   const [snack, setSnack] = useState({
@@ -92,7 +107,7 @@ export default function step2() {
           };    
           try {
             const data = await ThyrocareSlot(dynamicParams);
-              setSlots(data.data);
+              //setSlots(data.data);
           } catch (error) {
             console.error(error.message);
           }
@@ -133,7 +148,7 @@ export default function step2() {
         return { ...prev, booking_date: newDate };
       });
   
-      setSlots(data.data);
+      //setSlots(data.data);
     } catch (error) {
       console.error(error.message);
     }
@@ -260,8 +275,7 @@ export default function step2() {
                               <Form.Control
                                 type="date"
                                 placeholder=""
-                                className="page-form-control"
-                                value={getCurrentDatePlusOneDay()}
+                                className="page-form-control"                                
                                 min={getCurrentDate()}
                                 onChange={handleDateChange}
                               />

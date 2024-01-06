@@ -216,7 +216,7 @@ export default function PackageAttachmentDetails() {
                 <div>
                   {packageBookingTubeDetails.image ? (
                     <img
-                      src={`http://127.0.0.1:8000/${packageBookingTubeDetails.image}`}
+                      src={`https://phleboapp.secondmedic.com/${packageBookingTubeDetails.image}`}
                       alt="Package Image"
                       style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
                     />

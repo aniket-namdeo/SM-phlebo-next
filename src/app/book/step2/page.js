@@ -68,11 +68,11 @@ export default function BookStep2() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(userPackageBooking);    
-    console.log(tubes);    
-    const tubesJSONString = JSON.stringify(tubes);
-    console.log(tubesJSONString);    
-    const otpAPI = await AddBookingsDetails(userPackageBooking,tubesJSONString); 
+    //console.log(userPackageBooking);    
+    //console.log(tubes);  
+
+    const otpAPI = await AddBookingsDetails(userPackageBooking,tubes); 
+    console.log(otpAPI);
     if(otpAPI.status == 200){
       console.log(otpAPI.status);      
       setSnack({
@@ -235,7 +235,7 @@ export default function BookStep2() {
                     value={userPackageBooking.booking_for}
                     onChange={(e) => setUserPackageBooking({ ...userPackageBooking, booking_for: e.target.value })}
                   >
-                    <option>Select Gender</option>
+                    <option>Select Relation</option>
                     <option value="Self">Self</option>
                     <option value="Father">Father</option>
                     <option value="Mother">Mother</option>

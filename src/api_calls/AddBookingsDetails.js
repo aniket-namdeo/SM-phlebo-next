@@ -11,16 +11,21 @@ export const AddBookingsDetails = async (memberObj,tubes) => {
 
 
     const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"lab/labPackageAdd";
-    const receivedString = tubes;
-    const receivedData = JSON.parse(receivedString);
+    const splitTubes = (inputArray) => {
+        const tubeTypes = inputArray.map(item => item.tubeType);
+        const barcodeNumbers = inputArray.map(item => item.barcodeNumber);
+        
+        return { tubeTypes, barcodeNumbers };
+    };
+    const { tubeTypes, barcodeNumbers } = splitTubes(tubes);
 
     var bodyFormData = new FormData();
-    bodyFormData.append('name', memberObj.user_name);
-    bodyFormData.append('age', memberObj.user_age);
-    bodyFormData.append('email', memberObj.user_email);
-    bodyFormData.append('contact', memberObj.user_contact);
+    bodyFormData.append('name', memberObj.name);
+    bodyFormData.append('age', memberObj.age);
+    bodyFormData.append('email', memberObj.email);
+    bodyFormData.append('contact', memberObj.contact);
     bodyFormData.append('booking_for', memberObj.booking_for);
-    bodyFormData.append('gender', memberObj.user_gender);
+    bodyFormData.append('gender', memberObj.gender);
     bodyFormData.append('user_address', memberObj.user_address);
     bodyFormData.append('pincode', memberObj.pincode);
     bodyFormData.append('package_name', memberObj.package_name);
@@ -36,7 +41,8 @@ export const AddBookingsDetails = async (memberObj,tubes) => {
     bodyFormData.append('ref_by_doc', memberObj.ref_by_doc);
     bodyFormData.append('ref_by_lab', memberObj.ref_by_lab);
     bodyFormData.append('service_provider_id', userId);
-    bodyFormData.append('tubeType', receivedData);
+    bodyFormData.append('tubeType', tubeTypes);
+    bodyFormData.append('barcodeNumber', barcodeNumbers);
     //bodyFormData.append('service_provider_id',service_provider_id);
 
 
