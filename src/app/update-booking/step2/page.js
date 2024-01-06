@@ -172,9 +172,9 @@ export default function step2() {
   };
   const removePackage = () => {
     // Set userPackageBooking to an object with package_name as an empty string
-    setUserPackageBooking(prev => {
-      return { ...prev, package_name: ''}
-    });
+    // setUserPackageBooking(prev => {
+    //   return { ...prev, package_name: ''}
+    // });
     setUserPackageBooking(prev => {
       return { ...prev, slot_time: ''}
     });
@@ -246,6 +246,7 @@ export default function step2() {
                                 value={userPackageBooking.package_id} 
                                 onChange={(e) => packageChange(e.target.value)}
                               >
+                                <option key="0" value="">Select Package</option>
                                 {labPackages.map((labPackage) => (
                                   <option key={labPackage.lab_package_id} value={labPackage.lab_package_id}>
                                     {labPackage.lab_package_name}

@@ -13,6 +13,7 @@ export const UpdateBookingTubeDetails = async (tubeId,bookingId,memberObj) => {
     bodyFormData.append('status', memberObj.status);
     bodyFormData.append('image', memberObj.image);
     bodyFormData.append('barcode_no', memberObj.barcode_no);
+    bodyFormData.append('tube_type', memberObj.tube_type);
     bodyFormData.append('package_order_id', bookingId);
     if(tubeId){
         bodyFormData.append('id', tubeId);

@@ -28,6 +28,8 @@ import Swal from 'sweetalert2';
 
 export default function PackageAttachmentDetails() {
 
+  const router = useRouter();
+
   const searchParams = useSearchParams();
   const [userPackageBooking, setUserPackageBooking] = useState({});
   const [labPackages, setLabPackages] = useState([]);
@@ -40,6 +42,13 @@ export default function PackageAttachmentDetails() {
   const [imageFile, setImageFile] = useState(null);
   const [packageBookingTubeDetails, setPackageBookingTubeDetails] = useState({});
   const [tubeTypes, setTubeTypes] = useState([]);
+
+  const [statusOptions, setStatusOptions] = useState([
+    'Picked',
+    'NotPicked',
+    'Pending',
+    'Hold'
+  ]);
 
   const handleBarcodeScanned = (barcode) => {
     console.log('Barcode scanned:', barcode);
@@ -81,6 +90,7 @@ export default function PackageAttachmentDetails() {
             open: true,
             message: 'Successfully Update Tube Details.'
         });
+        router.push('/update-booking/step2?id='+userPackageBooking.id);
       }else{
         setSnack({
             open: true,
@@ -148,25 +158,25 @@ export default function PackageAttachmentDetails() {
                     <Form.Group className="mb-3">
                       <Form.Label>Sample Status*</Form.Label>
                       <Form.Select 
-                      className="page-form-control"
-                      value={userPackageBooking.status}
-                      onChange={(e) => setPackageBookingTubeDetails({ ...packageBookingTubeDetails, status: e.target.value })}
+                        className="page-form-control"
+                        value={packageBookingTubeDetails.status}
+                        onChange={(e) => setPackageBookingTubeDetails({ ...packageBookingTubeDetails, status: e.target.value })}
                       >
                         <option>Select</option>
-                        <option value="Picked" >Picked</option>
-                        <option value="Not Picked">Not Picked</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Hold">Hold</option>
+                        {statusOptions.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
                       </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label>Tube Type*</Form.Label>
                       <Form.Select 
                       className="page-form-control"
-                      //value={userPackageBooking.tube_type}
+                      value={packageBookingTubeDetails.tube_type}
                       // onChange={(e) => setPackageBookingTubeDetails({ ...packageBookingTubeDetails, tube_type: e.target.value })}
-                      onChange={(e) => tubeTypeChange(e.target.value)}
-                      
+                      onChange={(e) => tubeTypeChange(e.target.value)}                      
                       >
                         <option value="">Select Tube Type</option>
                         {tubeTypes && tubeTypes.length > 0 && tubeTypes.map((tubeType) => (
@@ -182,7 +192,7 @@ export default function PackageAttachmentDetails() {
                       <div className="d-flex align-items-center justify-content-between gap-3">
                         <Form.Control
                           type="text"
-                          value={scannedBarcode}
+                          value={packageBookingTubeDetails.barcode_no ? packageBookingTubeDetails.barcode_no : scannedBarcode}
                           onChange={(e) => setPackageBookingTubeDetails({ ...packageBookingTubeDetails, barcode_no: e.target.value })}
                           placeholder=" "
                           className="page-form-control"
@@ -203,6 +213,15 @@ export default function PackageAttachmentDetails() {
                     </div> */}
                   </div>
                 </div>
+                <div>
+                  {packageBookingTubeDetails.image ? (
+                    <img
+                      src={`http://127.0.0.1:8000/${packageBookingTubeDetails.image}`}
+                      alt="Package Image"
+                      style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
+                    />
+                  ) : null}
+                </div>
 
                 <Form.Group className="mb-3">
                   <Form.Control
@@ -212,17 +231,19 @@ export default function PackageAttachmentDetails() {
                   accept='.jpg, .jpeg, .png, .pdf'
                   className='html-to-mui'
                   onChange={(e) => {
-                      if (e.target.files) {
-                          const file = e.target.files[0];
-                          blobToBase64(file, function (error, base64) {
-                              const parts = base64.split(';base64,');
-                              const imageType = parts[0].split(':')[1];
-                              const decodedData = parts[1];
-                              console.log(decodedData);
-                              setImageFile(decodedData);
-                            });
-                            setPackageBookingTubeDetails({ ...packageBookingTubeDetails, image: imageFile })
-                      }
+                    if (e.target.files) {
+                      const file = e.target.files[0];
+                      blobToBase64(file, function (error, base64) {
+                        const parts = base64.split(';base64,');
+                        const imageType = parts[0].split(':')[1];
+                        const decodedData = parts[1];
+                        console.log(decodedData);
+                        setImageFile(decodedData);
+              
+                        // Show the selected file in the image tag
+                        setPackageBookingTubeDetails({ ...packageBookingTubeDetails, image: decodedData });
+                      });
+                    }
                   }}
                   ></Form.Control>
                   {/* <Form.Label for="uploadpicture" className="custom-file-upload">
