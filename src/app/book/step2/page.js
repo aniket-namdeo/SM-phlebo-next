@@ -70,22 +70,43 @@ export default function BookStep2() {
     e.preventDefault();
     //console.log(userPackageBooking);    
     //console.log(tubes);  
+  if (userPackageBooking && userPackageBooking.booking_for && userPackageBooking.name && userPackageBooking.email && userPackageBooking.contact && userPackageBooking.age && userPackageBooking.pincode && userPackageBooking.user_address && userPackageBooking.slot_time && userPackageBooking.package_name) {
+    const { booking_for, name, email, contact, age, pincode, user_address, slot_time, package_name } = userPackageBooking;
 
-    const otpAPI = await AddBookingsDetails(userPackageBooking,tubes); 
-    console.log(otpAPI);
-    if(otpAPI.status == 200){
-      console.log(otpAPI.status);      
-      setSnack({
-          open: true,
-          message: 'Successfully Add Booking.'
-      });
-      router.push('/pending-booking');
-    }else{
-      setSnack({
-          open: true,
-          message: 'Something Wrong.'
-      });
+    if (!booking_for.trim() || !name.trim() || !email.trim() || !contact.trim() || !age.trim() || !pincode.trim() || !user_address.trim() || !slot_time.trim()  ||  !package_name.trim() ) {
+        Swal.fire({
+          title: 'Error',
+          text: 'All required fields must be filled.',
+          icon: 'error',
+        });
+    } else {
+      const otpAPI = await AddBookingsDetails(userPackageBooking,tubes); 
+      console.log(otpAPI);
+      if(otpAPI.status == 200){
+        console.log(otpAPI.status);      
+        setSnack({
+            open: true,
+            message: 'Successfully Add Booking.'
+        });
+        router.push('/pending-booking');
+      }else{
+        setSnack({
+            open: true,
+            message: 'Something Wrong.'
+        });
+      }
     }
+  } else {
+    Swal.fire({
+      title: 'Error',
+      text: 'All required fields must be filled.',
+      icon: 'error',
+    });
+  }
+    
+ 
+
+   
   };
 
 
@@ -260,7 +281,7 @@ export default function BookStep2() {
                     value={userPackageBooking.gender}
                     onChange={(e) => setUserPackageBooking({ ...userPackageBooking, gender: e.target.value })}
                   >
-                    <option>Select Gender</option>
+                    <option>Select Gender *</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
@@ -349,7 +370,7 @@ export default function BookStep2() {
                   />
                 </Form.Group>                 
                 <Form.Group className="mb-3">
-                  <Form.Label>Landmark/Sublocality*</Form.Label>
+                  <Form.Label>Address*</Form.Label>
                   <Form.Control
                     as="textarea"
                     placeholder="Landmark"
@@ -360,7 +381,7 @@ export default function BookStep2() {
                   />
                 </Form.Group>              
                 <Form.Group className="mb-3">
-                  <Form.Label>Pincode</Form.Label>
+                  <Form.Label>Pincode*</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Pincode"
@@ -406,7 +427,7 @@ export default function BookStep2() {
                               />
                             </Form.Group>
                             <Form.Group className="mb-3">
-                              <p className="mb-0">Booking Slot</p>
+                              <p className="mb-0">Booking Slot*</p>
                               <Form.Select name="Slot">
                                 <option value="">Select Slot</option>
                                 {slots.map((slot, index) => (
