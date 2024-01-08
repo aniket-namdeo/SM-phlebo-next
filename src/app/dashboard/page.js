@@ -8,8 +8,43 @@ import PageHeader from "../component/page-header";
 import Footer from "../component/footer";
 import Sidebar from "../component/sidebar";
 
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { DashboardCount } from '@/api_calls/DashboardCount';
+import { FaUserPlus } from "react-icons/fa";
+
 export default function updatebooking() {
+
+  const [dashboardCounts, setDashboardCounts] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await DashboardCount();
+        setDashboardCounts(data.counts);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
+    // "month_assignments": 7,
+    // "today_assignments": 0,
+    // "month_pending": 7,
+    // "today_pending": 0,
+    // "month_hold": 0,
+    // "today_hold": 0,
+    // "month_confirmed": 0,
+    // "today_confirmed": 0,
+    // "month_canceled": 0,
+    // "today_canceled": 0
     <>
       <Sidebar />
       <PageHeader heading="Phlebo Dashboard" />
@@ -19,48 +54,48 @@ export default function updatebooking() {
             <Col className="col-6">
               <Link href={"#"} className="dash-box">
                 <div className="box-body">
-                  <h2 className="number">2</h2>
+                  <h2 className="number">{dashboardCounts.today_assignments}</h2>
                   <p>Assigned Bookings</p>
                 </div>
                 <div className="box-footer">
-                  <p>Month - 12</p>
+                  <p>Month - {dashboardCounts.month_assignments}</p>
                 </div>
               </Link>
             </Col>
             <Col className="col-6">
               <div className="dash-box">
                 <div className="box-body">
-                  <h2 className="number">1</h2>
+                  <h2 className="number">{dashboardCounts.today_confirmed}</h2>
                   <p>Confirmed Bookings</p>
                 </div>
                 <div className="box-footer">
-                  <p>Month - 07</p>
+                  <p>Month - {dashboardCounts.month_confirmed}</p>
                 </div>
               </div>
             </Col>
             <Col className="col-6">
               <div className="dash-box">
                 <div className="box-body">
-                  <h2 className="number">02</h2>
+                  <h2 className="number">{dashboardCounts.today_hold}</h2>
                   <p>Hold Bookings</p>
                 </div>
                 <div className="box-footer">
-                  <p>Month - 04</p>
+                  <p>Month - {dashboardCounts.month_hold}</p>
                 </div>
               </div>
             </Col>
             <Col className="col-6">
               <div className="dash-box">
                 <div className="box-body">
-                  <h2 className="number">02</h2>
+                  <h2 className="number">{dashboardCounts.today_pending}</h2>
                   <p>Pending Bookings</p>
                 </div>
                 <div className="box-footer">
-                  <p>Month - 02</p>
+                  <p>Month - {dashboardCounts.month_pending}</p>
                 </div>
               </div>
             </Col>
-            <Col className="col-6">
+             {/* <Col className="col-6">
               <div className="dash-box">
                 <div className="box-body">
                   <h2 className="number">0</h2>
@@ -86,18 +121,18 @@ export default function updatebooking() {
               <div className="dash-box">
                 <div className="box-body">
                   <h2 className="number">4350</h2>
-                  <p>Cash Due</p>
+                  <p>Cash Collect</p>
                 </div>
                 <div className="box-footer">
                   <p>Today - 4350</p>
                 </div>
               </div>
-            </Col>
+            </Col> */}
             <Col className="col-12">
               <div className="dash-box total">
                 <div className="box-body">
-                  <h2 className="number">&#8377;4350</h2>
-                  <p>Total Cash Due</p>
+                  <h2 className="number">&#8377; {dashboardCounts.month_cash_collected}</h2>
+                  <p>Total Cash Collect</p>
                 </div>
               </div>
             </Col>
