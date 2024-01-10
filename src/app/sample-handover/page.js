@@ -8,6 +8,7 @@ import { MdQrCodeScanner } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import "/public/css/update-booking.css";
 import "/public/css/sample-handover.css";
 import PageHeader from "../component/page-header";
 
@@ -20,6 +21,7 @@ import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import BookingList from '@/components/BookingList';
 import Sidebar from "../component/sidebar";
+import SignaturePad from '@/components/SignaturePad';
 
 
 export default function samplehandover() {
@@ -31,6 +33,7 @@ export default function samplehandover() {
   const [userPackageBooking, setUserPackageBooking] = useState([]);
   const [handoverLabPackageBooking, setHandoverLabPackageBooking] = useState({});
   const [labBranches, setLabBranches] = useState([]);
+  const [signatureData, setSignatureData] = useState('');
 
   const [selectedBookings, setSelectedBookings] = useState([]);
 
@@ -63,6 +66,18 @@ export default function samplehandover() {
     handleClose();
   };
 
+  const handleSignatureChange = (data) => {
+    setSignatureData(data);  
+    setHandoverLabPackageBooking({ ...handoverLabPackageBooking, lab_signature: data })
+  };
+
+  const handleTextAreaChange = (value) => {
+    // Handle the change in the text area value if needed
+    setHandoverLabPackageBooking(prev => {
+      return { ...prev, remark: value}
+    });
+  };
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -88,16 +103,14 @@ export default function samplehandover() {
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     //console.log(selectedBookings);
-    //console.log(handoverLabPackageBooking);
+    console.log(handoverLabPackageBooking);
     try {
       const res = await UpdateHandoverLabDetails(handoverLabPackageBooking,selectedBookings);
-      // const res1 = await LabPackageBooking('confirmed');
-      // setUserPackageBooking(res1);
       console.log(res);
+      router.push('/confirmed-booking');
     } catch (error) {
       console.error(error);
     }
-    router.push('/confirmed-booking');
 
   };
 
@@ -240,6 +253,19 @@ export default function samplehandover() {
                 <Link href={"#"} className="text-center mb-3 d-block">
                   Take sample receivers signature
                 </Link>
+                <div className="box-left">
+                  <h2 className="box-heading">Customer Signature</h2>
+                  <SignaturePad onSignatureChange={handleSignatureChange} />
+                </div>
+                <Form.Group controlId="additionalInfo">
+                  <Form.Label>Additional Information:</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows="4"
+                    placeholder="Provide additional information..."
+                    onChange={(e) => handleTextAreaChange(e.target.value)}
+                  />
+                </Form.Group>
                 <Link href={"#"} className="btn web-btn w-100" onClick={handleSubmit}>
                   Submit
                 </Link>

@@ -15,6 +15,8 @@ export const UpdateHandoverLabDetails = async (subObj,bookIdArray) => {
     bodyFormData.append('branch_id', subObj.branch_id);
     bodyFormData.append('service_provider_id', userId);
     bodyFormData.append('package_booking_id', bookIdArray);
+    bodyFormData.append('lab_signature', subObj.lab_signature);
+    bodyFormData.append('remark', subObj.remark);
 
     let config = {
         method: 'post',

@@ -224,6 +224,7 @@ export default function PackageAttachmentDetails() {
                 </div>
 
                 <Form.Group className="mb-3">
+                  <p className="box-heading">Tube Image : </p>    
                   <Form.Control
                   type="file"
                   required

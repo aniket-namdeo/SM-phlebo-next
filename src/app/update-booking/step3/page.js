@@ -4,6 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Link from "next/link";
 import Form from "react-bootstrap/Form";
+import Table from "react-bootstrap/Table";
 import { Modal, Button } from 'react-bootstrap';
 import { MdQrCodeScanner } from "react-icons/md";
 import "/public/css/update-booking.css";
@@ -96,6 +97,13 @@ export default function step2() {
 
     fetchData();
   }, []);
+  let priceDifference = userPackageBooking.package_mrp > userPackageBooking.package_price ? userPackageBooking.package_mrp - userPackageBooking.package_price : 0;
+  const camelToTitleCase = (str) => {
+    if (!str) {
+      return '';
+    }
+    return str.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/\b\w/g, (char) => char.toUpperCase());
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
@@ -215,17 +223,48 @@ export default function step2() {
                 </div>
               ) : null}
               </div>
-              {selectedOption === 'confirmed'? (
+              {selectedOption === 'confirmed' && userPackageBooking.payment_status !== 'completed'? (
               <div className="web-box">
                 <h2 className="box-heading">Payment Details</h2>
+                <div className="web-box">
+                  <h2 className="box-heading">Order Summary</h2>
+                  <div className="box-body">
+                    <Table striped bordered hover>
+                      <tbody>
+                        <tr>
+                          <td>Price</td>
+                          <th>{userPackageBooking.package_mrp}</th>
+                        </tr>
+                        <tr>
+                          <td>Discount</td>
+                          <th>-{priceDifference}</th>
+                        </tr>
+                        <tr>
+                          <td>Price After Discount</td>
+                          <th>{userPackageBooking.package_price}</th>
+                        </tr>
+                        <tr>
+                          <td>Payment Status</td>
+                          <th>{camelToTitleCase(userPackageBooking.payment_status)}</th>
+                        </tr>
+                      </tbody>
+                    </Table>
+                    {/* <Link href={"#"} className="btn web-stroke-btn w-100">
+                      <FaPlus />
+                      Select Coupon
+                    </Link> */}
+                  </div>
+                </div> 
                 <div className="box-body">
-                <Form.Select 
+                  <Form.Select 
                   className="page-form-control"
                   value={userPackageBooking.payment_mode}
-                  onChange={(e) => setUserPackageBooking({ ...userPackageBooking, payment_mode: e.target.value })}
+                  onChange={(e) => setUserPackageBooking((prevUserPackageBooking) => ({
+                    ...prevUserPackageBooking,
+                    payment_mode: e.target.value
+                  }))}
                   >
                     <option >select</option>
-                    <option value="admin_pay">Admin paid</option>
                     <option value="cash">Cash</option>
                     <option value="link">Link Payment</option>
                   </Form.Select>
@@ -234,14 +273,25 @@ export default function step2() {
                     <Form.Control
                       type="text"
                       placeholder=""
-                      value={userPackageBooking.cash_payment}
+                      value={userPackageBooking.package_price}
                       onChange={(e) => setUserPackageBooking({ ...userPackageBooking, cash_payment: e.target.value })}
                       className="page-form-control"
                     />
                   </Form.Group>
-                  <div className="text-center mb-3">
-                    <Link href={"#"} onClick={handleShow}>Get Payment Info</Link>
-                  </div>
+                  {userPackageBooking.payment_mode === 'link' && (
+                    <div className="text-center mb-3">
+                      <Link href="#" onClick={handleShow}>Get Payment Info</Link>
+                    </div>
+                  )}
+                  <Form.Group controlId="additionalInfo">
+                    <Form.Label>Additional Information:</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows="4"
+                      placeholder="Provide additional information..."
+                      onChange={(e) => handleTextAreaChange(e.target.value)}
+                    />
+                  </Form.Group>
                   <Modal show={showModal} onHide={handleClose}>
                     <Modal.Header closeButton>
                       <Modal.Title>Payment Information</Modal.Title>
@@ -256,23 +306,43 @@ export default function step2() {
                       </Button>
                     </Modal.Footer>
                   </Modal>
-                  {/* <Form.Group className="mb-3">
-                    <Form.Label>Happy Code*</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder=""
-                      className="page-form-control"
-                    />
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Label>Customer Feedback*</Form.Label>
-                    <Form.Select className="page-form-control">
-                      <option>Choose Customer Feedback</option>
-                    </Form.Select>
-                  </Form.Group> */}
                 </div>
               </div>
-              ): null}
+              ): (
+                selectedOption === 'confirmed' && userPackageBooking.payment_status === 'completed' && (
+                  <>
+                    <div className="web-box">
+                      <h2 className="box-heading">Order Summary</h2>
+                      <div className="box-body">
+                        <Table striped bordered hover>
+                          <tbody>
+                            <tr>
+                              <td>Price</td>
+                              <th>{userPackageBooking.package_mrp}</th>
+                            </tr>
+                            <tr>
+                              <td>Discount</td>
+                              <th>-{priceDifference}</th>
+                            </tr>
+                            <tr>
+                              <td>Price After Discount</td>
+                              <th>{userPackageBooking.package_price}</th>
+                            </tr>
+                            <tr>
+                              <td>Payment Status</td>
+                              <th>{camelToTitleCase(userPackageBooking.payment_status)}</th>
+                            </tr>
+                          </tbody>
+                        </Table>
+                        {/* <Link href={"#"} className="btn web-stroke-btn w-100">
+                          <FaPlus />
+                          Select Coupon
+                        </Link> */}
+                      </div>
+                    </div> 
+                  </>
+                )
+              )}
 
               <Link href={"#"} className="btn web-btn w-100"  onClick={handleSubmit}>
                 Update Booking Details
