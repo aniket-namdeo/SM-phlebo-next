@@ -235,7 +235,7 @@ export default function samplehandover() {
                       onChange={(e) => setHandoverLabPackageBooking({ ...handoverLabPackageBooking, cash_submit: e.target.value })}
                     />
                   </Form.Group>
-                <Form.Group className="mb-3">
+                {/* <Form.Group className="mb-3">
                   <Form.Label>Given to</Form.Label>
                   <div className="d-flex align-items-center justify-content-between gap-3">
                     <Form.Control
@@ -249,7 +249,7 @@ export default function samplehandover() {
                       Scan
                     </Link>
                   </div>
-                </Form.Group>
+                </Form.Group> */}
                 <Link href={"#"} className="text-center mb-3 d-block">
                   Take sample receivers signature
                 </Link>
