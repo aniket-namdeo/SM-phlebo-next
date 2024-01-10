@@ -101,17 +101,25 @@ const BookingList = ({ bookings }) => {
               <>
               </>
             )}
-            <Link
+            {/* <Link
               href="#"
               className="btn web-btn w-100"
               onClick={() => handleButtonClick(booking)}
             >
               Proceed
-            </Link>
-            <Link href={`update-booking?id=${booking.id}`} 
-              className="btn web-btn w-100">
-              Update Details
-            </Link>
+            </Link> */}
+            {booking.booking_status != "confirmed"? (
+              <>
+                <Link href={`update-booking?id=${booking.id}`} 
+                  className="btn web-btn w-100">
+                  Update Details
+                </Link>
+              </>
+            ) : (
+              <>
+              </>
+            )}
+          
           </div>
         </div>
       ))) : (

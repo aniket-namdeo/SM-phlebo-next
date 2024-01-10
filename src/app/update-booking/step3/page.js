@@ -276,6 +276,7 @@ export default function step2() {
                       value={userPackageBooking.package_price}
                       onChange={(e) => setUserPackageBooking({ ...userPackageBooking, cash_payment: e.target.value })}
                       className="page-form-control"
+                      readOnly 
                     />
                   </Form.Group>
                   {userPackageBooking.payment_mode === 'link' && (
