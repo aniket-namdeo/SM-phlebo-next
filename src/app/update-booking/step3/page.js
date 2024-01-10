@@ -281,7 +281,7 @@ export default function step2() {
                   </Form.Group>
                   {userPackageBooking.payment_mode === 'link' && (
                     <div className="text-center mb-3">
-                      <Link href="#" onClick={handleShow}>Get Payment Info</Link>
+                      <Link href="#" onClick={handleShow}>Payment QR</Link>
                     </div>
                   )}
                   <Form.Group controlId="additionalInfo">
