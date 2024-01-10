@@ -223,7 +223,7 @@ export default function step2() {
           <Row>
             <Col>
               <div className="web-box">
-                <h2 className="box-heading">Order Details</h2>
+                <h2 className="box-heading">Package Details</h2>
                 <div className="box-body">
                   <Form onSubmit={handleSubmit}>
                     <div className="info-box mb-3">
