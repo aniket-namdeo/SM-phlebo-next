@@ -58,3 +58,7 @@
   ~ .sample-booking-box:before {
   background-color: var(--greencolor);
 }
+textarea.form-control {
+  height: 54px;
+  padding-bottom: 9%;
+}

@@ -22,6 +22,8 @@ import Snackbar from '@mui/material/Snackbar';
 import BookingList from '@/components/BookingList';
 import Sidebar from "../component/sidebar";
 import SignaturePad from '@/components/SignaturePad';
+import BarcodeScannerPopup from '@/components/BarcodeScannerPopup';
+import SignaturePadPopup from '@/components/SignaturePadPopup';
 
 
 export default function samplehandover() {
@@ -66,9 +68,23 @@ export default function samplehandover() {
     handleClose();
   };
 
+  const [isSignaturePopupOpen, setIsSignaturePopupOpen] = useState(false);
+  const openSignaturePopup = () => {
+    setIsSignaturePopupOpen(true);
+  };
+
+  const closeSignaturePopup = () => {
+    setIsSignaturePopupOpen(false);
+  };
+  
   const handleSignatureChange = (data) => {
     setSignatureData(data);  
     setHandoverLabPackageBooking({ ...handoverLabPackageBooking, lab_signature: data })
+  };
+
+  const handleSaveSignature = () => {
+    console.log('Signature saved:', signatureData);
+    closeSignaturePopup();
   };
 
   const handleTextAreaChange = (value) => {
@@ -250,12 +266,55 @@ export default function samplehandover() {
                     </Link>
                   </div>
                 </Form.Group> */}
-                <Link href={"#"} className="text-center mb-3 d-block">
+                {/* <Link href={"#"} className="text-center mb-3 d-block">
                   Take sample receivers signature
-                </Link>
-                <div className="box-left">
-                  <h2 className="box-heading">Customer Signature</h2>
-                  <SignaturePad onSignatureChange={handleSignatureChange} />
+                </Link> */}
+                <div>
+                  <h2 className="box-heading">
+                    Lab Signature 
+                  </h2>
+                  {signatureData ? (
+                      <div>
+                        <p>Signature Saved</p>
+                        {/* <img src={signatureData} alt="Customer Signature" /> */}
+                      </div>
+                  ) : (
+                    <a  className="sign text-center mb-3 d-block" onClick={openSignaturePopup}>
+                      Take order receivers signature
+                    </a>
+                  )}
+
+                  {isSignaturePopupOpen && (                
+                    <div className="popup-container-signature">
+                      <div className="popup-content-signature">
+                        <SignaturePadPopup
+                          onSignatureChange={handleSignatureChange}
+                          onSaveSignature={handleSaveSignature}
+                          onClose={closeSignaturePopup}
+                        />
+                      </div>
+                  </div>
+                  )}
+                  <style jsx>{`
+                      .popup-container-signature {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.5);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      }
+
+                      .popup-content-signature {
+                        background: #fff;
+                        padding: 2px;
+                        border-radius: 8px;
+                      }
+                    `}
+                  </style>
                 </div>
                 <Form.Group controlId="additionalInfo">
                   <Form.Label>Additional Information:</Form.Label>

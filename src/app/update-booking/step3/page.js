@@ -19,11 +19,20 @@ import { LabPackages } from '@/api_calls/LabPackages';
 import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import SignaturePad from '@/components/SignaturePad';
+import BarcodeScannerPopup from '@/components/BarcodeScannerPopup';
+import SignaturePadPopup from '@/components/SignaturePadPopup';
 
 export default function step2() {
 
   const searchParams = useSearchParams();
   const [scannedBarcode, setScannedBarcode] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const openScannerPopup = () => {
+    setIsPopupOpen(true);
+  };
+  const closeScannerPopup = () => {
+    setIsPopupOpen(false);
+  };
   const [signatureData, setSignatureData] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
   const [userPackageBooking, setUserPackageBooking] = useState({});
@@ -52,11 +61,19 @@ export default function step2() {
     console.log('Barcode scanned:', barcode);
     setScannedBarcode(barcode);   
     setUserPackageBooking(prev => {
-      return { ...prev, customer_signature: data}
+      return { ...prev, master_barcode_no: barcode}
     }); 
   };
 
+  const [isSignaturePopupOpen, setIsSignaturePopupOpen] = useState(false);
+  const openSignaturePopup = () => {
+    setIsSignaturePopupOpen(true);
+  };
 
+  const closeSignaturePopup = () => {
+    setIsSignaturePopupOpen(false);
+  };
+  
   const handleSignatureChange = (data) => {
     setSignatureData(data);
     setUserPackageBooking(prev => {
@@ -64,6 +81,10 @@ export default function step2() {
     });
   };
 
+  const handleSaveSignature = () => {
+    console.log('Signature saved:', signatureData);
+    closeSignaturePopup();
+  };
   const handleRemoveSignature = () => {
     setSignatureData(null);
   }
@@ -143,40 +164,118 @@ export default function step2() {
               </div> */}
              
               <div className="web-box">
-                <div className="box-left">
+                <div>
+                  <h2 className="box-heading">
+                    Customer Signature 
+                  </h2>
+                  {signatureData ? (
+                      <div>
+                        <p>Signature Saved</p>
+                        {/* <img src={signatureData} alt="Customer Signature" /> */}
+                      </div>
+                  ) : (
+                    <a  className="sign text-center mb-3 d-block" onClick={openSignaturePopup}>
+                     Take Customer signature
+                   </a>
+                  )}
+
+                  {isSignaturePopupOpen && (                
+                    <div className="popup-container-signature">
+                      <div className="popup-content-signature">
+                        <SignaturePadPopup
+                          onSignatureChange={handleSignatureChange}
+                          onSaveSignature={handleSaveSignature}
+                          onClose={closeSignaturePopup}
+                        />
+                      </div>
+                  </div>
+                  )}
+                  <style jsx>{`
+                      .popup-container-signature {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.5);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      }
+
+                      .popup-content-signature {
+                        background: #fff;
+                        padding: 2px;
+                        border-radius: 8px;
+                      }
+                    `}
+                  </style>
+                </div>
+                {/* <div className="box-left">
                   <h2 className="box-heading">Customer Signature</h2>
                   <SignaturePad onSignatureChange={handleSignatureChange} />
                 </div>
                 <div className="box-right">
-                  {/* {signatureData && (
+                  {signatureData && (
                     <div>
                       <h2>Signature Preview</h2>
                       <img src={signatureData} alt="Customer Signature" />
                     </div>
-                  )} */}
-                </div>
+                  )}
+                </div> */}
                 <h2 className="box-heading">Master Barcode Value</h2>
                 <div className="box-body">
                   <div className="d-flex align-items-center justify-content-between gap-3">
                     <Form.Control
                       type="text"
                       placeholder=" "
+                      value={userPackageBooking.master_barcode_no ? userPackageBooking.master_barcode_no : scannedBarcode}
                       className="page-form-control"
                     />
-                    <Link href={"#"} className="scan text-center">
-                      <MdQrCodeScanner />
-                      <br />
-                      Scan
-                    </Link>                   
+                    <Link onClick={openScannerPopup} href={'#'} className="scan text-center">
+                          <MdQrCodeScanner />
+                          <br />
+                          Scan
+                        </Link>                        
+                          {isPopupOpen && (
+                            <div className="popup-container">
+                              <div className="popup-content">
+                                <BarcodeScannerPopup
+                                  onBarcodeScanned={handleBarcodeScanned}
+                                  onClose={closeScannerPopup}
+                                />
+                              </div>
+                            </div>
+                          )}
+
+                          <style jsx>{`
+                            .popup-container {
+                              position: fixed;
+                              top: 0;
+                              left: 0;
+                              width: 100%;
+                              height: 100%;
+                              background: rgba(0, 0, 0, 0.5);
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                            }
+
+                            .popup-content {
+                              background: #fff;
+                              padding: 20px;
+                              border-radius: 8px;
+                            }
+                          `}</style>                  
                   </div>
-                   <div>
+                   {/* <div>
                       <h2 className="box-heading">Next.js Barcode Reader</h2>
                       {scannedBarcode ? (
                         <p>Scanned Barcode: {scannedBarcode}</p>
                       ) : (
                         <BarcodeReader onBarcodeScanned={handleBarcodeScanned} />
                       )}
-                    </div>
+                    </div> */}
                 </div>
               </div>
               <div className="web-box">
