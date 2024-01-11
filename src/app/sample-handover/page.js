@@ -39,6 +39,8 @@ export default function samplehandover() {
 
   const [selectedBookings, setSelectedBookings] = useState([]);
 
+  const [totalPrice, setTotalPrice] = useState(0);
+
   const handleCheckboxChange = (bookingId) => {
     // Check if the bookingId is already in the selectedBookings array
     const isSelected = selectedBookings.includes(bookingId);
@@ -54,6 +56,15 @@ export default function samplehandover() {
         bookingId,
       ]);
     }
+
+    const updatedTotalPrice = userPackageBooking.reduce((sum, booking) => {
+      if (selectedBookings.includes(booking.id)) {
+        return sum + parseFloat(booking.package_price);
+      }
+      return sum;
+    }, 0);
+
+    setTotalPrice(updatedTotalPrice);
   };
 
   const handleConfirm = () => {
@@ -221,7 +232,7 @@ export default function samplehandover() {
                           <span>Package Name</span> <br /> {selectedBooking.package_name}
                         </p>
                         <p>
-                          <span>Package Detail</span> <br /> {selectedBooking.package_detail}
+                          <span>Package price</span> <br /> {selectedBooking.package_Price}
                         </p>
                       </div>
                     );
@@ -247,8 +258,10 @@ export default function samplehandover() {
                     <Form.Control
                       type="text"
                       placeholder="Cash"
+                      value={totalPrice}
                       className="page-form-control"
                       onChange={(e) => setHandoverLabPackageBooking({ ...handoverLabPackageBooking, cash_submit: e.target.value })}
+                      readOnly
                     />
                   </Form.Group>
                 {/* <Form.Group className="mb-3">

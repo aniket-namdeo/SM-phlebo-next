@@ -61,6 +61,9 @@ export default function PackageAttachmentDetails() {
   const handleBarcodeScanned = (barcode) => {
     console.log('Barcode scanned:', barcode);
     setScannedBarcode(barcode);
+    setPackageBookingTubeDetails((prev) => {
+      return { ...prev, barcode_no: barcode };
+    });
   };
 
   const [snack, setSnack] = useState({
@@ -200,7 +203,7 @@ export default function PackageAttachmentDetails() {
                       <div className="d-flex align-items-center justify-content-between gap-3">
                         <Form.Control
                           type="text"
-                          value={packageBookingTubeDetails.barcode_no ? packageBookingTubeDetails.barcode_no : scannedBarcode}
+                          value={scannedBarcode ?  scannedBarcode : packageBookingTubeDetails.barcode_no }
                           onChange={(e) => setPackageBookingTubeDetails({ ...packageBookingTubeDetails, barcode_no: e.target.value })}
                           placeholder=" "
                           className="page-form-control"
