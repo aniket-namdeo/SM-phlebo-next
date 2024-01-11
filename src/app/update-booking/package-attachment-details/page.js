@@ -24,6 +24,7 @@ import { useSearchParams } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import SignaturePad from '@/components/SignaturePad';
 import BarcodeReader from '@/components/BarcodeReader';
+import BarcodeScannerPopup from '@/components/BarcodeScannerPopup';
 import Swal from 'sweetalert2';
 
 export default function PackageAttachmentDetails() {
@@ -37,7 +38,14 @@ export default function PackageAttachmentDetails() {
   const [selectedDate, setSelectedDate] = useState(''); 
 
 
-  const [scannedBarcode, setScannedBarcode] = useState(null);
+  const [scannedBarcode, setScannedBarcode] = useState(null); 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const openScannerPopup = () => {
+    setIsPopupOpen(true);
+  };
+  const closeScannerPopup = () => {
+    setIsPopupOpen(false);
+  };
   const [signatureData, setSignatureData] = useState('');
   const [imageFile, setImageFile] = useState(null);
   const [packageBookingTubeDetails, setPackageBookingTubeDetails] = useState({});
@@ -197,17 +205,47 @@ export default function PackageAttachmentDetails() {
                           placeholder=" "
                           className="page-form-control"
                         />
-                        <Link href={"#"} className="scan text-center">
+                        <Link onClick={openScannerPopup} href={'#'} className="scan text-center">
                           <MdQrCodeScanner />
                           <br />
                           Scan
-                        </Link>
+                        </Link>                        
+                          {isPopupOpen && (
+                            <div className="popup-container">
+                              <div className="popup-content">
+                                <BarcodeScannerPopup
+                                  onBarcodeScanned={handleBarcodeScanned}
+                                  onClose={closeScannerPopup}
+                                />
+                              </div>
+                            </div>
+                          )}
+
+                          <style jsx>{`
+                            .popup-container {
+                              position: fixed;
+                              top: 0;
+                              left: 0;
+                              width: 100%;
+                              height: 100%;
+                              background: rgba(0, 0, 0, 0.5);
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                            }
+
+                            .popup-content {
+                              background: #fff;
+                              padding: 20px;
+                              border-radius: 8px;
+                            }
+                          `}</style>
                       </div>
                     </Form.Group>
-                    <div>
+                    {/* <div>
                       <h2 className="box-heading">Barcode Reader</h2>                   
                       <BarcodeReader onBarcodeScanned={handleBarcodeScanned} />
-                    </div>
+                    </div> */}
                     {/* <div className="text-center">
                       <Link href={"#"}>Update Barcode</Link>
                     </div> */}
