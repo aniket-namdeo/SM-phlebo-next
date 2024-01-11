@@ -81,7 +81,7 @@ export default function step2() {
         console.log(otpAPI.status);      
         setSnack({
             open: true,
-            message: 'Successfully Update Member Details.'
+            message: 'Successfully Update Package Details.'
         });
         router.push('/update-booking/step3?id='+userPackageBooking.id);  
       }else{
