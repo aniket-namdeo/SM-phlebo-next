@@ -365,7 +365,7 @@ export default function step2() {
                   >
                     <option >select</option>
                     <option value="cash">Cash</option>
-                    <option value="link">Link Payment</option>
+                    <option value="link">Payment QR</option>
                   </Form.Select>
                   <Form.Group className="mb-3">
                     <Form.Label>Receivable Amount*</Form.Label>
@@ -380,7 +380,7 @@ export default function step2() {
                   </Form.Group>
                   {userPackageBooking.payment_mode === 'link' && (
                     <div className="text-center mb-3">
-                      <Link href="#" onClick={handleShow}>Payment QR</Link>
+                      <Link href="#" onClick={handleShow}>Payment QR Code</Link>
                     </div>
                   )}
                   <Form.Group controlId="additionalInfo">

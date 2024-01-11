@@ -442,86 +442,7 @@ export default function BookStep2() {
                     </div>                    
                     
                 </div>
-              </div>
-              <div className="web-box">
-                <h2 className="box-heading">Tube Details</h2>
-                <div className="box-body"> 
-                  <div>
-                    <p>Tubes</p>
-                    {tubes.map((tube, index) => (
-                      <div key={index}>
-                        <Form.Group className="mb-3">
-                          <Form.Label>Tube Type</Form.Label>
-                          <Form.Select
-                            onChange={(e) => handleTubeChange(index, 'tubeType', e.target.value)}
-                          >
-                            {/* Map over tube types to generate options */}
-                            {tubeTypes.map((type) => (
-                              <option key={type.id} value={type.id}>
-                                {type.name}
-                              </option>
-                            ))}
-                          </Form.Select>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label>Barcode Number</Form.Label>
-                          <Form.Control
-                            type="text"
-                            placeholder="Enter barcode number"
-                            value={tube.barcodeNumber}
-                            onChange={(e) => handleTubeChange(index, 'barcodeNumber', e.target.value)}
-                          />
-                        </Form.Group>
-                        <button  className="btn web-stroke-btn mb-3 d-block"  type="button" onClick={() => removeTube(index)}>Remove Tube</button>
-                      </div>
-                    ))}
-                    <button  className="btn web-stroke-btn mb-3 d-block"  type="button" onClick={addTube}>Add Tube</button>
-                  </div>
-                </div>
-              </div>
-              <div className="web-box">
-                <h2 className="box-heading">payment Details</h2>
-                <div className="box-body"> 
-                  <div className="row">
-                    <div className="form-group">
-                      <label htmlFor="paymentMethod">Payment Method:</label>
-                      <select
-                        id="paymentMethod"
-                        className="form-control"
-                        name="paymentMethod"
-                        onChange={handlePaymentMethodChange}
-                        value={paymentMethod}
-                      >
-                        <option value="CASH">CASH</option>
-                        <option value="CARD">CARD</option>
-                        <option value="CHEQUE_DD">CHEQUE/DD</option>
-                      </select>
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="barcodeNumber">Cash Amount:</label>
-                      <input type="text" className="form-control" name="cash_amount" />
-                    </div>
-
-                    <div className="form-group" style={{ display: paymentMethod === 'CARD' || paymentMethod === 'CHEQUE_DD' ? 'block' : 'none' }}>
-                      <label htmlFor="paymentMethod">Select Bank</label>
-                      <select name="bank" id="bank" className="form-control">
-                        <option value="" disabled>Select a bank</option>
-                        {banks.map((bank) => (
-                          <option key={bank.id} value={bank.bank_name}>
-                            {bank.bank_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="form-group" style={{ display: paymentMethod === 'CARD' || paymentMethod === 'CHEQUE_DD' ? 'block' : 'none' }}>
-                      <label htmlFor="paymentMethod">Cheque No./Card No.:</label>
-                      <input type="text" className="form-control" name="cash" />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </div>             
               <div className="web-box">
                 <h2 className="box-heading">Order Summary</h2>
                 <div className="box-body">
@@ -541,7 +462,7 @@ export default function BookStep2() {
                       </tr>
                       <tr>
                         <td>Payment Status</td>
-                        <th>{camelToTitleCase(userPackageBooking.payment_status)}</th>
+                        <th>Pending</th>
                       </tr>
                     </tbody>
                   </Table>

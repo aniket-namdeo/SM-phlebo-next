@@ -21,10 +21,10 @@ const SignaturePadPopup = ({ onSignatureChange, onSaveSignature, onClose }) => {
           onSignatureChange={handleSignatureChangeLocal}
         />
         <div className="save-button">
-          <button onClick={handleSaveSignatureLocal}>Save Signature</button>
+          <button className="btn web-stroke-btn w-100" onClick={handleSaveSignatureLocal}>Save Signature</button>
         </div>
         <div className="close-button">
-          <button onClick={onClose}>Close</button>
+          <button className="btn web-stroke-btn w-100" onClick={onClose}>Close</button>
         </div>
       </div>
     </div>

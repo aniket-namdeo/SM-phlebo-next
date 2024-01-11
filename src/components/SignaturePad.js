@@ -23,7 +23,7 @@ const SignaturePad = ({ onSignatureChange }) => {
         onEnd={handleEnd}
       />
       <div className='clear_canvas'>
-        <a onClick={handleClear}>Clear Signature</a>
+        <a  onClick={handleClear}>Clear Signature</a>
       </div>
     </div>
   );
