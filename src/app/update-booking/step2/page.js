@@ -23,6 +23,7 @@ import BookingList from '@/components/BookingList';
 import Swal from 'sweetalert2';
 
 export default function step2() {
+  const router = useRouter();
 
   const searchParams = useSearchParams();  
   const [selectedSlot, setSelectedSlot] = useState("");
@@ -82,6 +83,7 @@ export default function step2() {
             open: true,
             message: 'Successfully Update Member Details.'
         });
+        router.push('/update-booking/step3?id='+userPackageBooking.id);  
       }else{
         setSnack({
             open: true,
@@ -354,12 +356,12 @@ export default function step2() {
                 </div>
               </div>              
               <Link href={"#"} className="btn web-stroke-btn mb-3 d-block" onClick={handleSubmit}>
-                Update Booking Details
-              </Link>
-
-              <Link href={ `step3?id=${userPackageBooking.id}`} className="btn web-btn w-100">
                 Next
               </Link>
+
+              {/* <Link href={ `step3?id=${userPackageBooking.id}`} className="btn web-btn w-100">
+                Next
+              </Link> */}
             </Col>
           </Row>
           <Snackbar

@@ -18,6 +18,7 @@ import BookingList from '@/components/BookingList';
 import Swal from 'sweetalert2';
 
 export default function updatebooking() {
+  const router = useRouter();
 
   const searchParams = useSearchParams();
   const [location, setLocation] = useState(null);
@@ -51,11 +52,12 @@ export default function updatebooking() {
     } else {
       const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id,userPackageBooking); 
       if(otpAPI.status == 200){
-        console.log(otpAPI.status);      
+        console.log(otpAPI.status); 
         setSnack({
-            open: true,
-            message: 'Successfully Update Member Details.'
+          open: true,
+          message: 'Successfully Update Member Details.'
         });
+        router.push('/update-booking/step2?id='+userPackageBooking.id);     
       }else{
         setSnack({
             open: true,
@@ -275,12 +277,12 @@ export default function updatebooking() {
                 </p>
 
                 <Link href={"#"} className="btn web-stroke-btn mb-3 d-block" onClick={handleSubmit}>
-                  Update Member Details
-                </Link>
-
-                <Link href={ `update-booking/step2?id=${userPackageBooking.id}`} className="btn web-btn d-block">
                   Next
                 </Link>
+
+                {/* <Link href={ `update-booking/step2?id=${userPackageBooking.id}`} className="btn web-btn d-block">
+                  Next
+                </Link> */}
               </Form>
             </Col>
           </Row>
