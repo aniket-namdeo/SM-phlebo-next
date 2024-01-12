@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import Snackbar from "@mui/material/Snackbar";
+import PageHeaderWithBack from "../../component/page-header-with-back";
 
 export default function BookStep1() {
   const searchParams = useSearchParams();
@@ -53,6 +54,7 @@ export default function BookStep1() {
 
   return (
     <>
+      <PageHeaderWithBack heading="Add Booking" />
       <section className="login">
         <div className="box">
           <Container>

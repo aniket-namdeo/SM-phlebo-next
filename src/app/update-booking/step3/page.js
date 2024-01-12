@@ -9,6 +9,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { MdQrCodeScanner } from "react-icons/md";
 import "/public/css/update-booking.css";
 import PageHeader from "../../component/page-header";
+import PageHeaderWithBack from "../../component/page-header-with-back";
 import BarcodeReader from '@/components/BarcodeReader';
 
 import { useEffect, useState } from 'react';
@@ -153,7 +154,7 @@ export default function step2() {
 
   return (
     <>
-      <PageHeader heading="Update Booking" />
+      <PageHeaderWithBack heading="Update Booking" />
       <section className="update-booking section-padding">
         <Container>
           <Row>

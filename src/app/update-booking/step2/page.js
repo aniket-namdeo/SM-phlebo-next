@@ -9,6 +9,7 @@ import { FaPlus } from "react-icons/fa6";
 import Table from "react-bootstrap/Table";
 import "/public/css/update-booking.css";
 import PageHeader from "../../component/page-header";
+import PageHeaderWithBack from "../../component/page-header-with-back";
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -219,7 +220,7 @@ export default function step2() {
   }
   return (
     <>
-      <PageHeader heading="Update Booking" />
+      <PageHeaderWithBack heading="Update Booking" />
       <section className="update-booking section-padding">
         <Container>
           <Row>

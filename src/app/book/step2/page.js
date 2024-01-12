@@ -8,6 +8,7 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import "/public/css/update-booking.css";
 import PageHeader from "../../component/page-header";
+import PageHeaderWithBack from "../../component/page-header-with-back";
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -243,7 +244,7 @@ export default function BookStep2() {
 
   return (
     <>
-      <PageHeader heading="Customer Details" />
+      <PageHeaderWithBack heading="Customer Details" />
       <section className="update-booking section-padding">
         <Form onSubmit={handleSubmit}>
         <Container>
