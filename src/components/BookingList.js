@@ -110,7 +110,7 @@ const BookingList = ({ bookings }) => {
             </Link> */}
             {booking.booking_status != "confirmed"? (
               <>
-                <Link href={`update-booking?id=${booking.id}`} 
+                <Link href={`update-order?id=${booking.id}`} 
                   className="btn web-btn w-100">
                   Update Details
                 </Link>

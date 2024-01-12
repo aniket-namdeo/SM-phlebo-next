@@ -324,91 +324,91 @@ export default function step2() {
               ) : null}
               </div>
               {selectedOption === 'confirmed' && userPackageBooking.payment_status !== 'completed'? (
-              <div className="web-box">
-                <h2 className="box-heading">Payment Details</h2>
                 <div className="web-box">
-                  <h2 className="box-heading">Order Summary</h2>
-                  <div className="box-body">
-                    <Table striped bordered hover>
-                      <tbody>
-                        <tr>
-                          <td>Price</td>
-                          <th>{userPackageBooking.package_mrp}</th>
-                        </tr>
-                        <tr>
-                          <td>Discount</td>
-                          <th>-{priceDifference}</th>
-                        </tr>
-                        <tr>
-                          <td>Price After Discount</td>
-                          <th>{userPackageBooking.package_price}</th>
-                        </tr>
-                        <tr>
-                          <td>Payment Status</td>
-                          <th>{camelToTitleCase(userPackageBooking.payment_status)}</th>
-                        </tr>
-                      </tbody>
-                    </Table>
-                    {/* <Link href={"#"} className="btn web-stroke-btn w-100">
-                      <FaPlus />
-                      Select Coupon
-                    </Link> */}
-                  </div>
-                </div> 
-                <div className="box-body">
-                  <Form.Select 
-                  className="page-form-control"
-                  value={userPackageBooking.payment_mode}
-                  onChange={(e) => setUserPackageBooking((prevUserPackageBooking) => ({
-                    ...prevUserPackageBooking,
-                    payment_mode: e.target.value
-                  }))}
-                  >
-                    <option >select</option>
-                    <option value="cash">Cash</option>
-                    <option value="link">Payment QR</option>
-                  </Form.Select>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Receivable Amount*</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder=""
-                      value={userPackageBooking.package_price}
-                      onChange={(e) => setUserPackageBooking({ ...userPackageBooking, cash_payment: e.target.value })}
-                      className="page-form-control"
-                      readOnly 
-                    />
-                  </Form.Group>
-                  {userPackageBooking.payment_mode === 'link' && (
-                    <div className="text-center mb-3">
-                      <Link href="#" onClick={handleShow}>Payment QR Code</Link>
+                  <h2 className="box-heading">Payment Details</h2>
+                  <div className="web-box">
+                    <h2 className="box-heading">Order Summary</h2>
+                    <div className="box-body">
+                      <Table striped bordered hover>
+                        <tbody>
+                          <tr>
+                            <td>Price</td>
+                            <th>{userPackageBooking.package_mrp}</th>
+                          </tr>
+                          <tr>
+                            <td>Discount</td>
+                            <th>-{priceDifference}</th>
+                          </tr>
+                          <tr>
+                            <td>Price After Discount</td>
+                            <th>{userPackageBooking.package_price}</th>
+                          </tr>
+                          <tr>
+                            <td>Payment Status</td>
+                            <th>{camelToTitleCase(userPackageBooking.payment_status)}</th>
+                          </tr>
+                        </tbody>
+                      </Table>
+                      {/* <Link href={"#"} className="btn web-stroke-btn w-100">
+                        <FaPlus />
+                        Select Coupon
+                      </Link> */}
                     </div>
-                  )}
-                  <Form.Group controlId="additionalInfo">
-                    <Form.Label>Additional Information:</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows="4"
-                      placeholder="Provide additional information..."
-                      onChange={(e) => handleTextAreaChange(e.target.value)}
-                    />
-                  </Form.Group>
-                  <Modal show={showModal} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                      <Modal.Title>Payment Information</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      {/* Add your content for the payment information here */}
-                      <img src="https://www.lyra.com/in/wp-content/uploads/sites/8/2020/05/OQ-Code-Payments.png" alt="Payment Info" />
-                    </Modal.Body>
-                    <Modal.Footer>
-                      <Button variant="secondary" onClick={handleClose}>
-                        Close
-                      </Button>
-                    </Modal.Footer>
-                  </Modal>
+                  </div> 
+                  <div className="box-body">
+                    <Form.Select 
+                    className="page-form-control"
+                    value={userPackageBooking.payment_mode}
+                    onChange={(e) => setUserPackageBooking((prevUserPackageBooking) => ({
+                      ...prevUserPackageBooking,
+                      payment_mode: e.target.value
+                    }))}
+                    >
+                      <option >select</option>
+                      <option value="cash">Cash</option>
+                      <option value="link">Payment QR</option>
+                    </Form.Select>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Receivable Amount*</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder=""
+                        value={userPackageBooking.package_price}
+                        onChange={(e) => setUserPackageBooking({ ...userPackageBooking, cash_payment: e.target.value })}
+                        className="page-form-control"
+                        readOnly 
+                      />
+                    </Form.Group>
+                    {userPackageBooking.payment_mode === 'link' && (
+                      <div className="text-center mb-3">
+                        <Link href="#" onClick={handleShow}>Payment QR Code</Link>
+                      </div>
+                    )}
+                    <Form.Group controlId="additionalInfo">
+                      <Form.Label>Additional Information:</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        rows="4"
+                        placeholder="Provide additional information..."
+                        onChange={(e) => handleTextAreaChange(e.target.value)}
+                      />
+                    </Form.Group>
+                    <Modal show={showModal} onHide={handleClose}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Payment Information</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        {/* Add your content for the payment information here */}
+                        <img src="https://www.lyra.com/in/wp-content/uploads/sites/8/2020/05/OQ-Code-Payments.png" alt="Payment Info" />
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                          Close
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
+                  </div>
                 </div>
-              </div>
               ): (
                 selectedOption === 'confirmed' && userPackageBooking.payment_status === 'completed' && (
                   <>
