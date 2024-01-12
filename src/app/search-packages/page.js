@@ -10,6 +10,7 @@ import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import "/public/css/search-packages.css";
 import PageHeader from "../component/page-header";
+import PageHeaderWithBack from "../component/page-header-with-back";
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -61,7 +62,7 @@ export default function searchpackages() {
   }, []);
   return (
     <>
-      <PageHeader heading="Search Packages" />
+      <PageHeaderWithBack heading="Search Packages" />
       <section className="search-packages section-padding">
         <Container>
           <Row>
@@ -83,6 +84,9 @@ export default function searchpackages() {
                       <p>{labPackage.lab_name}</p>
                       <p className="text-grey">
                         {labPackage.package_short_description}
+                      </p>
+                      <p className="text-grey">
+                        {labPackage.list_of_test}
                       </p>
                       <hr />
                       <p className="price web-clr">
