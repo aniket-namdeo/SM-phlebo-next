@@ -104,43 +104,65 @@ export default function updatebooking() {
       });
   };
   
+  const validateAndShowError = (field, fieldName) => {
+    if (!field.trim()) {
+      Swal.fire({
+        title: 'Error',
+        text: `${fieldName} is required.`,
+        icon: 'error',
+      });
+      return false;
+    }
+    return true;
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault(); 
+  
     console.log(userPackageBooking);
-    const { name, email, contact, age , pincode , user_address} = userPackageBooking;
-    if (!name.trim() || !email.trim() || !contact.trim() || !age.trim() || !pincode.trim() || !user_address.trim()  ) {
-        Swal.fire({
-          title: 'Error',
-          text: 'All required fields must be filled.',
-          icon: 'error',
-        });
-    } else {
-      const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id,userPackageBooking); 
-      if(otpAPI.status == 200){
-        console.log(otpAPI.status);      
-        if(userPackageBooking.booking_status == "onHold"){
-          router.push('/hold-booking');
-        }else if(userPackageBooking.booking_status == "canceled"){
-          router.push('/cancelled-booking');
-        }else if(userPackageBooking.booking_status == "pending"){
-          router.push('/pending-booking');
-        }else{
-          router.push('/confirmed-booking');
-        }  
+  
+    const { name, email, contact, age, pincode, user_address, slot_time } = userPackageBooking;
+  
+    if (
+      validateAndShowError(name, 'Name') &&
+      validateAndShowError(email, 'Email') &&
+      validateAndShowError(contact, 'Contact') &&
+      validateAndShowError(age, 'Age') &&
+      validateAndShowError(pincode, 'Pincode') &&
+      validateAndShowError(user_address, 'User address') &&
+      validateAndShowError(slot_time, 'Slot time')
+    ) {
+      const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id, userPackageBooking);
+  
+      if (otpAPI.status === 200) {
+        console.log(otpAPI.status);
+  
+        switch (userPackageBooking.booking_status) {
+          case 'onHold':
+            router.push('/hold-booking');
+            break;
+          case 'canceled':
+            router.push('/cancelled-booking');
+            break;
+          case 'pending':
+            router.push('/pending-booking');
+            break;
+          default:
+            router.push('/confirmed-booking');
+            break;
+        }
+  
         setSnack({
-            open: true,
-            message: 'Successfully Update Order Details.'
+          open: true,
+          message: 'Successfully Update Order Details.',
         });
-      }else{
+      } else {
         setSnack({
-            open: true,
-            message: 'Something Wrong.'
+          open: true,
+          message: 'Something Wrong.',
         });
       }
     }
-
-    
-    
   };
 
   useEffect(() => {
