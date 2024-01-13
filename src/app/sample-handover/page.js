@@ -24,6 +24,7 @@ import Sidebar from "../component/sidebar";
 import SignaturePad from '@/components/SignaturePad';
 import BarcodeScannerPopup from '@/components/BarcodeScannerPopup';
 import SignaturePadPopup from '@/components/SignaturePadPopup';
+import Swal from 'sweetalert2';
 
 
 export default function samplehandover() {
@@ -42,7 +43,7 @@ export default function samplehandover() {
   const [totalPrice, setTotalPrice] = useState(0);
 
   const handleCheckboxChange = (bookingId) => {
-    // Check if the bookingId is already in the selectedBookings array
+  
     const isSelected = selectedBookings.includes(bookingId);
 
     // Update the selectedBookings array based on checkbox status
@@ -56,15 +57,20 @@ export default function samplehandover() {
         bookingId,
       ]);
     }
-
+    console.log("selectedBookings:", selectedBookings);
+    console.log("userPackageBooking:", userPackageBooking);
     const updatedTotalPrice = userPackageBooking.reduce((sum, booking) => {
       if (selectedBookings.includes(booking.id)) {
         return sum + parseFloat(booking.package_price);
       }
       return sum;
     }, 0);
-
+    console.log("updatedTotalPrice:", updatedTotalPrice);
     setTotalPrice(updatedTotalPrice);
+    setHandoverLabPackageBooking({
+      ...handoverLabPackageBooking,
+      cash_submit: updatedTotalPrice,
+    });
   };
 
   const handleConfirm = () => {
@@ -127,18 +133,55 @@ export default function samplehandover() {
     fetchData();
   }, []);
 
+  const validateArrayAndShowError = (field, fieldName) => {
+    if (Array.isArray(field) && field.length === 0) {
+      Swal.fire({
+        title: 'Error',
+        text: `${fieldName} is required.`,
+        icon: 'error',
+      });
+      return false;
+    }
+    return true;
+  };
+  const validateAndShowError = (field, fieldName) => {
+    if (field === undefined || (typeof field === 'string' && !field.trim())) {
+      Swal.fire({
+        title: 'Error',
+        text: `${fieldName} is required.`,
+        icon: 'error',
+      });
+      return false;
+    }
+    return true;
+  };
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     //console.log(selectedBookings);
     console.log(handoverLabPackageBooking);
-    try {
-      const res = await UpdateHandoverLabDetails(handoverLabPackageBooking,selectedBookings);
-      console.log(res);
-      router.push('/confirmed-booking');
-    } catch (error) {
-      console.error(error);
+    const { remark, lab_signature, branch_id , cash_submit} = handoverLabPackageBooking;
+    if ( 
+      validateArrayAndShowError(selectedBookings, 'Please Select Booking') &&
+      validateAndShowError(branch_id, 'Please Select Lab')  &&
+      validateAndShowError(cash_submit, 'Cash')){
+      try {
+        const res = await UpdateHandoverLabDetails(handoverLabPackageBooking,selectedBookings);
+        console.log(res);
+        //router.push('/confirmed-booking');
+        if (res.status === 200) {
+          // Show success alert with router.push inside the then block
+          Swal.fire({
+            title: 'Success',
+            text: 'Submitted Order successfully To Lab.',
+            icon: 'success',
+          }).then(() => {
+            router.push('/confirmed-booking');
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
-
   };
 
   // useEffect(() => {
@@ -258,9 +301,15 @@ export default function samplehandover() {
                     <Form.Control
                       type="text"
                       placeholder="Cash"
+                      className="page-form-control"                      
+                      // onChange={(e) => setHandoverLabPackageBooking({ ...handoverLabPackageBooking, cash_submit: e.target.value })}
                       value={totalPrice}
-                      className="page-form-control"
-                      onChange={(e) => setHandoverLabPackageBooking({ ...handoverLabPackageBooking, cash_submit: e.target.value })}
+                      onChange={(e) => {
+                        setHandoverLabPackageBooking({
+                          ...handoverLabPackageBooking,
+                          cash_submit: totalPrice,
+                        });
+                      }}
                       readOnly
                     />
                   </Form.Group>

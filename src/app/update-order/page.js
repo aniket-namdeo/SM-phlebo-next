@@ -105,7 +105,7 @@ export default function updatebooking() {
   };
   
   const validateAndShowError = (field, fieldName) => {
-    if (!field.trim()) {
+    if (field === undefined || (typeof field === 'string' && !field.trim())) {
       Swal.fire({
         title: 'Error',
         text: `${fieldName} is required.`,
