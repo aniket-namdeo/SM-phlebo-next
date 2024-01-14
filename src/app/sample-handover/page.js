@@ -42,6 +42,7 @@ export default function samplehandover() {
 
   const [totalPrice, setTotalPrice] = useState(0);
 
+  /*
   const handleCheckboxChange = (bookingId) => {
   
     const isSelected = selectedBookings.includes(bookingId);
@@ -72,6 +73,34 @@ export default function samplehandover() {
       cash_submit: updatedTotalPrice,
     });
   };
+  */
+
+  const handleCheckboxChange = (bookingId) => {
+    setSelectedBookings((prevSelectedBookings) => {
+      const isSelected = prevSelectedBookings.includes(bookingId);
+  
+      // Update the selectedBookings array based on checkbox status
+      if (isSelected) {
+        return prevSelectedBookings.filter((id) => id !== bookingId);
+      } else {
+        return [...prevSelectedBookings, bookingId];
+      }
+    });
+  };
+  useEffect(() => {
+    //console.log("selectedBookings:", selectedBookings);
+    const updatedTotalPrice = userPackageBooking.reduce((sum, booking) => {
+      if (selectedBookings.includes(booking.id)) {
+        return sum + parseFloat(booking.package_price);
+      }
+      return sum;
+    }, 0);
+    setTotalPrice(updatedTotalPrice);
+    setHandoverLabPackageBooking({
+      ...handoverLabPackageBooking,
+      cash_submit: updatedTotalPrice,
+    });
+  }, [selectedBookings]);
 
   const handleConfirm = () => {
     // Handle the logic when the "Confirm" button is clicked
@@ -263,6 +292,8 @@ export default function samplehandover() {
                       (booking) => booking.id === bookingId
                     );
 
+                    console.log("Selected Booking:", selectedBooking); // Log selectedBooking
+
                     return (
                       <div style={{ border: '1px solid #ccc', padding: '10px' }} className="sample-booking-box mb-3" key={selectedBooking.id}>
                         <p>
@@ -275,12 +306,12 @@ export default function samplehandover() {
                           <span>Package Name</span> <br /> {selectedBooking.package_name}
                         </p>
                         <p>
-                          <span>Package price</span> <br /> {selectedBooking.package_Price}
+                          <span>Package price</span> <br /> {selectedBooking.package_price}
                         </p>
                       </div>
                     );
                   })}
-                </div>           
+                </div>         
 
                 <Form.Group className="mb-3">
                   <Form.Label>Select Receiver Type:</Form.Label>
