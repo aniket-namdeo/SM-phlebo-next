@@ -11,6 +11,8 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import "/public/css/update-booking.css";
 import "/public/css/sample-handover.css";
 import PageHeader from "../component/page-header";
+import PageHeaderWithBack from "../component/page-header-with-back";
+import Footer from "../component/footer";
 
 import { useEffect, useState,Fragment  } from 'react';
 import { useRouter } from 'next/navigation';
@@ -220,8 +222,7 @@ export default function samplehandover() {
 
   return (
     <>
-      <Sidebar />
-      <PageHeader heading="Sample Handover" />
+      <PageHeaderWithBack heading="Sample Handover" />
       <section className="sample-handover section-padding">
         <Container>
          
@@ -427,6 +428,7 @@ export default function samplehandover() {
           </Row>
         </Container>
       </section>
+      <Footer page="sample-handover" />
     </>
   );
 }

@@ -293,7 +293,7 @@ export default function BookStep2() {
                   <Form.Label>Mobile*</Form.Label>
                   <Form.Control
                     type="number"
-                    placeholder="Name"
+                    placeholder="Mobile"
                     className="page-form-control"
                     value={userPackageBooking.contact}
                     onChange={(e) => setUserPackageBooking({ ...userPackageBooking, contact: e.target.value })}
