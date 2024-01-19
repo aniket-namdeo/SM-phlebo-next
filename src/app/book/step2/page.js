@@ -71,39 +71,39 @@ export default function BookStep2() {
     e.preventDefault();
     //console.log(userPackageBooking);    
     //console.log(tubes);  
-  if (userPackageBooking && userPackageBooking.booking_for && userPackageBooking.name && userPackageBooking.email && userPackageBooking.contact && userPackageBooking.age && userPackageBooking.pincode && userPackageBooking.user_address && userPackageBooking.slot_time && userPackageBooking.package_name) {
-    const { booking_for, name, email, contact, age, pincode, user_address, slot_time, package_name } = userPackageBooking;
+    if (userPackageBooking && userPackageBooking.booking_for && userPackageBooking.name && userPackageBooking.email && userPackageBooking.contact && userPackageBooking.age && userPackageBooking.pincode && userPackageBooking.user_address && userPackageBooking.slot_time && userPackageBooking.package_name) {
+      const { booking_for, name, email, contact, age, pincode, user_address, slot_time, package_name } = userPackageBooking;
 
-    if (!booking_for.trim() || !name.trim() || !email.trim() || !contact.trim() || !age.trim() || !pincode.trim() || !user_address.trim() || !slot_time.trim()  ||  !package_name.trim() ) {
-        Swal.fire({
-          title: 'Error',
-          text: 'All required fields must be filled.',
-          icon: 'error',
-        });
-    } else {
-      const otpAPI = await AddBookingsDetails(userPackageBooking,tubes); 
-      console.log(otpAPI);
-      if(otpAPI.status == 200){
-        console.log(otpAPI.status);      
-        setSnack({
-            open: true,
-            message: 'Successfully Add Booking.'
-        });
-        router.push('/pending-booking');
-      }else{
-        setSnack({
-            open: true,
-            message: 'Something Wrong.'
-        });
+      if (!booking_for.trim() || !name.trim() || !email.trim() || !contact.trim() || !age.trim() || !pincode.trim() || !user_address.trim() || !slot_time.trim()  ||  !package_name.trim() ) {
+          Swal.fire({
+            title: 'Error',
+            text: 'All required fields must be filled.',
+            icon: 'error',
+          });
+      } else {
+        const otpAPI = await AddBookingsDetails(userPackageBooking,tubes); 
+        console.log(otpAPI);
+        if(otpAPI.status == 200){
+          console.log(otpAPI.status);      
+          setSnack({
+              open: true,
+              message: 'Successfully Add Booking.'
+          });
+          router.push('/pending-booking');
+        }else{
+          setSnack({
+              open: true,
+              message: 'Something Wrong.'
+          });
+        }
       }
+    } else {
+      Swal.fire({
+        title: 'Error',
+        text: 'All required fields must be filled.',
+        icon: 'error',
+      });
     }
-  } else {
-    Swal.fire({
-      title: 'Error',
-      text: 'All required fields must be filled.',
-      icon: 'error',
-    });
-  }
     
  
 
