@@ -14,20 +14,19 @@ import PageHeader from "../component/page-header";
 import PageHeaderWithBack from "../component/page-header-with-back";
 import Footer from "../component/footer";
 
-import { useEffect, useState,Fragment  } from 'react';
-import { useRouter } from 'next/navigation';
-import { LabPackageBooking } from '@/api_calls/LabPackageBooking';
-import { UpdateHandoverLabDetails } from '@/api_calls/UpdateHandoverLabDetails';
-import { LabBranches } from '@/api_calls/LabBranches';
-import { useSearchParams } from 'next/navigation';
-import Snackbar from '@mui/material/Snackbar';
-import BookingList from '@/components/BookingList';
+import { useEffect, useState, Fragment } from "react";
+import { useRouter } from "next/navigation";
+import { LabPackageBooking } from "@/api_calls/LabPackageBooking";
+import { UpdateHandoverLabDetails } from "@/api_calls/UpdateHandoverLabDetails";
+import { LabBranches } from "@/api_calls/LabBranches";
+import { useSearchParams } from "next/navigation";
+import Snackbar from "@mui/material/Snackbar";
+import BookingList from "@/components/BookingList";
 import Sidebar from "../component/sidebar";
-import SignaturePad from '@/components/SignaturePad';
-import BarcodeScannerPopup from '@/components/BarcodeScannerPopup';
-import SignaturePadPopup from '@/components/SignaturePadPopup';
-import Swal from 'sweetalert2';
-
+import SignaturePad from "@/components/SignaturePad";
+import BarcodeScannerPopup from "@/components/BarcodeScannerPopup";
+import SignaturePadPopup from "@/components/SignaturePadPopup";
+import Swal from "sweetalert2";
 
 export default function samplehandover() {
   const router = useRouter();
@@ -36,9 +35,11 @@ export default function samplehandover() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [userPackageBooking, setUserPackageBooking] = useState([]);
-  const [handoverLabPackageBooking, setHandoverLabPackageBooking] = useState({});
+  const [handoverLabPackageBooking, setHandoverLabPackageBooking] = useState(
+    {}
+  );
   const [labBranches, setLabBranches] = useState([]);
-  const [signatureData, setSignatureData] = useState('');
+  const [signatureData, setSignatureData] = useState("");
 
   const [selectedBookings, setSelectedBookings] = useState([]);
 
@@ -80,7 +81,7 @@ export default function samplehandover() {
   const handleCheckboxChange = (bookingId) => {
     setSelectedBookings((prevSelectedBookings) => {
       const isSelected = prevSelectedBookings.includes(bookingId);
-  
+
       // Update the selectedBookings array based on checkbox status
       if (isSelected) {
         return prevSelectedBookings.filter((id) => id !== bookingId);
@@ -124,30 +125,33 @@ export default function samplehandover() {
   const closeSignaturePopup = () => {
     setIsSignaturePopupOpen(false);
   };
-  
+
   const handleSignatureChange = (data) => {
-    setSignatureData(data);  
-    setHandoverLabPackageBooking({ ...handoverLabPackageBooking, lab_signature: data })
+    setSignatureData(data);
+    setHandoverLabPackageBooking({
+      ...handoverLabPackageBooking,
+      lab_signature: data,
+    });
   };
 
   const handleSaveSignature = () => {
-    console.log('Signature saved:', signatureData);
+    console.log("Signature saved:", signatureData);
     closeSignaturePopup();
   };
 
   const handleTextAreaChange = (value) => {
     // Handle the change in the text area value if needed
-    setHandoverLabPackageBooking(prev => {
-      return { ...prev, remark: value}
+    setHandoverLabPackageBooking((prev) => {
+      return { ...prev, remark: value };
     });
   };
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await LabPackageBooking('confirmed');
+        const res = await LabPackageBooking("confirmed");
         setUserPackageBooking(res);
-        console.log('userPackageBooking:', res);
+        console.log("userPackageBooking:", res);
       } catch (error) {
         console.error(error);
       }
@@ -155,7 +159,7 @@ export default function samplehandover() {
       try {
         const res = await LabBranches();
         setLabBranches(res);
-        console.log('labBranches:', res);
+        console.log("labBranches:", res);
       } catch (error) {
         console.error(error);
       }
@@ -167,46 +171,51 @@ export default function samplehandover() {
   const validateArrayAndShowError = (field, fieldName) => {
     if (Array.isArray(field) && field.length === 0) {
       Swal.fire({
-        title: 'Error',
+        title: "Error",
         text: `${fieldName} is required.`,
-        icon: 'error',
+        icon: "error",
       });
       return false;
     }
     return true;
   };
   const validateAndShowError = (field, fieldName) => {
-    if (field === undefined || (typeof field === 'string' && !field.trim())) {
+    if (field === undefined || (typeof field === "string" && !field.trim())) {
       Swal.fire({
-        title: 'Error',
+        title: "Error",
         text: `${fieldName} is required.`,
-        icon: 'error',
+        icon: "error",
       });
       return false;
     }
     return true;
   };
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     //console.log(selectedBookings);
     console.log(handoverLabPackageBooking);
-    const { remark, lab_signature, branch_id , cash_submit} = handoverLabPackageBooking;
-    if ( 
-      validateArrayAndShowError(selectedBookings, 'Please Select Booking') &&
-      validateAndShowError(branch_id, 'Please Select Lab')  &&
-      validateAndShowError(cash_submit, 'Cash')){
+    const { remark, lab_signature, branch_id, cash_submit } =
+      handoverLabPackageBooking;
+    if (
+      validateArrayAndShowError(selectedBookings, "Please Select Booking") &&
+      validateAndShowError(branch_id, "Please Select Lab") &&
+      validateAndShowError(cash_submit, "Cash")
+    ) {
       try {
-        const res = await UpdateHandoverLabDetails(handoverLabPackageBooking,selectedBookings);
+        const res = await UpdateHandoverLabDetails(
+          handoverLabPackageBooking,
+          selectedBookings
+        );
         console.log(res);
         //router.push('/confirmed-booking');
         if (res.status === 200) {
           // Show success alert with router.push inside the then block
           Swal.fire({
-            title: 'Success',
-            text: 'Submitted Order successfully To Lab.',
-            icon: 'success',
+            title: "Success",
+            text: "Submitted Order successfully To Lab.",
+            icon: "success",
           }).then(() => {
-            router.push('/confirmed-booking');
+            router.push("/confirmed-booking");
           });
         }
       } catch (error) {
@@ -219,16 +228,14 @@ export default function samplehandover() {
   //   alert('dasda');
   // }, [userPackageBooking]);
 
-
   return (
     <>
       <PageHeaderWithBack heading="Sample Handover" />
       <section className="sample-handover section-padding">
         <Container>
-         
           <Row>
             <Col>
-              <Form  onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit}>
                 <Button
                   className="btn web-stroke-btn w-100 mb-3"
                   onClick={handleShow}
@@ -245,45 +252,53 @@ export default function samplehandover() {
                   <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Add Bookings</Offcanvas.Title>
                   </Offcanvas.Header>
-                  <Offcanvas.Body>              
-                  {userPackageBooking.length > 0 ? (
-                    userPackageBooking.map((booking) => (
-                      <Form.Group
-                        key={booking.id}
-                        className="mb-3 custom-checkbox"
-                      >
-                        <Form.Control
-                          type="checkbox"
-                          name="bookings"
-                          id={`booking${booking.id}`}
-                          checked={selectedBookings.includes(booking.id)}
-                          hidden
-                          onChange={() => handleCheckboxChange(booking.id)}
-                        />
-                        <Form.Label
-                          className="sample-booking-box"
-                          htmlFor={`booking${booking.id}`}
+                  <Offcanvas.Body>
+                    {userPackageBooking.length > 0 ? (
+                      userPackageBooking.map((booking) => (
+                        <Form.Group
+                          key={booking.id}
+                          className="mb-3 custom-checkbox"
                         >
-                        <p>
-                          <span>Name:</span> <br /> {booking.name}
-                        </p>
-                        <p>
-                          <span>Number:</span> <br />{booking.contact}
-                        </p>
-                        <p>
-                          <span>Booking id</span> <br /> {booking.id}
-                        </p>
-                        <p>
-                          <span>Package Price</span> <br /> {booking.package_price}
-                        </p>
-                      </Form.Label>
-                    </Form.Group>  
-                    ))) : (
+                          <Form.Control
+                            type="checkbox"
+                            name="bookings"
+                            id={`booking${booking.id}`}
+                            checked={selectedBookings.includes(booking.id)}
+                            hidden
+                            onChange={() => handleCheckboxChange(booking.id)}
+                          />
+                          <Form.Label
+                            className="sample-booking-box"
+                            htmlFor={`booking${booking.id}`}
+                          >
+                            <p>
+                              <span>Name:</span> <br /> {booking.name}
+                            </p>
+                            <p>
+                              <span>Number:</span> <br />
+                              {booking.contact}
+                            </p>
+                            <p>
+                              <span>Booking id</span> <br /> {booking.id}
+                            </p>
+                            <p>
+                              <span>Package Price</span> <br />{" "}
+                              {booking.package_price}
+                            </p>
+                          </Form.Label>
+                        </Form.Group>
+                      ))
+                    ) : (
                       <div className="web-box">
                         <h2 className="box-heading">No bookings found.</h2>
                       </div>
-                    )}                
-                    <Button className="btn web-btn w-100"  onClick={handleConfirm}>Confirm</Button>
+                    )}
+                    <Button
+                      className="btn web-btn w-100"
+                      onClick={handleConfirm}
+                    >
+                      Confirm
+                    </Button>
                   </Offcanvas.Body>
                 </Offcanvas>
 
@@ -296,7 +311,11 @@ export default function samplehandover() {
                     console.log("Selected Booking:", selectedBooking); // Log selectedBooking
 
                     return (
-                      <div style={{ border: '1px solid #ccc', padding: '10px' }} className="sample-booking-box mb-3" key={selectedBooking.id}>
+                      <div
+                        style={{ border: "1px solid #ccc", padding: "10px" }}
+                        className="sample-booking-box mb-3"
+                        key={selectedBooking.id}
+                      >
                         <p>
                           <span>Name:</span> <br /> {selectedBooking.name}
                         </p>
@@ -304,21 +323,28 @@ export default function samplehandover() {
                           <span>Number:</span> <br /> {selectedBooking.contact}
                         </p>
                         <p>
-                          <span>Package Name</span> <br /> {selectedBooking.package_name}
+                          <span>Package Name</span> <br />{" "}
+                          {selectedBooking.package_name}
                         </p>
                         <p>
-                          <span>Package price</span> <br /> {selectedBooking.package_price}
+                          <span>Package price</span> <br />{" "}
+                          {selectedBooking.package_price}
                         </p>
                       </div>
                     );
                   })}
-                </div>         
+                </div>
 
                 <Form.Group className="mb-3">
                   <Form.Label>Select Receiver Type:</Form.Label>
-                  <Form.Select 
-                  className="page-form-control"
-                  onChange={(e) => setHandoverLabPackageBooking({ ...handoverLabPackageBooking, branch_id: e.target.value })}
+                  <Form.Select
+                    className="page-form-control"
+                    onChange={(e) =>
+                      setHandoverLabPackageBooking({
+                        ...handoverLabPackageBooking,
+                        branch_id: e.target.value,
+                      })
+                    }
                   >
                     <option>Labs</option>
                     {labBranches.map((branch) => (
@@ -329,22 +355,22 @@ export default function samplehandover() {
                   </Form.Select>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Cash</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Cash"
-                      className="page-form-control"                      
-                      // onChange={(e) => setHandoverLabPackageBooking({ ...handoverLabPackageBooking, cash_submit: e.target.value })}
-                      value={totalPrice}
-                      onChange={(e) => {
-                        setHandoverLabPackageBooking({
-                          ...handoverLabPackageBooking,
-                          cash_submit: totalPrice,
-                        });
-                      }}
-                      readOnly
-                    />
-                  </Form.Group>
+                  <Form.Label>Cash</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Cash"
+                    className="page-form-control"
+                    // onChange={(e) => setHandoverLabPackageBooking({ ...handoverLabPackageBooking, cash_submit: e.target.value })}
+                    value={totalPrice}
+                    onChange={(e) => {
+                      setHandoverLabPackageBooking({
+                        ...handoverLabPackageBooking,
+                        cash_submit: totalPrice,
+                      });
+                    }}
+                    readOnly
+                  />
+                </Form.Group>
                 {/* <Form.Group className="mb-3">
                   <Form.Label>Given to</Form.Label>
                   <div className="d-flex align-items-center justify-content-between gap-3">
@@ -364,51 +390,30 @@ export default function samplehandover() {
                   Take sample receivers signature
                 </Link> */}
                 <div>
-                  <h2 className="box-heading">
-                    Lab Signature 
-                  </h2>
+                  <h2 className="box-heading">Lab Signature</h2>
                   {signatureData ? (
-                      <div>
-                        <p>Signature Saved</p>
-                        {/* <img src={signatureData} alt="Customer Signature" /> */}
-                      </div>
+                    <div className="box-body text-center">
+                      <p className="m-0">Signature Saved</p>
+                      {/* <img src={signatureData} alt="Customer Signature" /> */}
+                    </div>
                   ) : (
-                    <a  className="sign text-center mb-3 d-block" onClick={openSignaturePopup}>
-                      Take order receivers signature
-                    </a>
+                    <div className="box-body">
+                      <a
+                        className="sign text-center d-block"
+                        onClick={openSignaturePopup}
+                      >
+                        Take order receivers signature
+                      </a>
+                    </div>
                   )}
 
-                  {isSignaturePopupOpen && (                
-                    <div className="popup-container-signature">
-                      <div className="popup-content-signature">
-                        <SignaturePadPopup
-                          onSignatureChange={handleSignatureChange}
-                          onSaveSignature={handleSaveSignature}
-                          onClose={closeSignaturePopup}
-                        />
-                      </div>
-                  </div>
+                  {isSignaturePopupOpen && (
+                    <SignaturePadPopup
+                      onSignatureChange={handleSignatureChange}
+                      onSaveSignature={handleSaveSignature}
+                      onClose={closeSignaturePopup}
+                    />
                   )}
-                  <style jsx>{`
-                      .popup-container-signature {
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background: rgba(0, 0, 0, 0.5);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      }
-
-                      .popup-content-signature {
-                        background: #fff;
-                        padding: 2px;
-                        border-radius: 8px;
-                      }
-                    `}
-                  </style>
                 </div>
                 <Form.Group controlId="additionalInfo">
                   <Form.Label>Additional Information:</Form.Label>
@@ -419,10 +424,13 @@ export default function samplehandover() {
                     onChange={(e) => handleTextAreaChange(e.target.value)}
                   />
                 </Form.Group>
-                <Link href={"#"} className="btn web-btn w-100" onClick={handleSubmit}>
+                <Link
+                  href={"#"}
+                  className="btn web-btn w-100"
+                  onClick={handleSubmit}
+                >
                   Submit
                 </Link>
-                
               </Form>
             </Col>
           </Row>

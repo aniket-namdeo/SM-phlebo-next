@@ -53,14 +53,15 @@
   width: 100%;
 }
 #barcode-scanner canvas {
-display: none;
+  display: none;
 }
 
 canvas {
   width: 100%;
 }
 
-img, svg {
+img,
+svg {
   vertical-align: middle;
   width: 100%;
 }
@@ -68,9 +69,52 @@ img, svg {
 .clear_canvas > a {
   margin: 29%;
   padding: 0% 2%;
-  border: 1pX solid;
+  border: 1px solid;
 }
 textarea.form-control {
   height: 54px;
   padding-bottom: 9%;
+}
+
+.web-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 25px;
+}
+.web-popup .popup-content-signature {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.web-popup .popup-content-signature .heading {
+  font-size: 16px;
+  margin: -20px -20px 20px;
+  padding: 15px 20px;
+  background: #eee;
+}
+.web-popup .popup-content-signature .close-btn {
+  font-size: 20px;
+  border-radius: 50px;
+  color: white;
+  padding: 5px;
+}
+.signature-wrapper {
+  height: 450px;
+  position: relative;
+}
+.signature-wrapper .signature-canvas {
+  height: 100%;
+}
+.signature-wrapper .clear-btn {
+  position: absolute;
+  bottom: -55px;
+  left: 0;
 }

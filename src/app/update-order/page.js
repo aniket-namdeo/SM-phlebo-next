@@ -11,22 +11,22 @@ import PageHeaderWithBack from "../component/page-header-with-back";
 import { HiOutlineMinusSm } from "react-icons/hi";
 import { FaPlus } from "react-icons/fa6";
 import Table from "react-bootstrap/Table";
-import { Modal } from 'react-bootstrap';
+import { Modal } from "react-bootstrap";
 import { MdQrCodeScanner } from "react-icons/md";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { LabPackageBookingDetails } from '@/api_calls/LabPackageBookingDetails';
-import { UpdateBookingMemberDetails } from '@/api_calls/UpdateBookingMemberDetails';
-import { LabPackages } from '@/api_calls/LabPackages';
-import { ThyrocareSlot } from '@/api_calls/ThyrocareSlot';
-import { LabBookingTubeList } from '@/api_calls/LabBookingTubeList';
-import { useSearchParams } from 'next/navigation';
-import Snackbar from '@mui/material/Snackbar';
-import BookingList from '@/components/BookingList';
-import Swal from 'sweetalert2';
-import BarcodeScannerPopup from '@/components/BarcodeScannerPopup';
-import SignaturePadPopup from '@/components/SignaturePadPopup';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { LabPackageBookingDetails } from "@/api_calls/LabPackageBookingDetails";
+import { UpdateBookingMemberDetails } from "@/api_calls/UpdateBookingMemberDetails";
+import { LabPackages } from "@/api_calls/LabPackages";
+import { ThyrocareSlot } from "@/api_calls/ThyrocareSlot";
+import { LabBookingTubeList } from "@/api_calls/LabBookingTubeList";
+import { useSearchParams } from "next/navigation";
+import Snackbar from "@mui/material/Snackbar";
+import BookingList from "@/components/BookingList";
+import Swal from "sweetalert2";
+import BarcodeScannerPopup from "@/components/BarcodeScannerPopup";
+import SignaturePadPopup from "@/components/SignaturePadPopup";
 
 export default function updatebooking() {
   const router = useRouter();
@@ -75,8 +75,8 @@ export default function updatebooking() {
     "23:30 - 00:00",
   ]);
   const [labTubeList, setLabTubeList] = useState([]);
-  const [selectedDate, setSelectedDate] = useState('');   
-  
+  const [selectedDate, setSelectedDate] = useState("");
+
   //Booking Step 3 all state page
   const [scannedBarcode, setScannedBarcode] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -86,87 +86,90 @@ export default function updatebooking() {
   const closeScannerPopup = () => {
     setIsPopupOpen(false);
   };
-  const [signatureData, setSignatureData] = useState('');
-  const [selectedOption, setSelectedOption] = useState('');
+  const [signatureData, setSignatureData] = useState("");
+  const [selectedOption, setSelectedOption] = useState("");
   const [showModal, setShowModal] = useState(false);
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
-
   const [snack, setSnack] = useState({
     open: false,
-      message: ''
+    message: "",
   });
   const snackClose = () => {
-      setSnack({
-          open: false,
-          message: ''
-      });
+    setSnack({
+      open: false,
+      message: "",
+    });
   };
-  
+
   const validateAndShowError = (field, fieldName) => {
-    if (field === undefined || (typeof field === 'string' && !field.trim())) {
+    if (field === undefined || (typeof field === "string" && !field.trim())) {
       Swal.fire({
-        title: 'Error',
+        title: "Error",
         text: `${fieldName} is required.`,
-        icon: 'error',
+        icon: "error",
       });
       return false;
     }
     return true;
   };
-  
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
-  
+    e.preventDefault();
+
     console.log(userPackageBooking);
-  
-    const { name, email, contact, age, pincode, user_address, slot_time } = userPackageBooking;
-  
+
+    const { name, email, contact, age, pincode, user_address, slot_time } =
+      userPackageBooking;
+
     if (
-      validateAndShowError(name, 'Name') &&
-      validateAndShowError(email, 'Email') &&
-      validateAndShowError(contact, 'Contact') &&
-      validateAndShowError(age, 'Age') &&
-      validateAndShowError(pincode, 'Pincode') &&
-      validateAndShowError(user_address, 'User address') &&
-      validateAndShowError(slot_time, 'Slot time')
+      validateAndShowError(name, "Name") &&
+      validateAndShowError(email, "Email") &&
+      validateAndShowError(contact, "Contact") &&
+      validateAndShowError(age, "Age") &&
+      validateAndShowError(pincode, "Pincode") &&
+      validateAndShowError(user_address, "User address") &&
+      validateAndShowError(slot_time, "Slot time")
     ) {
-      const otpAPI = await UpdateBookingMemberDetails(userPackageBooking.id, userPackageBooking);
-  
+      const otpAPI = await UpdateBookingMemberDetails(
+        userPackageBooking.id,
+        userPackageBooking
+      );
+
       if (otpAPI.status === 200) {
         console.log(otpAPI.status);
-  
+
         switch (userPackageBooking.booking_status) {
-          case 'onHold':
-            router.push('/hold-booking');
+          case "onHold":
+            router.push("/hold-booking");
             break;
-          case 'canceled':
-            router.push('/cancelled-booking');
+          case "canceled":
+            router.push("/cancelled-booking");
             break;
-          case 'pending':
-            router.push('/pending-booking');
+          case "pending":
+            router.push("/pending-booking");
             break;
           default:
-            router.push('/confirmed-booking');
+            router.push("/confirmed-booking");
             break;
         }
-  
+
         setSnack({
           open: true,
-          message: 'Successfully Update Order Details.',
+          message: "Successfully Update Order Details.",
         });
       } else {
         setSnack({
           open: true,
-          message: 'Something Wrong.',
+          message: "Something Wrong.",
         });
       }
     }
   };
 
   useEffect(() => {
-    if ('geolocation' in navigator) {
+    if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           // Get the latitude and longitude from the position object
@@ -178,28 +181,28 @@ export default function updatebooking() {
         }
       );
     } else {
-      setError('Geolocation is not supported in this browser.');
+      setError("Geolocation is not supported in this browser.");
     }
 
-    const id = searchParams.get('id');
+    const id = searchParams.get("id");
     async function fetchData() {
       try {
         const res = await LabPackageBookingDetails(id);
         setUserPackageBooking(res);
         const lab_res = await LabPackages();
         setLabPackages(lab_res);
-        console.log('userPackageBooking:', res);
-          const dynamicParams = {
-            pincode: '700051',
-            newdate: getCurrentDatePlusOneDay(),
-            //newdate: '2023-12-31',
-          };    
-          try {
-            const data = await ThyrocareSlot(dynamicParams);
-              //setSlots(data.data);
-          } catch (error) {
-            console.error(error.message);
-          }
+        console.log("userPackageBooking:", res);
+        const dynamicParams = {
+          pincode: "700051",
+          newdate: getCurrentDatePlusOneDay(),
+          //newdate: '2023-12-31',
+        };
+        try {
+          const data = await ThyrocareSlot(dynamicParams);
+          //setSlots(data.data);
+        } catch (error) {
+          console.error(error.message);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -208,13 +211,11 @@ export default function updatebooking() {
         console.log(response);
         setLabTubeList(response); // Assuming response.data is the array of tube types
       } catch (error) {
-        console.error('Error fetching bank types:', error.message);
+        console.error("Error fetching bank types:", error.message);
       }
-
-      
     }
     setUserPackageBooking((prev) => {
-      return { ...prev, slot_time: userPackageBooking.slot_time};
+      return { ...prev, slot_time: userPackageBooking.slot_time };
     });
     setSelectedSlot(userPackageBooking.slot_time);
     fetchData();
@@ -223,22 +224,22 @@ export default function updatebooking() {
   //Booking Step 2 page all function
   const handleDateChange = async (event) => {
     const newDate = event.target.value;
-  
+
     // Update the selectedDate state when the date field changes
     setSelectedDate(newDate);
-  
+
     try {
       const dynamicParams = {
-        pincode: '700051',
+        pincode: "700051",
         newdate: newDate,
       };
-  
+
       const data = await ThyrocareSlot(dynamicParams);
-      
+
       setUserPackageBooking((prev) => {
         return { ...prev, booking_date: newDate };
       });
-  
+
       //setSlots(data.data);
     } catch (error) {
       console.error(error.message);
@@ -248,70 +249,72 @@ export default function updatebooking() {
     const newSelectedSlot = event.target.value;
     setSelectedSlot(newSelectedSlot);
     setUserPackageBooking((prev) => {
-      return { ...prev, slot_time: event.target.value};
+      return { ...prev, slot_time: event.target.value };
     });
   };
   const getCurrentDate = () => {
     const now = new Date();
     const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
   const getCurrentDatePlusOneDay = () => {
     const now = new Date();
     now.setDate(now.getDate() + 1); // Add one day
-  
+
     const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-  
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+
     return `${year}-${month}-${day}`;
   };
-  const priceDifference = userPackageBooking.package_mrp - userPackageBooking.package_price;
+  const priceDifference =
+    userPackageBooking.package_mrp - userPackageBooking.package_price;
   const camelToTitleCase = (str) => {
     if (!str) {
-      return '';
+      return "";
     }
-    return str.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/\b\w/g, (char) => char.toUpperCase());
+    return str
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
   };
   const removePackage = () => {
-    setUserPackageBooking(prev => {
-      return { ...prev, slot_time: ''}
+    setUserPackageBooking((prev) => {
+      return { ...prev, slot_time: "" };
     });
-    setSelectedSlot('');
+    setSelectedSlot("");
   };
   const packageChange = (val) => {
-    const lab_package_obj = labPackages.filter(i => i.lab_package_id == val);
+    const lab_package_obj = labPackages.filter((i) => i.lab_package_id == val);
     console.log(lab_package_obj[0].lab_package_name);
-    setUserPackageBooking(prev => {
-      return { ...prev, package_name: lab_package_obj[0].lab_package_name}
+    setUserPackageBooking((prev) => {
+      return { ...prev, package_name: lab_package_obj[0].lab_package_name };
     });
-    setUserPackageBooking(prev => {
-      return { ...prev, package_price: lab_package_obj[0].package_price }
-    }); 
-    
-    setUserPackageBooking(prev => {
-      return { ...prev, package_mrp: lab_package_obj[0].package_mrp }
-    });  ; 
-    
-    setUserPackageBooking(prev => {
-      return { ...prev, package_id: lab_package_obj[0].lab_package_id }
-    }); 
+    setUserPackageBooking((prev) => {
+      return { ...prev, package_price: lab_package_obj[0].package_price };
+    });
 
-  }
+    setUserPackageBooking((prev) => {
+      return { ...prev, package_mrp: lab_package_obj[0].package_mrp };
+    });
+
+    setUserPackageBooking((prev) => {
+      return { ...prev, package_id: lab_package_obj[0].lab_package_id };
+    });
+  };
   const handleGetDirections = () => {
     const googleMapsLink = `https://www.google.com/maps/dir/?api=1&origin=${location.latitude},${location.longitude}&destination=${userPackageBooking.latitude},${userPackageBooking.longitude}`;
-    window.open(googleMapsLink, '_blank');
+    window.open(googleMapsLink, "_blank");
   };
 
-  // Step 3 Function 
+  // Step 3 Function
   const handleBarcodeScanned = (barcode) => {
-    console.log('Barcode scanned:', barcode);
-    setScannedBarcode(barcode);   
-    setUserPackageBooking(prev => {
-      return { ...prev, master_barcode_no: barcode}
-    }); 
+    console.log("Barcode scanned:", barcode);
+    setScannedBarcode(barcode);
+    setUserPackageBooking((prev) => {
+      return { ...prev, master_barcode_no: barcode };
+    });
   };
   const [isSignaturePopupOpen, setIsSignaturePopupOpen] = useState(false);
   const openSignaturePopup = () => {
@@ -319,30 +322,30 @@ export default function updatebooking() {
   };
   const closeSignaturePopup = () => {
     setIsSignaturePopupOpen(false);
-  };  
+  };
   const handleSignatureChange = (data) => {
     setSignatureData(data);
-    setUserPackageBooking(prev => {
-      return { ...prev, customer_signature: data}
+    setUserPackageBooking((prev) => {
+      return { ...prev, customer_signature: data };
     });
   };
   const handleSaveSignature = () => {
-    console.log('Signature saved:', signatureData);
+    console.log("Signature saved:", signatureData);
     closeSignaturePopup();
   };
   const handleRemoveSignature = () => {
     setSignatureData(null);
-  }
+  };
   const handleSelectChange = (value) => {
     setSelectedOption(value);
-    setUserPackageBooking(prev => {
-      return { ...prev, booking_status: value}
+    setUserPackageBooking((prev) => {
+      return { ...prev, booking_status: value };
     });
   };
   const handleTextAreaChange = (value) => {
     // Handle the change in the text area value if needed
-    setUserPackageBooking(prev => {
-      return { ...prev, reamark: value}
+    setUserPackageBooking((prev) => {
+      return { ...prev, reamark: value };
     });
   };
 
@@ -363,7 +366,12 @@ export default function updatebooking() {
                       <Form.Select
                         className="page-form-control"
                         value={userPackageBooking.booking_for}
-                        onChange={(e) => setUserPackageBooking({ ...userPackageBooking, booking_for: e.target.value })}
+                        onChange={(e) =>
+                          setUserPackageBooking({
+                            ...userPackageBooking,
+                            booking_for: e.target.value,
+                          })
+                        }
                       >
                         <option>Select Relation</option>
                         <option value="Self">Self</option>
@@ -380,7 +388,12 @@ export default function updatebooking() {
                         placeholder="Name"
                         className="page-form-control"
                         value={userPackageBooking.name}
-                        onChange={(e) => setUserPackageBooking({ ...userPackageBooking, name: e.target.value })}
+                        onChange={(e) =>
+                          setUserPackageBooking({
+                            ...userPackageBooking,
+                            name: e.target.value,
+                          })
+                        }
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
@@ -390,15 +403,25 @@ export default function updatebooking() {
                         placeholder="Age"
                         className="page-form-control"
                         value={userPackageBooking.age}
-                        onChange={(e) => setUserPackageBooking({ ...userPackageBooking, age: e.target.value })}
+                        onChange={(e) =>
+                          setUserPackageBooking({
+                            ...userPackageBooking,
+                            age: e.target.value,
+                          })
+                        }
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                    <Form.Label>Gender*</Form.Label>
+                      <Form.Label>Gender*</Form.Label>
                       <Form.Select
                         className="page-form-control"
                         value={userPackageBooking.gender}
-                        onChange={(e) => setUserPackageBooking({ ...userPackageBooking, gender: e.target.value })}
+                        onChange={(e) =>
+                          setUserPackageBooking({
+                            ...userPackageBooking,
+                            gender: e.target.value,
+                          })
+                        }
                       >
                         <option>Select Gender</option>
                         <option value="Male">Male</option>
@@ -406,7 +429,6 @@ export default function updatebooking() {
                       </Form.Select>
                     </Form.Group>
 
-                
                     <Form.Group className="mb-3">
                       <Form.Label>Email*</Form.Label>
                       <Form.Control
@@ -414,7 +436,12 @@ export default function updatebooking() {
                         placeholder="Email"
                         className="page-form-control"
                         value={userPackageBooking.email}
-                        onChange={(e) => setUserPackageBooking({ ...userPackageBooking, email: e.target.value })}
+                        onChange={(e) =>
+                          setUserPackageBooking({
+                            ...userPackageBooking,
+                            email: e.target.value,
+                          })
+                        }
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
@@ -424,9 +451,14 @@ export default function updatebooking() {
                         placeholder="Age"
                         className="page-form-control"
                         value={userPackageBooking.contact}
-                        onChange={(e) => setUserPackageBooking({ ...userPackageBooking, contact: e.target.value })}
+                        onChange={(e) =>
+                          setUserPackageBooking({
+                            ...userPackageBooking,
+                            contact: e.target.value,
+                          })
+                        }
                       />
-                    </Form.Group>                
+                    </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label>Landmark/Sublocality*</Form.Label>
                       <Form.Control
@@ -435,9 +467,14 @@ export default function updatebooking() {
                         style={{ height: "80px" }}
                         className="page-form-control"
                         value={userPackageBooking.user_address}
-                        onChange={(e) => setUserPackageBooking({ ...userPackageBooking, user_address: e.target.value })}
+                        onChange={(e) =>
+                          setUserPackageBooking({
+                            ...userPackageBooking,
+                            user_address: e.target.value,
+                          })
+                        }
                       />
-                    </Form.Group>               
+                    </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label>Pincode</Form.Label>
                       <Form.Control
@@ -445,11 +482,18 @@ export default function updatebooking() {
                         placeholder="Pincode"
                         className="page-form-control"
                         value={userPackageBooking.pincode}
-                        onChange={(e) => setUserPackageBooking({ ...userPackageBooking, pincode: e.target.value })}
+                        onChange={(e) =>
+                          setUserPackageBooking({
+                            ...userPackageBooking,
+                            pincode: e.target.value,
+                          })
+                        }
                       />
-                    </Form.Group>               
+                    </Form.Group>
                     <div className="mb-3 text-center">
-                      <Link href="#" onClick={handleGetDirections} >Get direction to customer</Link>
+                      <Link href="#" onClick={handleGetDirections}>
+                        Get direction to customer
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -477,8 +521,8 @@ export default function updatebooking() {
                       </p>
                       <p>
                         <span>Mobile Number</span>
-                        <br />  {userPackageBooking.contact}
-                      </p>                 
+                        <br /> {userPackageBooking.contact}
+                      </p>
                     </div>
                     <div>
                       {userPackageBooking.slot_time == "" ? (
@@ -488,12 +532,17 @@ export default function updatebooking() {
                               <Form.Label>Choose Package*</Form.Label>
                               <Form.Select
                                 className="page-form-control"
-                                value={userPackageBooking.package_id} 
+                                value={userPackageBooking.package_id}
                                 onChange={(e) => packageChange(e.target.value)}
                               >
-                                <option key="0" value="">Select Package</option>
+                                <option key="0" value="">
+                                  Select Package
+                                </option>
                                 {labPackages.map((labPackage) => (
-                                  <option key={labPackage.lab_package_id} value={labPackage.lab_package_id}>
+                                  <option
+                                    key={labPackage.lab_package_id}
+                                    value={labPackage.lab_package_id}
+                                  >
                                     {labPackage.lab_package_name}
                                   </option>
                                 ))}
@@ -505,8 +554,8 @@ export default function updatebooking() {
                               <Form.Control
                                 type="date"
                                 placeholder=""
-                                className="page-form-control"                                
-                                value={userPackageBooking.booking_date} 
+                                className="page-form-control"
+                                value={userPackageBooking.booking_date}
                                 min={getCurrentDate()}
                                 onChange={handleDateChange}
                               />
@@ -514,10 +563,10 @@ export default function updatebooking() {
                             <Form.Group className="mb-3">
                               <p className="mb-0">Booking Slot</p>
                               <Form.Select
-                               name="Slot" 
-                               value={userPackageBooking.slot_time} 
-                               onChange={handleSlotChange}
-                               >
+                                name="Slot"
+                                value={userPackageBooking.slot_time}
+                                onChange={handleSlotChange}
+                              >
                                 <option value="">Select Slot</option>
                                 {slots.map((slot, index) => (
                                   <option key={index} value={slot}>
@@ -533,55 +582,110 @@ export default function updatebooking() {
                           <p className="text-secondary mb-2">
                             <small>{userPackageBooking.package_name}</small>
                           </p>
-                          <p className="mb-0">{userPackageBooking.package_price}</p>
-                          <button onClick={removePackage} className="delete-btn btn btn-danger">
+                          <p className="mb-0">
+                            {userPackageBooking.package_price}
+                          </p>
+                          <button
+                            onClick={removePackage}
+                            className="delete-btn btn btn-danger"
+                          >
                             <HiOutlineMinusSm />
                           </button>
                         </div>
                       )}
                       <div className="text-center">
-                      {labTubeList.map((tube) => (
-                        <Link href={`update-order/package-attachment-details?id=${tube.tube_id}&booking_id=${userPackageBooking.id}`} className="text-danger">
-                          <p>{tube.tube_type}</p><hr/>
+                        {labTubeList.map((tube) => (
+                          <Link
+                            href={`update-order/package-attachment-details?id=${tube.tube_id}&booking_id=${userPackageBooking.id}`}
+                            className="text-danger"
+                          >
+                            <p>{tube.tube_type}</p>
+                            <hr />
+                          </Link>
+                        ))}
+                        <Link
+                          href={`update-order/package-attachment-details?booking_id=${userPackageBooking.id}`}
+                          className="text-danger"
+                        >
+                          <p>Add Tube </p>
+                          <hr />
                         </Link>
-                      ))}
-                        <Link href={`update-order/package-attachment-details?booking_id=${userPackageBooking.id}`} className="text-danger">
-                          <p>Add Tube </p><hr/>
-                        </Link>
-                        
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="web-box">
                   <div>
-                    <h2 className="box-heading">
-                      Customer Signature 
-                    </h2>
+                    <h2 className="box-heading">Customer Signature</h2>
                     {signatureData ? (
-                        <div>
-                          <p>Signature Saved</p>
-                          {/* <img src={signatureData} alt="Customer Signature" /> */}
-                        </div>
+                      <div className="box-body text-center">
+                        <p className="m-0">Signature Saved</p>
+                        {/* <img src={signatureData} alt="Customer Signature" /> */}
+                      </div>
                     ) : (
-                      <a  className="sign text-center mb-3 d-block" onClick={openSignaturePopup}>
-                      Take Customer signature
-                    </a>
+                      <div className="box-body">
+                        <a
+                          className="sign text-center d-block"
+                          onClick={openSignaturePopup}
+                        >
+                          Take Customer signature
+                        </a>
+                      </div>
                     )}
 
-                    {isSignaturePopupOpen && (                
-                      <div className="popup-container-signature">
-                        <div className="popup-content-signature">
-                          <SignaturePadPopup
-                            onSignatureChange={handleSignatureChange}
-                            onSaveSignature={handleSaveSignature}
-                            onClose={closeSignaturePopup}
-                          />
-                        </div>
-                    </div>
+                    {isSignaturePopupOpen && (
+                      <SignaturePadPopup
+                        onSignatureChange={handleSignatureChange}
+                        onSaveSignature={handleSaveSignature}
+                        onClose={closeSignaturePopup}
+                      />
                     )}
-                    <style jsx>{`
-                        .popup-container-signature {
+                  </div>
+                </div>
+                <div className="web-box">
+                  <h2 className="box-heading">Master Barcode Value</h2>
+                  <div className="box-body">
+                    <div className="d-flex align-items-center justify-content-between gap-3">
+                      <Form.Control
+                        type="text"
+                        placeholder=""
+                        // value={userPackageBooking.master_barcode_no ? userPackageBooking.master_barcode_no : scannedBarcode}
+                        value={
+                          userPackageBooking.master_barcode_no !== undefined
+                            ? userPackageBooking.master_barcode_no
+                            : scannedBarcode
+                        }
+                        onChange={(e) => {
+                          // Handle the input change and update the state accordingly
+                          setUserPackageBooking({
+                            ...userPackageBooking,
+                            master_barcode_no: e.target.value,
+                          });
+                        }}
+                        className="page-form-control"
+                      />
+                      <Link
+                        onClick={openScannerPopup}
+                        href={"#"}
+                        className="scan text-center"
+                      >
+                        <MdQrCodeScanner />
+                        <br />
+                        Scan
+                      </Link>
+                      {isPopupOpen && (
+                        <div className="popup-container">
+                          <div className="popup-content">
+                            <BarcodeScannerPopup
+                              onBarcodeScanned={handleBarcodeScanned}
+                              onClose={closeScannerPopup}
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      <style jsx>{`
+                        .popup-container {
                           position: fixed;
                           top: 0;
                           left: 0;
@@ -593,99 +697,67 @@ export default function updatebooking() {
                           justify-content: center;
                         }
 
-                        .popup-content-signature {
+                        .popup-content {
                           background: #fff;
-                          padding: 2px;
+                          padding: 20px;
                           border-radius: 8px;
                         }
-                      `}
-                    </style>
-                  </div>
-                  <h2 className="box-heading">Master Barcode Value</h2>
-                  <div className="box-body">
-                    <div className="d-flex align-items-center justify-content-between gap-3">
-                      <Form.Control
-                        type="text"
-                        placeholder=""
-                        // value={userPackageBooking.master_barcode_no ? userPackageBooking.master_barcode_no : scannedBarcode}
-                        value={userPackageBooking.master_barcode_no !== undefined ? userPackageBooking.master_barcode_no : scannedBarcode}
-                        onChange={(e) => {
-                          // Handle the input change and update the state accordingly
-                          setUserPackageBooking({
-                            ...userPackageBooking,
-                            master_barcode_no: e.target.value,
-                          });
-                        }}
-                        className="page-form-control"
-                      />
-                      <Link onClick={openScannerPopup} href={'#'} className="scan text-center">
-                            <MdQrCodeScanner />
-                            <br />
-                            Scan
-                          </Link>                        
-                            {isPopupOpen && (
-                              <div className="popup-container">
-                                <div className="popup-content">
-                                  <BarcodeScannerPopup
-                                    onBarcodeScanned={handleBarcodeScanned}
-                                    onClose={closeScannerPopup}
-                                  />
-                                </div>
-                              </div>
-                            )}
-
-                            <style jsx>{`
-                              .popup-container {
-                                position: fixed;
-                                top: 0;
-                                left: 0;
-                                width: 100%;
-                                height: 100%;
-                                background: rgba(0, 0, 0, 0.5);
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                              }
-
-                              .popup-content {
-                                background: #fff;
-                                padding: 20px;
-                                border-radius: 8px;
-                              }
-                            `}</style>                  
+                      `}</style>
                     </div>
                   </div>
                 </div>
                 <div className="web-box">
                   <h2 className="box-heading">Pickup Status*</h2>
                   <div className="box-body">
-                    <Form.Select 
-                    className="page-form-control"
-                    onChange={(e) => handleSelectChange(e.target.value)}
+                    <Form.Select
+                      className="page-form-control"
+                      onChange={(e) => handleSelectChange(e.target.value)}
                     >
-                      <option >Select</option>
+                      <option>Select</option>
                       <option value="confirmed">Picked</option>
                       <option value="canceled">Not Picked</option>
                       <option value="pending">Pending</option>
                       <option value="onHold">Hold</option>
                     </Form.Select>
                   </div>
-                    {selectedOption === 'canceled' || selectedOption === 'onHold' ? (
+                  {selectedOption === "canceled" ||
+                  selectedOption === "onHold" ? (
                     <div className="box-body">
-                      <Form.Select 
-                      className="page-form-control"
-                      value={userPackageBooking.reason}
-                      onChange={(e) => setUserPackageBooking({ ...userPackageBooking, reason: e.target.value })}
+                      <Form.Select
+                        className="page-form-control"
+                        value={userPackageBooking.reason}
+                        onChange={(e) =>
+                          setUserPackageBooking({
+                            ...userPackageBooking,
+                            reason: e.target.value,
+                          })
+                        }
                       >
-                        <option value="outOfStation">Customer out of station</option>
-                        <option value="notReal">Booking not confirmed, customer not real</option>
-                        <option value="notFasting">Customer not in fasting</option>
+                        <option value="outOfStation">
+                          Customer out of station
+                        </option>
+                        <option value="notReal">
+                          Booking not confirmed, customer not real
+                        </option>
+                        <option value="notFasting">
+                          Customer not in fasting
+                        </option>
                         <option value="phleboLate">Phlebotomist late</option>
-                        <option value="holdDueToPayment">Hold due to payment</option>
-                        <option value="cancelRequest">Customer wants to cancel</option>
-                        <option value="addressNotFound">Address not found</option>
-                        <option value="rescheduleRequest">Customer wants to reschedule</option>
-                        <option value="notResponding">Customer not responding to call</option>
+                        <option value="holdDueToPayment">
+                          Hold due to payment
+                        </option>
+                        <option value="cancelRequest">
+                          Customer wants to cancel
+                        </option>
+                        <option value="addressNotFound">
+                          Address not found
+                        </option>
+                        <option value="rescheduleRequest">
+                          Customer wants to reschedule
+                        </option>
+                        <option value="notResponding">
+                          Customer not responding to call
+                        </option>
                         <option value="outOfCity">Out of city</option>
                       </Form.Select>
                       <Form.Group controlId="additionalInfo">
@@ -700,7 +772,8 @@ export default function updatebooking() {
                     </div>
                   ) : null}
                 </div>
-                {selectedOption === 'confirmed' && userPackageBooking.payment_status !== 'completed'? (
+                {selectedOption === "confirmed" &&
+                userPackageBooking.payment_status !== "completed" ? (
                   <div className="web-box">
                     <h2 className="box-heading">Payment Details</h2>
                     <div className="web-box">
@@ -722,22 +795,28 @@ export default function updatebooking() {
                             </tr>
                             <tr>
                               <td>Payment Status</td>
-                              <th>{camelToTitleCase(userPackageBooking.payment_status)}</th>
+                              <th>
+                                {camelToTitleCase(
+                                  userPackageBooking.payment_status
+                                )}
+                              </th>
                             </tr>
                           </tbody>
                         </Table>
                       </div>
-                    </div> 
+                    </div>
                     <div className="box-body">
-                      <Form.Select 
-                      className="page-form-control"
-                      value={userPackageBooking.payment_mode}
-                      onChange={(e) => setUserPackageBooking((prevUserPackageBooking) => ({
-                        ...prevUserPackageBooking,
-                        payment_mode: e.target.value
-                      }))}
+                      <Form.Select
+                        className="page-form-control"
+                        value={userPackageBooking.payment_mode}
+                        onChange={(e) =>
+                          setUserPackageBooking((prevUserPackageBooking) => ({
+                            ...prevUserPackageBooking,
+                            payment_mode: e.target.value,
+                          }))
+                        }
                       >
-                        <option >select</option>
+                        <option>select</option>
                         <option value="cash">Cash</option>
                         <option value="link">Payment QR</option>
                       </Form.Select>
@@ -747,14 +826,21 @@ export default function updatebooking() {
                           type="text"
                           placeholder=""
                           value={userPackageBooking.package_price}
-                          onChange={(e) => setUserPackageBooking({ ...userPackageBooking, cash_payment: e.target.value })}
+                          onChange={(e) =>
+                            setUserPackageBooking({
+                              ...userPackageBooking,
+                              cash_payment: e.target.value,
+                            })
+                          }
                           className="page-form-control"
-                          readOnly 
+                          readOnly
                         />
                       </Form.Group>
-                      {userPackageBooking.payment_mode === 'link' && (
+                      {userPackageBooking.payment_mode === "link" && (
                         <div className="text-center mb-3">
-                          <Link href="#" onClick={handleShow}>Payment QR Code</Link>
+                          <Link href="#" onClick={handleShow}>
+                            Payment QR Code
+                          </Link>
                         </div>
                       )}
                       <Form.Group controlId="additionalInfo">
@@ -772,7 +858,10 @@ export default function updatebooking() {
                         </Modal.Header>
                         <Modal.Body>
                           {/* Add your content for the payment information here */}
-                          <img src="https://www.lyra.com/in/wp-content/uploads/sites/8/2020/05/OQ-Code-Payments.png" alt="Payment Info" />
+                          <img
+                            src="https://www.lyra.com/in/wp-content/uploads/sites/8/2020/05/OQ-Code-Payments.png"
+                            alt="Payment Info"
+                          />
                         </Modal.Body>
                         <Modal.Footer>
                           <Button variant="secondary" onClick={handleClose}>
@@ -782,42 +871,51 @@ export default function updatebooking() {
                       </Modal>
                     </div>
                   </div>
-                ): (
-                selectedOption === 'confirmed' && userPackageBooking.payment_status === 'completed' && (
-                  <>
-                    <div className="web-box">
-                      <h2 className="box-heading">Order Summary</h2>
-                      <div className="box-body">
-                        <Table striped bordered hover>
-                          <tbody>
-                            <tr>
-                              <td>Price</td>
-                              <th>{userPackageBooking.package_mrp}</th>
-                            </tr>
-                            <tr>
-                              <td>Discount</td>
-                              <th>-{priceDifference}</th>
-                            </tr>
-                            <tr>
-                              <td>Price After Discount</td>
-                              <th>{userPackageBooking.package_price}</th>
-                            </tr>
-                            <tr>
-                              <td>Payment Status</td>
-                              <th>{camelToTitleCase(userPackageBooking.payment_status)}</th>
-                            </tr>
-                          </tbody>
-                        </Table>
-                        {/* <Link href={"#"} className="btn web-stroke-btn w-100">
+                ) : (
+                  selectedOption === "confirmed" &&
+                  userPackageBooking.payment_status === "completed" && (
+                    <>
+                      <div className="web-box">
+                        <h2 className="box-heading">Order Summary</h2>
+                        <div className="box-body">
+                          <Table striped bordered hover>
+                            <tbody>
+                              <tr>
+                                <td>Price</td>
+                                <th>{userPackageBooking.package_mrp}</th>
+                              </tr>
+                              <tr>
+                                <td>Discount</td>
+                                <th>-{priceDifference}</th>
+                              </tr>
+                              <tr>
+                                <td>Price After Discount</td>
+                                <th>{userPackageBooking.package_price}</th>
+                              </tr>
+                              <tr>
+                                <td>Payment Status</td>
+                                <th>
+                                  {camelToTitleCase(
+                                    userPackageBooking.payment_status
+                                  )}
+                                </th>
+                              </tr>
+                            </tbody>
+                          </Table>
+                          {/* <Link href={"#"} className="btn web-stroke-btn w-100">
                           <FaPlus />
                           Select Coupon
                         </Link> */}
+                        </div>
                       </div>
-                    </div> 
-                  </>
-                )
-              )}
-                <Link href={"#"} className="btn web-stroke-btn mb-3 d-block" onClick={handleSubmit}>
+                    </>
+                  )
+                )}
+                <Link
+                  href={"#"}
+                  className="btn web-stroke-btn mb-3 d-block"
+                  onClick={handleSubmit}
+                >
                   Update Order Details
                 </Link>
 
@@ -828,10 +926,10 @@ export default function updatebooking() {
             </Col>
           </Row>
           <Snackbar
-              open={snack.open}
-              autoHideDuration={6000}
-              onClose={snackClose}
-              message={snack.message}
+            open={snack.open}
+            autoHideDuration={6000}
+            onClose={snackClose}
+            message={snack.message}
           />
         </Container>
       </section>

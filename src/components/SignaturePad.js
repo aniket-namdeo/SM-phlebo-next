@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import SignatureCanvas from 'react-signature-canvas';
+import { useRef } from "react";
+import SignatureCanvas from "react-signature-canvas";
 
 const SignaturePad = ({ onSignatureChange }) => {
   const signatureRef = useRef();
@@ -16,15 +16,15 @@ const SignaturePad = ({ onSignatureChange }) => {
   };
 
   return (
-    <div>
+    <div className="signature-wrapper">
       <SignatureCanvas
         ref={signatureRef}
-        canvasProps={{ className: 'signature-canvas' }}
+        canvasProps={{ className: "signature-canvas" }}
         onEnd={handleEnd}
       />
-      <div className='clear_canvas'>
-        <a  onClick={handleClear}>Clear Signature</a>
-      </div>
+      <a onClick={handleClear} className="btn web-stroke-btn clear-btn">
+        Clear
+      </a>
     </div>
   );
 };
