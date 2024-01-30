@@ -237,7 +237,7 @@ export default function samplehandover() {
             <Col>
               <Form onSubmit={handleSubmit}>
                 <Button
-                  className="btn web-stroke-btn w-100 mb-3"
+                  className="btn web-stroke-btn w-100 mb-3 with-icon"
                   onClick={handleShow}
                 >
                   <FaPlus /> Click To Add Bookings
@@ -389,7 +389,7 @@ export default function samplehandover() {
                 {/* <Link href={"#"} className="text-center mb-3 d-block">
                   Take sample receivers signature
                 </Link> */}
-                <div>
+                <div className="web-box mt-4">
                   <h2 className="box-heading">Lab Signature</h2>
                   {signatureData ? (
                     <div className="box-body text-center">
@@ -415,11 +415,11 @@ export default function samplehandover() {
                     />
                   )}
                 </div>
-                <Form.Group controlId="additionalInfo">
+                <Form.Group className="mb-3" controlId="additionalInfo">
                   <Form.Label>Additional Information:</Form.Label>
                   <Form.Control
                     as="textarea"
-                    rows="4"
+                    rows="2"
                     placeholder="Provide additional information..."
                     onChange={(e) => handleTextAreaChange(e.target.value)}
                   />

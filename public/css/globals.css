@@ -98,6 +98,9 @@ a {
   gap: 10px;
   transition: all 0.3s 0s linear;
 }
+.btn svg {
+  width: auto;
+}
 .web-btn {
   background-color: var(--greencolor) !important;
   border-color: var(--greencolor) !important;

@@ -71,10 +71,6 @@ svg {
   padding: 0% 2%;
   border: 1px solid;
 }
-textarea.form-control {
-  height: 54px;
-  padding-bottom: 9%;
-}
 
 .web-popup {
   position: fixed;
