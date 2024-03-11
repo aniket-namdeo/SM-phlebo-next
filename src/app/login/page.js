@@ -73,80 +73,63 @@ export default function Login() {
   return (
     <>
       <section className="login">
-        <div className="box">
-          <Container>
-            <Row>
-              <Col>
-                <Image
-                  src="/images/logo-icon.png"
-                  width={70}
-                  height={70}
-                  alt="Phlebo"
-                  className="logo"
-                />
-                <h1 className="heading">Log In</h1>
-                <Form>
-                  <Form.Group className="mb-3">
-                    <Form.Control
-                      type="text"
-                      placeholder="Mobile"
-                      value={mobile.value}
-                      onChange={(e) => handleMobileChange(e)}
-                      helperText={mobile.errText}
-                    />
-                  </Form.Group>
-                  <div className="text-center">
-                    {showLoginBtn ? (
-                      <Button className="btn web-btn" onClick={handleConfirm}>
-                        Log In
-                      </Button>
-                    ) : (
-                      <Button className="btn web-btn" disabled>
-                        Log In
-                      </Button>
-                    )}
-                  </div>
-                </Form>
-                {/* <div className="login-with">
-                  <p>Log In with</p>
-                  <ul>
-                    <li>
-                      <Link href={"#"}>
-                        <Image
-                          src="/images/facebook-icon.svg"
-                          width={40}
-                          height={40}
-                          alt=""
-                        />
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href={"#"}>
-                        <Image
-                          src="/images/google-icon.svg"
-                          width={40}
-                          height={40}
-                          alt=""
-                        />
-                      </Link>
-                    </li>
-                  </ul>
-                </div> */}
-              </Col>
-            </Row>
-          </Container>
-          <Snackbar
-            open={snack.open}
-            autoHideDuration={6000}
-            onClose={snackClose}
-            message={snack.message}
-          />
-        </div>
-        <div className="login-footer text-center">
-          <p className="m-0">
-            {/* Don't have an account? <Link href={"#"}>Sign Up</Link> */}
-          </p>
-        </div>
+        <Image
+          src="/images/lab-test.webp"
+          width={700}
+          height={467}
+          alt="Phlebo"
+          className="login-img"
+        />
+        <Image
+          src="/images/labtest.png"
+          width={98}
+          height={419}
+          alt="Phlebo"
+          className="labtest-tube"
+        />
+        <Container>
+          <Row>
+            <Col>
+              <Image
+                src="/images/logo-icon.png"
+                width={70}
+                height={60}
+                alt="Phlebo"
+                className="logo"
+              />
+              <h1 className="heading web-clr">Welcome Phlebotomist</h1>
+              <p>Login to your account</p>
+              <Form>
+                <Form.Group className="mb-3">
+                  <Form.Control
+                    type="text"
+                    placeholder="Mobile"
+                    value={mobile.value}
+                    onChange={(e) => handleMobileChange(e)}
+                    helperText={mobile.errText}
+                  />
+                </Form.Group>
+                <div className="text-center">
+                  {showLoginBtn ? (
+                    <Button className="btn web-btn" onClick={handleConfirm}>
+                      Log In
+                    </Button>
+                  ) : (
+                    <Button className="btn web-btn" disabled>
+                      Log In
+                    </Button>
+                  )}
+                </div>
+              </Form>
+            </Col>
+          </Row>
+        </Container>
+        <Snackbar
+          open={snack.open}
+          autoHideDuration={6000}
+          onClose={snackClose}
+          message={snack.message}
+        />
       </section>
     </>
   );
