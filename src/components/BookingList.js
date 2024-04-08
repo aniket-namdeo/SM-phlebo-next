@@ -78,6 +78,16 @@ const BookingList = ({ bookings }) => {
               <span>Package Name:</span> <br /> {booking.package_name}
             </p>
             <p>
+                <h4>Package Name:</h4>
+                <div className="package-container">
+                    {booking.details.map(detail => (
+                        <span key={detail.lab_package_booking_details_id} className="package-name">
+                            {detail.package_name}
+                        </span>
+                    ))}
+                </div>
+            </p>
+            <p>
               <span>Booking Source:</span> <br /> Thyrocare
             </p> <br />
             {booking.reamark? (
