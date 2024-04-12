@@ -258,7 +258,16 @@ export default function PackageAttachmentDetails() {
                 <div>
                   {packageBookingTubeDetails.image ? (
                     <img
-                      src={`https://phleboapp.secondmedic.com/${packageBookingTubeDetails.image}`}
+                      src={`https://phlebo.secondmedic.com/${packageBookingTubeDetails.image}`}
+                      alt="Package Image"
+                      style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
+                    />
+                  ) : null}
+                </div>
+                <div>
+                  {packageBookingTubeDetails.localImage ? (
+                    <img
+                      src={`data:image/jpeg;base64, ${packageBookingTubeDetails.localImage}`}
                       alt="Package Image"
                       style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
                     />
@@ -284,7 +293,7 @@ export default function PackageAttachmentDetails() {
                         setImageFile(decodedData);
               
                         // Show the selected file in the image tag
-                        setPackageBookingTubeDetails({ ...packageBookingTubeDetails, image: decodedData });
+                        setPackageBookingTubeDetails({ ...packageBookingTubeDetails, localImage: decodedData });
                       });
                     }
                   }}

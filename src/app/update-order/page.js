@@ -34,6 +34,7 @@ export default function updatebooking() {
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
   const [userPackageBooking, setUserPackageBooking] = useState({});
+  const [userPackageBookingDetails, setUserPackageBookingDetails] = useState([]);
 
   //Booking Step 2 all state page
   const [selectedSlot, setSelectedSlot] = useState("");
@@ -189,6 +190,7 @@ export default function updatebooking() {
       try {
         const res = await LabPackageBookingDetails(id);
         setUserPackageBooking(res);
+        setUserPackageBookingDetails(res.lab_package_details);
         const lab_res = await LabPackages();
         setLabPackages(lab_res);
         console.log("userPackageBooking:", res);
@@ -285,6 +287,23 @@ export default function updatebooking() {
     });
     setSelectedSlot("");
   };
+  // const removePackageDetail = (event, labPackageBookingDetailsIdToRemove) => {
+  //   event.preventDefault(); // Prevents the default action
+  //   console.log(labPackageBookingDetailsIdToRemove);
+  //   setUserPackageBooking(prevState => {
+  //     // Create a new copy of userPackageBooking object
+  //     const updatedUserPackageBooking = {...prevState};
+      
+  //     // Filter out the lab_package_details array, removing the item with the provided labPackageBookingDetailsIdToRemove
+  //     updatedUserPackageBooking.lab_package_details = updatedUserPackageBooking.userPackageBookingDetails.filter(
+  //       detail => detail.lab_package_booking_details_id !== labPackageBookingDetailsIdToRemove
+  //     );
+  
+  //     return updatedUserPackageBooking;
+  //   });
+  // };
+  
+  
   const packageChange = (val) => {
     const lab_package_obj = labPackages.filter((i) => i.lab_package_id == val);
     console.log(lab_package_obj[0].lab_package_name);
@@ -525,7 +544,7 @@ export default function updatebooking() {
                       </p>
                     </div>
                     <div>
-                      {userPackageBooking.slot_time == "" ? (
+                      {userPackageBooking.slot_time === "" ? (
                         <div>
                           <div>
                             <Form.Group className="mb-3">
@@ -578,20 +597,28 @@ export default function updatebooking() {
                           </div>
                         </div>
                       ) : (
-                        <div className="selected-packages mb-3">
-                          <p className="text-secondary mb-2">
-                            <small>{userPackageBooking.package_name}</small>
-                          </p>
-                          <p className="mb-0">
-                            {userPackageBooking.package_price}
-                          </p>
-                          <button
-                            onClick={removePackage}
-                            className="delete-btn btn btn-danger"
-                          >
-                            <HiOutlineMinusSm />
-                          </button>
-                        </div>
+                        <>
+                          {userPackageBookingDetails.map((packageDetail, index) => (
+                            <div key={index} className="selected-packages mb-3">
+                              <p className="text-secondary mb-2">
+                                <small>{packageDetail.package_name}</small>
+                              </p>
+                              <p className="mb-0">Rs. {packageDetail.package_price}</p>             
+                              {/* <button
+                                onClick={removePackage}
+                                className="delete-btn btn btn-danger"
+                              >
+                                <HiOutlineMinusSm />
+                              </button>               */}
+                              {/* <button
+                                onClick={(e) => removePackageDetail(e, packageDetail.lab_package_booking_details_id)} // Replace 87 with the appropriate lab_package_booking_details_id
+                                className="delete-btn btn btn-danger"
+                              >
+                                <HiOutlineMinusSm />
+                              </button> */}
+                            </div>
+                          ))}
+                        </>
                       )}
                       <div className="text-center">
                         {labTubeList.map((tube) => (
@@ -783,15 +810,17 @@ export default function updatebooking() {
                           <tbody>
                             <tr>
                               <td>Price</td>
-                              <th>{userPackageBooking.package_mrp}</th>
+                              <th>{userPackageBooking.cash_payment}</th>
                             </tr>
                             <tr>
                               <td>Discount</td>
-                              <th>-{priceDifference}</th>
+                              <th>
+                                {/* {priceDifference} */} 0
+                              </th>
                             </tr>
                             <tr>
                               <td>Price After Discount</td>
-                              <th>{userPackageBooking.package_price}</th>
+                              <th>{userPackageBooking.cash_payment}</th>
                             </tr>
                             <tr>
                               <td>Payment Status</td>
@@ -825,7 +854,7 @@ export default function updatebooking() {
                         <Form.Control
                           type="text"
                           placeholder=""
-                          value={userPackageBooking.package_price}
+                          value={userPackageBooking.cash_payment}
                           onChange={(e) =>
                             setUserPackageBooking({
                               ...userPackageBooking,
@@ -882,15 +911,17 @@ export default function updatebooking() {
                             <tbody>
                               <tr>
                                 <td>Price</td>
-                                <th>{userPackageBooking.package_mrp}</th>
+                                <th>{userPackageBooking.cash_payment}</th>
                               </tr>
                               <tr>
                                 <td>Discount</td>
-                                <th>-{priceDifference}</th>
+                                <th>
+                                  {/* {priceDifference} */} 0
+                                </th>
                               </tr>
                               <tr>
                                 <td>Price After Discount</td>
-                                <th>{userPackageBooking.package_price}</th>
+                                <th>{userPackageBooking.cash_payment}</th>
                               </tr>
                               <tr>
                                 <td>Payment Status</td>

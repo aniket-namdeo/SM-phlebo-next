@@ -94,7 +94,7 @@ export default function samplehandover() {
     //console.log("selectedBookings:", selectedBookings);
     const updatedTotalPrice = userPackageBooking.reduce((sum, booking) => {
       if (selectedBookings.includes(booking.id)) {
-        return sum + parseFloat(booking.package_price);
+        return sum + parseFloat(booking.cash_payment);
       }
       return sum;
     }, 0);
@@ -282,8 +282,8 @@ export default function samplehandover() {
                               <span>Booking id</span> <br /> {booking.id}
                             </p>
                             <p>
-                              <span>Package Price</span> <br />{" "}
-                              {booking.package_price}
+                              <span>Total Package Price</span> <br />{" "}
+                              {booking.cash_payment}
                             </p>
                           </Form.Label>
                         </Form.Group>
@@ -324,11 +324,17 @@ export default function samplehandover() {
                         </p>
                         <p>
                           <span>Package Name</span> <br />{" "}
-                          {selectedBooking.package_name}
-                        </p>
-                        <p>
-                          <span>Package price</span> <br />{" "}
-                          {selectedBooking.package_price}
+                          {/* {selectedBooking.package_name} */}
+                          <>
+                          {selectedBooking.details.map((packageDetail, index) => (
+                            <div key={index} className="selected-packages mb-3">
+                              <p className="text-secondary mb-2">
+                                <small>{packageDetail.package_name}</small>
+                              </p>
+                              <p className="mb-0">Rs. {packageDetail.package_price}</p> 
+                            </div>
+                          ))}
+                        </>
                         </p>
                       </div>
                     );

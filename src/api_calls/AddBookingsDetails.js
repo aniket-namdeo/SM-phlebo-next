@@ -1,15 +1,14 @@
 import axios from 'axios';
 
 export const AddBookingsDetails = async (memberObj,tubes) => {
-
     var userId = 0;
     if (JSON.parse(localStorage.getItem("app_user_temp")).temp_user_id) {
         var userId = JSON.parse(localStorage.getItem("app_user_temp")).temp_user_id;
     } else {
         var userId = 0;
     }
-
-
+    
+    
     const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL+"lab/labPackageAdd";
     const splitTubes = (inputArray) => {
         const tubeTypes = inputArray.map(item => item.tubeType);
@@ -18,7 +17,8 @@ export const AddBookingsDetails = async (memberObj,tubes) => {
         return { tubeTypes, barcodeNumbers };
     };
     const { tubeTypes, barcodeNumbers } = splitTubes(tubes);
-
+    
+  
     var bodyFormData = new FormData();
     bodyFormData.append('name', memberObj.name);
     bodyFormData.append('age', memberObj.age);
@@ -41,10 +41,20 @@ export const AddBookingsDetails = async (memberObj,tubes) => {
     bodyFormData.append('ref_by_doc', memberObj.ref_by_doc);
     bodyFormData.append('ref_by_lab', memberObj.ref_by_lab);
     bodyFormData.append('service_provider_id', userId);
-    bodyFormData.append('tubeType', tubeTypes);
-    bodyFormData.append('barcodeNumber', barcodeNumbers);
-    //bodyFormData.append('service_provider_id',service_provider_id);
 
+    /*
+    memberObj.packages.forEach(packageObj => {
+        bodyFormData.append('packages[][package_id]', packageObj.package_id);
+        bodyFormData.append('packages[][package_price]', packageObj.package_price);
+        bodyFormData.append('packages[][package_mrp]', packageObj.package_mrp);
+        bodyFormData.append('packages[][package_name]', packageObj.package_name);
+    });
+    */
+    //bodyFormData.append('tubeType', tubeTypes);
+    //bodyFormData.append('barcodeNumber', barcodeNumbers);
+
+    //bodyFormData.append('service_provider_id',service_provider_id);
+   
 
     let config = {
         method: 'post',

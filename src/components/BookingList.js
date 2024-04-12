@@ -66,10 +66,10 @@ const BookingList = ({ bookings }) => {
               <span>Collection Time:</span> <br /> {booking.slot_time}
             </p>
             <p>
-              <span>Booking Amount:</span> <br /> {booking.package_price}
+              <span>Booking Amount:</span> <br /> {booking.cash_payment}
             </p>
             <p>
-              <span>Amount Due:</span> <br /> {booking.package_price}
+              <span>Amount Due:</span> <br /> {booking.cash_payment}
             </p>
             <p>
               <span>Booking Status:</span> <br /> {booking.booking_status}
